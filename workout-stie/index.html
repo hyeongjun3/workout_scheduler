@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/login.css">
+  <link rel="stylesheet" href="styles/mydialog.css">
+  <link rel="stylesheet" href="styles/progressbar.css">
+  <script src="scripts/mydialog.js" defer></script>
+  <script type="module" src="scripts/login.js" defer></script>
+  <title>Document</title>
+</head>
+<body>
+  <div class="login_window">
+    <img src="image/logo.png" alt="logo image" class="login_logo">
+    <input type="email" class="login_info" id="login_email" placeholder="이메일">
+    <input type="password" class="login_info" id="login_password" placeholder="비밀번호">
+    <div class="login_auto">
+      <input type="checkbox" id="auto_radio">
+      <span class="auto_label">자동 로그인</span>
+    </div>
+    <button class="login">로그인</button>
+    <div class="login_signup">
+      <span class="signup_label">아이디가 없으신가요?</span>
+      <a href="" class="signup_link">회원가입</a>
+    </div>
+  </div>
+
+  <div class="arc-hider hidden"></div>
+
+  <!-- <dialog class="mydialog">
+    <p>Alert Dialog!!</p>
+    <div class="dialog_form_actions">
+      <button class="dialog_form_cancel">
+        확인
+      </button>
+    </div>
+  </dialog> -->
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+.my_dialog {
+  position : absolute;
+  top: 10vh;
+  transition: top 0.5s ease-out;
+  width: 150px;
+}
+
+.my_dialog > p {
+  text-align: center;
+}
+
+.dialog_form_actions {
+  display: flex;
+  justify-content: center;
+}
+
+.dialog_form_cancel {
+  padding : 5px;
+}
+
+
