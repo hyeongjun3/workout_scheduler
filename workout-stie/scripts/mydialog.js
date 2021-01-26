@@ -25,8 +25,9 @@ my_dialog_form_cancel.className = "dialog_form_cancel"
 my_dialog_form_cancel.innerHTML = "확인"
 my_dialog_form_cancel.addEventListener('click', event => {
   console.log('Cancel!');
-  my_dialog.removeAttribute("open");
+  my_dialog.close();
 });
+
 
 my_dialog.appendChild(my_dialog_message)
 my_dialog.appendChild(my_dialog_form_actions)

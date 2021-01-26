@@ -1,12 +1,10 @@
 :root{
-  
   /* --blue-color : ~~~; */
   --grey-color : #F6CECE;
   /* --font-medium : ~~~; */
   --font-medium : 12px;
   /* --side-padding : ~~~; */
 }
-
 
 body {
   margin : 0;
@@ -28,8 +26,6 @@ body {
 .login_logo {
   display: block;
   width : 20%;
-  /* margin : auto; */
-  
 }
 
 .login_info {

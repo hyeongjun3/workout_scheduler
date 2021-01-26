@@ -26,6 +26,7 @@ mySql.Utils.showUserTable = function () {
   })
 }
 
+// TODO : 암호화, 이미 가입되어있는지 확인, 이메일 인증
 mySql.Utils.createUser = function (user_email, password) {
   user_email = '"' + user_email + '"'
   password = '"' + password + '"'
@@ -37,12 +38,12 @@ mySql.Utils.createUser = function (user_email, password) {
       if (error) {
         return reject(error);
       }
-
       resolve(results, fields);
     })
   })
 };
 
+// TODO : user가 검색 안될 때 처리
 mySql.Utils.deleteUser = function (user_email) {
   user_email = '"' + user_email + '"';
   let query = "DELETE FROM " + user_table + " WHERE user_email = " + user_email;
@@ -58,28 +59,9 @@ mySql.Utils.deleteUser = function (user_email) {
   })
 }
 
-mySql.Utils.showUserTable().then( (results, fields) => {
-  console.log(results);
-  // console.log(fields);
-});
-
-// mySql.Utils.deleteUser('whow1101@naver.com').then ( value => {
-//   console.log(value)
-// })
-// .catch (err => {
-//   console.log(err);
-// });
-
-// mySql.Utils.createUser('whow1101@naver.com','1234')
-// .then( (results, fields) => {
+// mySql.Utils.showUserTable().then( (results, fields) => {
 //   console.log(results);
-//   console.log();
-//   console.log(fields);
-// })
-// .catch( err => {
-//   console.log(err);
+//   // console.log(fields);
 // });
 
-connection.end();
-
-// export default mySql;
+module.exports.Utils = mySql.Utils;

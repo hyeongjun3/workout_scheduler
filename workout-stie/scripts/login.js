@@ -66,7 +66,6 @@ login.login_elem.addEventListener('click', event => {
   //start progress bar
   login.Utils.progressOn();
   login_request.logInRequest('my request')
-
   .then( value => {
     login.progress_elem.classList.add('hidden');
     let test = value.text().then( message => message);

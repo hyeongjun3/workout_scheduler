@@ -25,4 +25,21 @@ export default class MyRequest {
     return res;
   }
 
+  SignUpRequest(input) {
+    let host = this.host + ':' + this.port + '/signUp';
+    const header = new Headers();
+    header.append('Content-Type', 'application/json')
+    let json_input = JSON.stringify(input)
+    const request = new Request(host, {headers: header,
+                                        method: 'POST',
+                                        mode : 'cors',
+                                        body: json_input });
+    let res = fetch(request)
+    .then(response => response.json())
+    .catch( error => {
+      console.log(error)
+    })
+
+    return res;
+  }
 }
