@@ -6,6 +6,7 @@ const login_request = new MyRequest();
 
 var login = login || {};
 login.fill_flag = false;
+login.access_token = "";
 login.login_window_elem = document.querySelector('.login_window')
 login.login_elem = document.querySelector('button.login');
 login.email_elem = document.querySelector('#login_email');
@@ -65,18 +66,28 @@ login.login_elem.addEventListener('click', event => {
   
   //start progress bar
   login.Utils.progressOn();
-  login_request.logInRequest('my request')
+  let input = {}
+  input.email = login.email_elem.value;
+  input.pwd = login.pwd_elem.value
+  login_request.logInRequest(input)
   .then( value => {
     login.progress_elem.classList.add('hidden');
-    let test = value.text().then( message => message);
-    return test;
+    return value;
   })
   .then( value => {
     //finish progres bar
     login.Utils.progressOff();
     
-    my_dialog_message.innerHTML = value;
-    my_dialog.showModal();
+    if (value.status === true) {
+      login.access_token = value.accessToken;
+      window.location.href = "daily.html";
+    } else {
+      my_dialog_message.innerHTML = value.message;
+      my_dialog.showModal();
+    }    
+  })
+  .catch (error => {
+    console.log(error);
   });
   
 })

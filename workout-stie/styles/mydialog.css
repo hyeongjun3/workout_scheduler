@@ -2,7 +2,7 @@
   position : absolute;
   top: 10vh;
   transition: top 0.5s ease-out;
-  width: 150px;
+  width: 300px;
 }
 
 .my_dialog > p {

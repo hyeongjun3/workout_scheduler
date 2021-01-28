@@ -9,14 +9,15 @@ export default class MyRequest {
   logInRequest(input) {
     let host = this.host + ':' + this.port + '/login';
     const header = new Headers();
-    header.append('Content-Type', 'text/plain')
+    header.append('Content-Type', 'application/json')
+    let json_input = JSON.stringify(input);
     const request = new Request(host, {headers: header,
                                        method: 'POST',
                                        mode : 'cors',
-                                       body: input });
+                                       body: json_input });
     let res = fetch(request)
     .then(response => {
-      return response
+      return response.json()
     })
     .catch(error => {
       console.log(`Error message : ${error}`);

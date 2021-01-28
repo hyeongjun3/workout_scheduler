@@ -75,12 +75,14 @@ signUp.btn_elem.addEventListener('click', event => {
   let input = {};
   input.email = signUp.email_elem.value;
   input.pwd = signUp.pwd_elem.value;
+  signUp.Utils.progressOn();
   signUp_request.SignUpRequest(input)
   .then( result => {
-    my_dialog_message.innerHTML = result.message;
-    my_dialog.showModal();
+    signUp.Utils.progressOff();
+    window.location.href = "daily.html";
   })
   .catch (error => {
+    signUp.Utils.progressOff();
     my_dialog_message.innerHTML = error;
     my_dialog.showModal();
   });
@@ -88,14 +90,15 @@ signUp.btn_elem.addEventListener('click', event => {
 
 
 //progress bar
+signUp.signUp_window = document.querySelector('.signUp_window')
 signUp.progress_elem = document.querySelector('.arc-hider');
 
 signUp.Utils.progressOn = function() {
-  login.login_window_elem.classList.add('transparent')
-  login.progress_elem.classList.remove('hidden');
+  signUp.signUp_window.classList.add('transparent')
+  signUp.progress_elem.classList.remove('hidden');
 }
 
 signUp.Utils.progressOff = function() {
-  login.progress_elem.classList.add('hidden');
-  login.login_window_elem.classList.remove('transparent')
+  signUp.progress_elem.classList.add('hidden');
+  signUp.signUp_window.classList.remove('transparent')
 }

@@ -43,6 +43,21 @@ mySql.Utils.createUser = function (user_email, password) {
   })
 };
 
+// SELECT * FROM user_tbl WHERE user_email = "whow1101@naver.com"  AND password = "1234" LIMIT 1
+mySql.Utils.readUser = function (user_email, password) {
+  user_email = '"' + user_email + '"'
+  password = '"' + password + '"'
+  let query = "SELECT * FROM " + user_table + " WHERE user_email = " + user_email + " AND password = "  + password + " LIMIT 1";
+  return new Promise ( (resolve, reject) => {
+    connection.query(query,(error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(results, fields);
+    })
+  })
+}
+
 // TODO : user가 검색 안될 때 처리
 mySql.Utils.deleteUser = function (user_email) {
   user_email = '"' + user_email + '"';
