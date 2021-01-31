@@ -79,8 +79,8 @@ login.login_elem.addEventListener('click', event => {
     login.Utils.progressOff();
     
     if (value.status === true) {
-      login.access_token = value.accessToken;
-      window.location.href = "daily.html";
+      console.log("Cookie : ", document.cookie)
+      // window.location.href = "daily.html";
     } else {
       my_dialog_message.innerHTML = value.message;
       my_dialog.showModal();
