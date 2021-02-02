@@ -80,7 +80,7 @@ login.login_elem.addEventListener('click', event => {
     
     if (value.status === true) {
       console.log("Cookie : ", document.cookie)
-      // window.location.href = "daily.html";
+      window.location.href = "daily.html";
     } else {
       my_dialog_message.innerHTML = value.message;
       my_dialog.showModal();
