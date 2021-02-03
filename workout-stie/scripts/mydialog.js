@@ -1,3 +1,4 @@
+
 /*
   <dialog class="my_dialog">
     <p>Message</p>
@@ -8,6 +9,59 @@
     </div>
   </dialog>
 */
+
+class MyDialogOne {
+  constructor(document,message, cancel_string) {
+    this.document = document;
+    this.message = message;
+    this.cancel_string = cancel_string;
+  }
+
+  setUI() {
+    this.setField();
+    this.setListener();
+    this.combination();
+  }
+
+  combination() {
+    this.my_dialog_form_actions.appendChild(this.my_dialog_form_cancel);
+
+    this.my_dialog.appendChild(this.my_dialog_message);
+    this.my_dialog.appendChild(this.my_dialog_form_actions);
+
+    this.document.querySelector('body').appendChild(this.my_dialog);
+  }
+
+  setListener() {
+    this.my_dialog_form_cancel.addEventListener('click', event => {
+      this.my_dialog.close();
+    })
+  }
+
+  setField() {
+    this.my_dialog = this.document.createElement('dialog');
+    this.my_dialog.className = 'my_dialog';
+
+    this.my_dialog_message = this.document.createElement('p');
+    this.my_dialog_message.innerHTML = this.message;
+
+    this.my_dialog_form_actions = this.document.createElement('div');
+    this.my_dialog_form_actions.className = 'dialog_form_actions';
+
+    this.my_dialog_form_cancel = this.document.createElement('button');
+    this.my_dialog_form_cancel.className = 'dialog_form_cancel';
+    this.my_dialog_form_cancel.innerHTML = this.cancel_string;
+  }
+
+  showModal() {
+    this.my_dialog.showModal();
+  }
+
+  setMessage(message) {
+    console.log(this.my_dialog_message);
+    this.my_dialog_message.innerHTML = message;
+  }
+}
 // Todo mydialog object 또는 class 만들기
 
 // var my_dialog = document.createElement("dialog")
@@ -101,4 +155,4 @@ class MyDialogTwo {
   }
 }
 
-export default MyDialogTwo
+export {MyDialogOne, MyDialogTwo};

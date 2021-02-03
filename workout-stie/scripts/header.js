@@ -1,4 +1,4 @@
-import MyDialogTwo from "./mydialog.js"
+import { MyDialogTwo } from "./mydialog.js"
 import MyRequest from "./request.js"
 
 {/*

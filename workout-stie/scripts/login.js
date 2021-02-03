@@ -1,6 +1,7 @@
 `use strict`
 
 import MyRequest from "./request.js"
+import { MyDialogOne } from "./mydialog.js"
 
 const login_request = new MyRequest();
 
@@ -12,6 +13,9 @@ login.login_elem = document.querySelector('button.login');
 login.email_elem = document.querySelector('#login_email');
 login.pwd_elem = document.querySelector('#login_password');
 login.progress_elem = document.querySelector('.arc-hider');
+
+let my_dialog = new MyDialogOne(document,"default", "확인")
+my_dialog.setUI();
 
 login.Utils = login.Utils || {};
 
@@ -82,7 +86,7 @@ login.login_elem.addEventListener('click', event => {
       console.log("Cookie : ", document.cookie)
       window.location.href = "daily.html";
     } else {
-      my_dialog_message.innerHTML = value.message;
+      my_dialog.setMessage(value.message);
       my_dialog.showModal();
     }    
   })
