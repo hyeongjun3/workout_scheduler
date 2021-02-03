@@ -1,4 +1,5 @@
 import MyDialogTwo from "./mydialog.js"
+import MyRequest from "./request.js"
 
 {/*
 <header class="header">
@@ -55,7 +56,13 @@ export default class myHeader {
     })
 
     this.my_dialog.setOkListener(event => {
-      console.log("test!!!");
+      this.my_request.logOutRequest().then( result => {
+        if (result.status === true) {
+          window.location.replace("index.html");
+        } else {
+          this.my_dialog.close();
+        }
+      });
     });
   }
 
@@ -95,5 +102,7 @@ export default class myHeader {
 
     this.my_dialog = new MyDialogTwo(document,"진짜루?","확인","취소");
     this.my_dialog.setUI();
+
+    this.my_request = new MyRequest();
   }
 }

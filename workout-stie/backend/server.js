@@ -6,6 +6,7 @@ const express = require('express');
 const cors = require('cors');
 const { SSL_OP_EPHEMERAL_RSA } = require('constants');
 const { nextTick } = require('process');
+const { access } = require('fs');
 const app = express();
 
 var corsOptions = {
@@ -130,6 +131,26 @@ app.post('/signUp', (req,res) => {
     json_input = JSON.stringify(input);
     res.send(json_input);
   })
+})
+
+app.post('/logout', (req,res) => {
+  console.log('LogOut requested');
+
+  let access_token = req.cookies.access_token;
+  let input = {}
+  let json_input = {}
+
+  if (cookie_storage.hasOwnProperty(access_token)) {
+    input.status = true;
+    input.message = "Success to log out";
+    delete cookie_storage[access_token];
+  } else {
+    input.status = false;
+    input.message = "Fail to log out"
+  }
+
+  json_input = JSON.stringify(input);
+  res.send(json_input);
 })
 
 app.listen(port, () => {

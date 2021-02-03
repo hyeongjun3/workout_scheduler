@@ -28,6 +28,26 @@ export default class MyRequest {
     return res;
   }
 
+  logOutRequest() {
+    console.log("Request Log Out");
+    let host = this.host + ':' + this.port + '/logout';
+    const header = new Headers();
+    header.append('Content-Type', 'application/json')
+    const request = new Request(host, {headers: header,
+                                        method: 'POST',
+                                        credentials : 'include',
+                                      });
+    let res = fetch(request)
+    .then(response => {
+    return response.json()
+    })
+    .catch(error => {
+    console.log(`Error message : ${error}`);
+    })
+
+    return res;
+  }
+
   SignUpRequest(input) {
     let host = this.host + ':' + this.port + '/signUp';
     const header = new Headers();
