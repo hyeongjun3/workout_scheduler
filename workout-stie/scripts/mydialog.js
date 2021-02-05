@@ -155,4 +155,106 @@ class MyDialogTwo {
   }
 }
 
-export {MyDialogOne, MyDialogTwo};
+/*
+<dialog class="my_dialog_additional">
+  <div class="dialog_edit_flex">
+    <label class="dialog_help">닉네임</label>
+    <input type="text" name="dialog_nickname" id="dialog_nickname">
+    <label class="dialog_help">성별</label>
+    <div class="dialog_radio">
+      <input type="radio" name="gender" id="male">
+      <label for="male">남자</label>
+      <input type="radio" name="gender" id="female">
+      <label for="female">여자</label>
+    </div>
+    <button class="dialog_confirm">확인</button>
+  </div>
+</dialog>
+*/
+
+class MyDialogAdditional{
+  constructor(document) {
+    this.document = document;
+  }
+
+  setUI() {
+    this.setField()
+    this.setListener();
+    this.combination()
+  }
+
+  combination() {
+    this.dialog_radio_gender.appendChild(this.dialog_input_male);
+    this.dialog_radio_gender.appendChild(this.dialog_label_male);
+    this.dialog_radio_gender.appendChild(this.dialog_input_female);
+    this.dialog_radio_gender.appendChild(this.dialog_label_female);
+
+    this.dialog_edit_flex.appendChild(this.dialog_label_nickname);
+    this.dialog_edit_flex.appendChild(this.dialog_input_nickname);
+    this.dialog_edit_flex.appendChild(this.dialog_label_gender);
+    this.dialog_edit_flex.appendChild(this.dialog_radio_gender);
+    this.dialog_edit_flex.appendChild(this.dialog_confirm);
+
+    this.dialog_addtional.appendChild(this.dialog_edit_flex);
+
+    this.document.querySelector('body').appendChild(this.dialog_addtional);
+  }
+
+  setListener() {
+
+  }
+
+  setField() {
+    this.dialog_addtional = this.document.createElement('dialog');
+    this.dialog_addtional.className = 'my_dialog_additional';
+
+    this.dialog_edit_flex = this.document.createElement('div');
+    this.dialog_edit_flex.className = 'dialog_edit_flex';
+
+    this.dialog_label_nickname = this.document.createElement('label');
+    this.dialog_label_nickname.className = 'dialog_help';
+    this.dialog_label_nickname.innerHTML = '닉네임'
+
+    this.dialog_input_nickname = this.document.createElement('input');
+    this.dialog_input_nickname.setAttribute('type', 'text');
+    this.dialog_input_nickname.setAttribute('name', 'dialog_nickname');
+    this.dialog_input_nickname.setAttribute('id', 'dialog_nickname');
+
+    this.dialog_label_gender = this.document.createElement('label');
+    this.dialog_label_gender.className = 'dialog_help';
+    this.dialog_label_gender.innerHTML = '성별'
+
+    this.dialog_radio_gender = this.document.createElement('div');
+    this.dialog_radio_gender.className = 'dialog_radio';
+
+    this.dialog_input_male = this.document.createElement('input');
+    this.dialog_input_male.setAttribute('type','radio');
+    this.dialog_input_male.setAttribute('name','gender');
+    this.dialog_input_male.setAttribute('id','male');
+
+    this.dialog_label_male = this.document.createElement('label');
+    this.dialog_label_male.setAttribute('for', 'male');
+    this.dialog_label_male.innerHTML = '남자'
+
+    this.dialog_input_female = this.document.createElement('input');
+    this.dialog_input_female.setAttribute('type','radio');
+    this.dialog_input_female.setAttribute('name','gender');
+    this.dialog_input_female.setAttribute('id','female');
+
+    this.dialog_label_female = this.document.createElement('label');
+    this.dialog_label_female.setAttribute('for', 'female');
+    this.dialog_label_female.innerHTML = '여자'
+
+    this.dialog_confirm = this.document.createElement('button');
+    this.dialog_confirm.className = 'dialog_confirm';
+    this.dialog_confirm.innerHTML = '확인';
+
+  }
+
+  showModal(){
+    this.dialog_addtional.showModal();
+  }
+}
+
+
+export {MyDialogOne, MyDialogTwo, MyDialogAdditional};
