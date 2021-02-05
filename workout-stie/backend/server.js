@@ -50,6 +50,16 @@ class Cookie{
 
     return ret;
   }
+
+  // TODO : 없을 때 처리
+  static getUserEmailByAccessToken(access_token) {
+    let cookie = cookie_storage[access_token]
+    if (cookie === undefined || cookie.hasOwnProperty('user') === false) {
+      return false;
+    } else {
+      return cookie.user;
+    }
+  }
 }
 
 function sleep (time) {
@@ -89,9 +99,13 @@ app.post('/login', (req,res) => {
       input.message = "성공"
       input.nickname = results[0].nickname;
       input.gender = results[0].gender;
+
+      console.log(`nickname : ${input.nickname}`);
       
       access_token = Cookie.generateAccessToken(req.body.email)
       has_additional_info = input.nickname === null ? false : true;
+
+      console.log(has_additional_info);
       
       res.cookie('access_token', access_token,options);
       res.cookie('has_additional_info', has_additional_info);
@@ -157,6 +171,42 @@ app.post('/logout', (req,res) => {
 
   json_input = JSON.stringify(input);
   res.send(json_input);
+})
+
+app.post('/addAdditionalInfo', (req,res) => {
+  console.log('addAdditionalInfo requested');
+
+  let user_email = Cookie.getUserEmailByAccessToken(req.cookies.access_token);
+  let input = {};
+
+  if (user_email === false) {
+    input.status = false;
+    input.message = "Invalid access token";
+    json_input = JSON.stringify(input);
+    res.send(json_input);
+    return;
+  }
+ 
+  mySql.Utils.addAdditionalInfo(user_email,req.body.nickname,req.body.gender)
+  .then( result => {
+    input.status = true;
+    input.message = "성공"
+    json_input = JSON.stringify(input);
+    res.send(json_input);
+  })
+  .catch (error => {
+    console.log(error);
+    input.status = false;
+    if (error.errno === 1062) {
+      input.message = "이미 있는 닉네임입니다."
+    } else {
+      input.message = error.sqlMessage
+    }
+
+    json_input = JSON.stringify(input);
+    res.send(json_input);
+  })
+
 })
 
 app.listen(port, () => {

@@ -14,7 +14,6 @@ export default class MyRequest {
     let json_input = JSON.stringify(input);
     const request = new Request(host, {headers: header,
                                        method: 'POST',
-                                      //  mode : 'cors',
                                        credentials : 'include',
                                        body: json_input });
     let res = fetch(request)
@@ -56,6 +55,24 @@ export default class MyRequest {
     const request = new Request(host, {headers: header,
                                         method: 'POST',
                                         mode : 'cors',
+                                        body: json_input });
+    let res = fetch(request)
+    .then(response => response.json())
+    .catch( error => {
+      console.log(error)
+    })
+
+    return res;
+  }
+
+  addAdditionalInfo(input) {
+    let host = this.host + ':' + this.port + '/addAdditionalInfo';
+    const header = new Headers();
+    header.append('Content-Type', 'application/json')
+    let json_input = JSON.stringify(input)
+    const request = new Request(host, {headers: header,
+                                        method: 'POST',
+                                        credentials : 'include',
                                         body: json_input });
     let res = fetch(request)
     .then(response => response.json())

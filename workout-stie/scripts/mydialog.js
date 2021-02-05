@@ -1,4 +1,3 @@
-
 /*
   <dialog class="my_dialog">
     <p>Message</p>
@@ -62,30 +61,6 @@ class MyDialogOne {
     this.my_dialog_message.innerHTML = message;
   }
 }
-// Todo mydialog object 또는 class 만들기
-
-// var my_dialog = document.createElement("dialog")
-// my_dialog.className = "my_dialog"
-
-// const my_dialog_message = document.createElement("p")
-// my_dialog_message.innerHTML = "Message!!"
-
-// const my_dialog_form_actions = document.createElement("div")
-// my_dialog_form_actions.className = "dialog_form_actions"
-
-// const my_dialog_form_cancel = document.createElement("button")
-// my_dialog_form_cancel.className = "dialog_form_cancel"
-// my_dialog_form_cancel.innerHTML = "확인"
-// my_dialog_form_cancel.addEventListener('click', event => {
-//   console.log('Cancel!');
-//   my_dialog.close();
-// });
-
-// my_dialog.appendChild(my_dialog_message)
-// my_dialog.appendChild(my_dialog_form_actions)
-// my_dialog_form_actions.appendChild(my_dialog_form_cancel)
-
-// document.querySelector('body').appendChild(my_dialog)
 
 /*
 <dialog class="my_dialog">
@@ -201,7 +176,28 @@ class MyDialogAdditional{
   }
 
   setListener() {
+    this.dialog_input_nickname.addEventListener('input', event => {
+      
+      if (this.checkValidation()) {
+        this.dialog_confirm.removeAttribute('disabled');
+      } else {
+        this.dialog_confirm.setAttribute('disabled', true);
+      }
+    }, false);
 
+    this
+  }
+
+  checkValidation() {
+    let ret = false;
+    
+    console.log(this.dialog_input_nickname.value);
+    if (this.dialog_input_nickname.value.length === 0 ) {
+      ret = false;
+    } else {
+      ret = true;
+    }
+    return ret;
   }
 
   setField() {
@@ -230,6 +226,7 @@ class MyDialogAdditional{
     this.dialog_input_male = this.document.createElement('input');
     this.dialog_input_male.setAttribute('type','radio');
     this.dialog_input_male.setAttribute('name','gender');
+    this.dialog_input_male.setAttribute('checked', true);
     this.dialog_input_male.setAttribute('id','male');
 
     this.dialog_label_male = this.document.createElement('label');
@@ -247,12 +244,29 @@ class MyDialogAdditional{
 
     this.dialog_confirm = this.document.createElement('button');
     this.dialog_confirm.className = 'dialog_confirm';
+    this.dialog_confirm.setAttribute('disabled', true);
     this.dialog_confirm.innerHTML = '확인';
 
   }
 
+  getInput() {
+    let input = {}
+    input.nickname = this.dialog_input_nickname.value;
+    input.gender = this.dialog_input_male.checked === true ? 'male' : 'female'
+
+    return input;
+  }
+
+  setConfirmListener(func) {
+    this.dialog_confirm.addEventListener('click', func, false);
+  }
+
   showModal(){
     this.dialog_addtional.showModal();
+  }
+
+  close () {
+    this.dialog_addtional.close();
   }
 }
 

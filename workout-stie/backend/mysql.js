@@ -14,6 +14,10 @@ connection.connect();
 let mySql = {};
 mySql.Utils = {};
 
+mySql.Utils.wrapString = function(str) {
+  return '"' + str + '"';
+}
+
 mySql.Utils.showUserTable = function () {
   let query = "SHOW COLUMNS FROM " + user_table;
   return new Promise ( (resolve, reject) => {
@@ -74,9 +78,24 @@ mySql.Utils.deleteUser = function (user_email) {
   })
 }
 
-// mySql.Utils.showUserTable().then( (results, fields) => {
-//   console.log(results);
-//   // console.log(fields);
-// });
+mySql.Utils.addAdditionalInfo = function (user_email,nickname, gender) {
+  user_email = mySql.Utils.wrapString(user_email);
+  nickname = mySql.Utils.wrapString(nickname);
+  gender = gender === 'male' ? '"M"' : '"F"';
+
+  let query = "UPDATE " + user_table + " SET" +
+              " nickname=" + nickname  +
+              ", gender=" + gender +
+              " WHERE user_email=" + user_email;
+  return new Promise ((resolve, reject) => {
+    connection.query(query, (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+
+      resolve(results);
+    });
+  })
+}
 
 module.exports.Utils = mySql.Utils;
