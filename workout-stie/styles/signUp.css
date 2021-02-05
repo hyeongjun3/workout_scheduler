@@ -1,0 +1,46 @@
+:root{ 
+  /* --blue-color : ~~~; */
+  --grey-color : #F6CECE;
+  /* --font-medium : ~~~; */
+  --font-large : 15px;
+  /* --side-padding : ~~~; */
+}
+
+body {
+  margin : 0;
+}
+
+.signUp_window {
+  margin : 10vh auto;;
+  max-width: 500px;
+  border : 1px solid var(--grey-color);
+  padding : 20px;
+  transition: margin-top 0.5s ease-out;
+}
+
+.signUp_window * {
+  margin : auto
+  /* margin: 19px auto 19px; */
+}
+
+.signUp_logo {
+  display: block;
+  width : 20%;
+}
+
+.signUp_input {
+  display: block;
+  width: 100%;
+  height: 50px;
+  box-sizing: border-box;
+  border : 1px solid var(--grey-color);
+  margin-bottom: 15px;
+  font-size: var(--font-large);
+}
+
+.signUp_button {
+  display: block;
+  width: 100%;
+  height: 50px;
+  border : 1px solid var(--grey-color);
+}

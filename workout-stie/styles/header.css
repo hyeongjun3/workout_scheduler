@@ -1,0 +1,83 @@
+:root{
+  --grey-color : #F6CECE;
+}
+
+/* TODO : Important 말고 다른거 찾기 */
+.flex{
+  display: flex !important;
+}
+
+.header { 
+  border-bottom: 1px solid var(--grey-color);
+  box-sizing: border-box;
+  box-shadow: 0px 4px 8px -2px grey;
+  width: 100%;
+  z-index: 5;
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: white;
+  top: 0px;
+}
+
+img {
+  display: block;
+  max-width : 100%;
+  max-height: 100%;
+}
+
+.header_flex {
+  display: flex;
+  height: 56px;
+  padding: 12px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header_img {
+  display: block;
+}
+
+.dropdown {
+  width: 40px;
+}
+
+.header_user{
+  display: block;
+  /* height: auto; */
+  width: 100%;
+  /* margin: 10px; */
+  object-fit: contain;
+}
+
+.dropdown a{
+  text-align: center;
+  text-decoration: none;
+}
+
+.dropdown_menu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  padding: 0;
+  right: 12px;
+  width: 234px;
+  margin : 0px;
+  margin-top: 15px;
+  background-color: white;
+  border: 1px solid var(--grey-color);
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px -2px grey;
+}
+
+.dropdown_menu a {  
+  padding: 10px 0px;
+  /* list-style-type: none; */
+  color: grey;
+}
+
+.dropdown_menu a:not(:last-child) {
+  border-bottom: 1px solid var(--grey-color);
+}
+
+
+
