@@ -83,7 +83,7 @@ export default class myHeader {
 
     this.dropdown_user = this.document.createElement('a');
     this.dropdown_user.className = "dropdown_user"
-    this.dropdown_user.setAttribute("href",'#');
+    // this.dropdown_user.setAttribute("href",'#');
 
     this.header_user = this.document.createElement('img');
     this.header_user.className = "header_user";
@@ -94,7 +94,7 @@ export default class myHeader {
     this.dropdown_menu.className = "dropdown_menu";
 
     this.dropdown_menu_private = this.document.createElement('a');
-    this.dropdown_menu_private.setAttribute("href","index.html")
+    this.dropdown_menu_private.setAttribute("href","private.html")
     this.dropdown_menu_private.innerHTML = "개인정보";
 
     this.dropdown_menu_logout = this.document.createElement('a');

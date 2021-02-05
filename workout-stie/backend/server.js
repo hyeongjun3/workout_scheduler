@@ -87,8 +87,14 @@ app.post('/login', (req,res) => {
     } else {
       input.status = true;
       input.message = "성공"
+      input.nickname = results[0].nickname;
+      input.gender = results[0].gender;
+      
       access_token = Cookie.generateAccessToken(req.body.email)
+      has_additional_info = input.nickname === null ? false : true;
+      
       res.cookie('access_token', access_token,options);
+      res.cookie('has_additional_info', has_additional_info);
       // res.redirect('/');
     }
   
