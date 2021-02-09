@@ -41,7 +41,8 @@ export default class MyRequest {
     return response.json()
     })
     .catch(error => {
-    console.log(`Error message : ${error}`);
+      console.log(`Error message : ${error}`);
+      return error;
     })
 
     return res;
@@ -54,13 +55,11 @@ export default class MyRequest {
     let json_input = JSON.stringify(input)
     const request = new Request(host, {headers: header,
                                         method: 'POST',
-                                        mode : 'cors',
+                                        credentials : 'include',
                                         body: json_input });
     let res = fetch(request)
     .then(response => response.json())
-    .catch( error => {
-      console.log(error)
-    })
+    .catch( error => error)
 
     return res;
   }

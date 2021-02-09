@@ -10,7 +10,7 @@ const { access } = require('fs');
 const app = express();
 
 var corsOptions = {
-  origin: 'http://127.0.0.1:5500',
+  origin: 'https://127.0.0.1:5500',
   allowedHeaders : ['Content-Type', 'Set-cookies'],
   credentials : true,
 }
@@ -149,7 +149,7 @@ app.post('/signUp', (req,res) => {
     input.status = false;
     input.message = msg
     json_input = JSON.stringify(input);
-    res.send(json_input);
+    res.status(400).send(json_input);
   })
 })
 

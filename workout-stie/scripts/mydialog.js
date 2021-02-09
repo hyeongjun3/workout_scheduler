@@ -57,7 +57,6 @@ class MyDialogOne {
   }
 
   setMessage(message) {
-    console.log(this.my_dialog_message);
     this.my_dialog_message.innerHTML = message;
   }
 }
