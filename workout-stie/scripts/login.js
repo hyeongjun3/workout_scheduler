@@ -90,15 +90,15 @@ login.login_elem.addEventListener('click', event => {
       return;
     }
 
-    // if (value.validation_flag === false) {
-    //   window.location.href = "validation.html";
-    //   return;
-    // }
+    if (value.validation_flag === false) {
+      window.location.href = "validation.html";
+      return;
+    }
 
-    // if (value.additional_flag === false) {
-    //   window.location.href = "daily.html";
-    //   return;
-    // }
+    if (value.additional_flag === false) {
+      window.location.href = "daily.html";
+      return;
+    }
 
     // Success
     window.location.href = "daily.html";

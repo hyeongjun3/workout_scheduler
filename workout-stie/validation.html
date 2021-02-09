@@ -4,9 +4,20 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles/validation.css">
   <title>Document</title>
 </head>
 <body>
-  hello
+  <div class="verfication_window">
+    <img src="./image/logo.png" alt="logo" class="verfication_logo">
+    <h2>이메일 인증</h2>
+    <div class="verification_form">
+      <p>이메일 인증 코드</p>
+      <input type="text" name="verfication_code" id="verfication_code">
+      <button>확인</button>
+    </div>
+    <p>~로 메일 보냈습니다.</p>
+    <button class="resend">다시 보내기</button>
+  </div>
 </body>
 </html>
