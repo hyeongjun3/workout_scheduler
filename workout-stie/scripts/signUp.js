@@ -1,7 +1,11 @@
 import MyRequest from "./request.js"
+import {MyDialogOne} from "./mydialog.js"
 
 let signUp = {}
 const signUp_request = new MyRequest();
+const my_dialog = new MyDialogOne(document,"root","확인");
+
+my_dialog.setUI();
 
 // TODO: check pwd1 pwd2
 signUp.Utils = {}
@@ -59,13 +63,15 @@ signUp.pwd2_elem.addEventListener('input', event => {
 signUp.btn_elem.addEventListener('click', event => {
   if (signUp.Utils.validateEmail() === false) {
     console.log('Email error');
-    my_dialog_message.innerHTML = 'Email error';
+    my_dialog.setMessage('Email error');
+    // my_dialog_message.innerHTML = 'Email error';
     my_dialog.showModal();
     return;
   }
   else if(signUp.Utils.checkEqualPwd() === false) {
     console.log('Password error');
-    my_dialog_message.innerHTML = 'Password error';
+    my_dialog.setMessage('Password error');
+    // my_dialog_message.innerHTML = 'Password error';
     my_dialog.showModal();
     return;
   }
@@ -78,12 +84,17 @@ signUp.btn_elem.addEventListener('click', event => {
   signUp.Utils.progressOn();
   signUp_request.SignUpRequest(input)
   .then( result => {
+    if (result.status === false) {
+      throw result;
+    }
+    console.log(result)
     signUp.Utils.progressOff();
     window.location.href = "daily.html";
   })
   .catch (error => {
     signUp.Utils.progressOff();
-    my_dialog_message.innerHTML = error;
+    my_dialog.setMessage(error.message);
+    // my_dialog_message.innerHTML = error;
     my_dialog.showModal();
   });
 })

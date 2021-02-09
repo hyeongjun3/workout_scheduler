@@ -10,7 +10,7 @@ const { access } = require('fs');
 const app = express();
 
 var corsOptions = {
-  origin: 'http://127.0.0.1:5500',
+  origin: 'https://127.0.0.1:5500',
   allowedHeaders : ['Content-Type', 'Set-cookies'],
   credentials : true,
 }
@@ -84,8 +84,8 @@ app.post('/login', (req,res) => {
     console.log(req.cookies)
     res.set({'Content-type' : 'application/json'})
 
-    let options = {
-      // maxAge: 1000 * 60 * 15, // would expire after 15 minutes
+    const options = {
+      maxAge: 1000 * 60 * 0.1, // would expire after 30 minutes
       // httpOnly: true, // The cookie only accessible by the web server
       // signed: true // Indicates if the cookie should be signed
       path : '/',
@@ -99,16 +99,17 @@ app.post('/login', (req,res) => {
       input.message = "성공"
       input.nickname = results[0].nickname;
       input.gender = results[0].gender;
+      input.additional_flag = results[0].additional_flag === 0 ? false : true;
+      input.validation_flag = results[0].validation_flag === 0 ? false : true;
 
-      console.log(`nickname : ${input.nickname}`);
-      
       access_token = Cookie.generateAccessToken(req.body.email)
-      has_additional_info = input.nickname === null ? false : true;
-
-      console.log(has_additional_info);
-      
       res.cookie('access_token', access_token,options);
-      res.cookie('has_additional_info', has_additional_info);
+      // has_additional_info = input.nickname === null ? false : true;
+
+      // console.log(has_additional_info);
+      
+      
+      // res.cookie('has_additional_info', has_additional_info);
       // res.redirect('/');
     }
   
@@ -149,7 +150,7 @@ app.post('/signUp', (req,res) => {
     input.status = false;
     input.message = msg
     json_input = JSON.stringify(input);
-    res.send(json_input);
+    res.status(400).send(json_input);
   })
 })
 
