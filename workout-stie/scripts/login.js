@@ -81,14 +81,27 @@ login.login_elem.addEventListener('click', event => {
   .then( value => {
     //finish progres bar
     login.Utils.progressOff();
-    
-    if (value.status === true) {
-      console.log("Cookie : ", document.cookie)
-      window.location.href = "daily.html";
-    } else {
+
+    console.log(value);
+
+    if (value.status === false) {
       my_dialog.setMessage(value.message);
       my_dialog.showModal();
-    }    
+      return;
+    }
+
+    // if (value.validation_flag === false) {
+    //   window.location.href = "validation.html";
+    //   return;
+    // }
+
+    // if (value.additional_flag === false) {
+    //   window.location.href = "daily.html";
+    //   return;
+    // }
+
+    // Success
+    window.location.href = "daily.html";
   })
   .catch (error => {
     console.log(error);
