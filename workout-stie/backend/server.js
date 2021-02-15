@@ -207,9 +207,26 @@ app.post('/addAdditionalInfo', (req,res) => {
     json_input = JSON.stringify(input);
     res.send(json_input);
   })
+})
 
+app.post('/getEmailByAccessToken', (req,res) => {
+  console.log('getEmailByAccessToken requested');
+
+  let user_email = Cookie.getUserEmailByAccessToken(req.cookies.access_token);
+  let input = {}
+
+  if (user_email === false) {
+    input.status = false;
+    input.message = "Invalid access token";
+  } else {
+    input.status =true;
+    input.email = user_email;
+  }
+
+  json_input = JSON.stringify(input);
+  res.send(json_input);
 })
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
-})
+});

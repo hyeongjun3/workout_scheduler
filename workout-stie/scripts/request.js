@@ -81,4 +81,21 @@ export default class MyRequest {
 
     return res;
   }
+
+  getEmailByAccessToken() {
+    let host = this.host + ':' + this.port + '/getEmailByAccessToken';
+    const header = new Headers();
+    header.append('Content-Type', 'application/json')
+    const request = new Request(host, {headers: header,
+                                        method: 'POST',
+                                        credentials : 'include',
+                                        });
+    let res = fetch(request)
+    .then(response => response.json())
+    .catch( error => {
+      console.log(error)
+    })
+
+    return res;
+  }
 }
