@@ -1,16 +1,12 @@
-
 const mySql = require('./mysql')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const cors = require('cors');
-const { SSL_OP_EPHEMERAL_RSA } = require('constants');
-const { nextTick } = require('process');
-const { access } = require('fs');
 const app = express();
 
 var corsOptions = {
-  origin: 'https://127.0.0.1:5500',
+  origin: 'http://127.0.0.1:5500',
   allowedHeaders : ['Content-Type', 'Set-cookies'],
   credentials : true,
 }
@@ -207,9 +203,26 @@ app.post('/addAdditionalInfo', (req,res) => {
     json_input = JSON.stringify(input);
     res.send(json_input);
   })
+})
 
+app.post('/getEmailByAccessToken', (req,res) => {
+  console.log('getEmailByAccessToken requested');
+
+  let user_email = Cookie.getUserEmailByAccessToken(req.cookies.access_token);
+  let input = {}
+
+  if (user_email === false) {
+    input.status = false;
+    input.message = "Invalid access token";
+  } else {
+    input.status =true;
+    input.email = user_email;
+  }
+
+  json_input = JSON.stringify(input);
+  res.send(json_input);
 })
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
-})
+});
