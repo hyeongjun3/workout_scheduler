@@ -1,16 +1,12 @@
-
 const mySql = require('./mysql')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const cors = require('cors');
-const { SSL_OP_EPHEMERAL_RSA } = require('constants');
-const { nextTick } = require('process');
-const { access } = require('fs');
 const app = express();
 
 var corsOptions = {
-  origin: 'https://127.0.0.1:5500',
+  origin: 'http://127.0.0.1:5500',
   allowedHeaders : ['Content-Type', 'Set-cookies'],
   credentials : true,
 }

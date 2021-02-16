@@ -2,7 +2,7 @@
 export default class MyRequest {
   constructor() {
     // TODO : validate arguments
-    this.host = "http://127.0.0.1";
+    this.host = "http://172.22.169.185";
     this.port = 3000;
   }
 
@@ -50,6 +50,7 @@ export default class MyRequest {
 
   SignUpRequest(input) {
     let host = this.host + ':' + this.port + '/signUp';
+    console.log("Fetch to ", host);
     const header = new Headers();
     header.append('Content-Type', 'application/json')
     let json_input = JSON.stringify(input)
