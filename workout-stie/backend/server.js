@@ -1,4 +1,8 @@
+// myfile
+const mail = require('./mail')
 const mySql = require('./mysql')
+
+// outside module
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const express = require('express');
@@ -122,17 +126,25 @@ app.post('/signUp', (req,res) => {
   console.log(req.body);
   
   let input = {}
+  let verification_code = Cookie.makeid(10);
   let json_input = undefined;
+
+  console.log('code : ',verification_code)
 
   res.set({'Content-Type' : 'application/json'});
 
-  mySql.Utils.createUser(req.body.email, req.body.pwd)
+  mySql.Utils.createUser(req.body.email, req.body.pwd,verification_code)
   .then( results => {
     console.log(results)
     input.status = true;
     input.message = "Success to sign up";
     json_input = JSON.stringify(input);
-    res.send(json_input);
+    mail.sendMail(req.body.email, verification_code).then(() => {
+      res.send(json_input)
+    }).catch(error => {
+      throw error;
+    })
+    // res.send(json_input);
   })
   .catch( error => {
     console.log(error);

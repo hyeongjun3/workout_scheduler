@@ -101,7 +101,7 @@ login.login_elem.addEventListener('click', event => {
     }
 
     // Success
-    window.location.href = "daily.html";
+    // window.location.href = "daily.html";
   })
   .catch (error => {
     console.log(error);

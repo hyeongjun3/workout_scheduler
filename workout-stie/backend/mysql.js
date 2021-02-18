@@ -31,11 +31,12 @@ mySql.Utils.showUserTable = function () {
 }
 
 // TODO : 암호화, 이미 가입되어있는지 확인, 이메일 인증
-mySql.Utils.createUser = function (user_email, password) {
+mySql.Utils.createUser = function (user_email, password,verification_code) {
   user_email = '"' + user_email + '"'
   password = '"' + password + '"'
-  let values = '(' + user_email + ', ' + password + ')';
-  let query = "INSERT INTO " + user_table + " (user_email, password)" + " VALUES " + values;
+  verification_code = '"' + verification_code + '"'
+  let values = '(' + user_email + ', ' + password + ',' + verification_code + ')';
+  let query = "INSERT INTO " + user_table + " (user_email, password, verification_code)" + " VALUES " + values;
 
   return new Promise ( (resolve, reject) => {
     connection.query(query,(error, results, fields) => {
