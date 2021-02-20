@@ -84,6 +84,8 @@ login.login_elem.addEventListener('click', event => {
 
     console.log(value);
 
+    window.sessionStorage.setItem('access_token',value.access_token)
+
     if (value.status === false) {
       my_dialog.setMessage(value.message);
       my_dialog.showModal();
@@ -101,7 +103,7 @@ login.login_elem.addEventListener('click', event => {
     }
 
     // Success
-    // window.location.href = "daily.html";
+    window.location.href = "daily.html";
   })
   .catch (error => {
     console.log(error);

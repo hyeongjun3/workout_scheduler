@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', event => {
 
   my_request.getEmailByAccessToken().then(value => {
     console.log(value);
+    // email_info_elem.innerHTML =
   });
-  
-  console.log(email_info_elem)
 });

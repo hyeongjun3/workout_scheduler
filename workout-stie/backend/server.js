@@ -28,6 +28,15 @@ class Cookie{
     this.user = user;
   }
 
+  static options = {
+    maxAge: 1000 * 60 * 0.1, // would expire after 30 minutes
+    // httpOnly: true, // The cookie only accessible by the web server
+    // signed: true // Indicates if the cookie should be signed
+    path : '/',
+    sameSite : 'None',
+    secure : true,
+  }
+
   static makeid(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -81,16 +90,8 @@ app.post('/login', (req,res) => {
     let json_input = {}
     let access_token = "";
 
-    console.log(req.cookies)
     res.set({'Content-type' : 'application/json'})
 
-    const options = {
-      maxAge: 1000 * 60 * 0.1, // would expire after 30 minutes
-      // httpOnly: true, // The cookie only accessible by the web server
-      // signed: true // Indicates if the cookie should be signed
-      path : '/',
-    } 
-  
     if (results.length === 0) {
       input.status = false;
       input.message = "이메일 또는 비밀번호를 확인하세요";
@@ -103,14 +104,11 @@ app.post('/login', (req,res) => {
       input.validation_flag = results[0].validation_flag === 0 ? false : true;
 
       access_token = Cookie.generateAccessToken(req.body.email)
-      res.cookie('access_token', access_token,options);
-      // has_additional_info = input.nickname === null ? false : true;
+      console.log(`ACCESS TOKEN : ${access_token}`);
+      res.cookie('access_token', access_token, Cookie.options);
 
-      // console.log(has_additional_info);
-      
-      
-      // res.cookie('has_additional_info', has_additional_info);
-      // res.redirect('/');
+      // 나중에 serverless AWS 이용하면 없앨 것
+      input.access_token = access_token;
     }
   
     json_input = JSON.stringify(input);

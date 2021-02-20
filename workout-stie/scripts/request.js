@@ -1,8 +1,6 @@
-
 export default class MyRequest {
   constructor() {
     // TODO : validate arguments
-    // this.host = "http://172.22.171.185";
     this.host = "http://localhost";
     this.port = 3000;
   }
