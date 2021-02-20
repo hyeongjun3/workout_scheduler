@@ -218,7 +218,11 @@ app.post('/addAdditionalInfo', (req,res) => {
 app.post('/getEmailByAccessToken', (req,res) => {
   console.log('getEmailByAccessToken requested');
 
-  let user_email = Cookie.getUserEmailByAccessToken(req.cookies.access_token);
+  // Cookie or session mechanism 
+  // let user_email = Cookie.getUserEmailByAccessToken(req.cookies.access_token);
+  let user_email = req.body.access_token === undefined ?
+                  Cookie.getUserEmailByAccessToken(req.cookies.access_token) :
+                  Cookie.getUserEmailByAccessToken(req.body.access_token);
   let input = {}
 
   if (user_email === false) {
@@ -231,6 +235,37 @@ app.post('/getEmailByAccessToken', (req,res) => {
 
   json_input = JSON.stringify(input);
   res.send(json_input);
+})
+
+app.post('/verification', (req,res) => {
+  console.log('Verification requests')
+  let code = req.body.code;
+  let input = {};
+  
+  mySql.Utils.checkVerificationCode(code)
+  .then(value => {
+    if (value.length === 0) {
+      input.status = false;
+      input.message = "Check verification code";
+      let json_input = JSON.stringify(input);
+      res.send(json_input);
+    } else {
+      mySql.Utils.updateValidationFlag(code)
+      .then(value => {
+        input.status = true;
+        input.message = "success to verification"
+        let json_input = JSON.stringify(input);
+        res.send(json_input);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
+  })
+  .catch(err => {
+    
+    console.log(err);
+  })
 })
 
 app.listen(port, () => {

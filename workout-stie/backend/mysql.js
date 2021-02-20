@@ -99,4 +99,33 @@ mySql.Utils.addAdditionalInfo = function (user_email,nickname, gender) {
   })
 }
 
+mySql.Utils.checkVerificationCode = function(code) {
+  code = mySql.Utils.wrapString(code);
+
+  let query = 'SELECT * FROM ' + user_table + ' WHERE verification_code = ' + code;
+  return new Promise ((resolve, reject) => {
+    connection.query(query, (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(results);
+    });
+  })
+}
+
+mySql.Utils.updateValidationFlag = function(code) {
+  code = mySql.Utils.wrapString(code);
+  // UPDATE user_tbl SET validation_flag = 1 WHERE verification code = ''
+  let query = 'UPDATE ' + user_table + ' SET validation_flag = 1 WHERE verification_code = ' + code;
+
+  return new Promise ((resolve, reject) => {
+    connection.query(query, (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(results);
+    });
+  })
+}
+
 module.exports.Utils = mySql.Utils;
