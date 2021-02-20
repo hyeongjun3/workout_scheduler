@@ -31,11 +31,12 @@ mySql.Utils.showUserTable = function () {
 }
 
 // TODO : 암호화, 이미 가입되어있는지 확인, 이메일 인증
-mySql.Utils.createUser = function (user_email, password) {
+mySql.Utils.createUser = function (user_email, password,verification_code) {
   user_email = '"' + user_email + '"'
   password = '"' + password + '"'
-  let values = '(' + user_email + ', ' + password + ')';
-  let query = "INSERT INTO " + user_table + " (user_email, password)" + " VALUES " + values;
+  verification_code = '"' + verification_code + '"'
+  let values = '(' + user_email + ', ' + password + ',' + verification_code + ')';
+  let query = "INSERT INTO " + user_table + " (user_email, password, verification_code)" + " VALUES " + values;
 
   return new Promise ( (resolve, reject) => {
     connection.query(query,(error, results, fields) => {
@@ -93,6 +94,35 @@ mySql.Utils.addAdditionalInfo = function (user_email,nickname, gender) {
         return reject(error);
       }
 
+      resolve(results);
+    });
+  })
+}
+
+mySql.Utils.checkVerificationCode = function(code) {
+  code = mySql.Utils.wrapString(code);
+
+  let query = 'SELECT * FROM ' + user_table + ' WHERE verification_code = ' + code;
+  return new Promise ((resolve, reject) => {
+    connection.query(query, (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(results);
+    });
+  })
+}
+
+mySql.Utils.updateValidationFlag = function(code) {
+  code = mySql.Utils.wrapString(code);
+  // UPDATE user_tbl SET validation_flag = 1 WHERE verification code = ''
+  let query = 'UPDATE ' + user_table + ' SET validation_flag = 1 WHERE verification_code = ' + code;
+
+  return new Promise ((resolve, reject) => {
+    connection.query(query, (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
       resolve(results);
     });
   })

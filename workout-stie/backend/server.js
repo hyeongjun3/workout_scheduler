@@ -1,4 +1,8 @@
+// myfile
+const mail = require('./mail')
 const mySql = require('./mysql')
+
+// outside module
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const express = require('express');
@@ -22,6 +26,15 @@ const cookie_storage = {}
 class Cookie{
   constructor(user) {
     this.user = user;
+  }
+
+  static options = {
+    maxAge: 1000 * 60 * 0.1, // would expire after 30 minutes
+    // httpOnly: true, // The cookie only accessible by the web server
+    // signed: true // Indicates if the cookie should be signed
+    path : '/',
+    sameSite : 'None',
+    secure : true,
   }
 
   static makeid(length) {
@@ -77,16 +90,8 @@ app.post('/login', (req,res) => {
     let json_input = {}
     let access_token = "";
 
-    console.log(req.cookies)
     res.set({'Content-type' : 'application/json'})
 
-    const options = {
-      maxAge: 1000 * 60 * 0.1, // would expire after 30 minutes
-      // httpOnly: true, // The cookie only accessible by the web server
-      // signed: true // Indicates if the cookie should be signed
-      path : '/',
-    } 
-  
     if (results.length === 0) {
       input.status = false;
       input.message = "이메일 또는 비밀번호를 확인하세요";
@@ -99,14 +104,11 @@ app.post('/login', (req,res) => {
       input.validation_flag = results[0].validation_flag === 0 ? false : true;
 
       access_token = Cookie.generateAccessToken(req.body.email)
-      res.cookie('access_token', access_token,options);
-      // has_additional_info = input.nickname === null ? false : true;
+      console.log(`ACCESS TOKEN : ${access_token}`);
+      res.cookie('access_token', access_token, Cookie.options);
 
-      // console.log(has_additional_info);
-      
-      
-      // res.cookie('has_additional_info', has_additional_info);
-      // res.redirect('/');
+      // 나중에 serverless AWS 이용하면 없앨 것
+      input.access_token = access_token;
     }
   
     json_input = JSON.stringify(input);
@@ -122,17 +124,25 @@ app.post('/signUp', (req,res) => {
   console.log(req.body);
   
   let input = {}
+  let verification_code = Cookie.makeid(10);
   let json_input = undefined;
+
+  console.log('code : ',verification_code)
 
   res.set({'Content-Type' : 'application/json'});
 
-  mySql.Utils.createUser(req.body.email, req.body.pwd)
+  mySql.Utils.createUser(req.body.email, req.body.pwd,verification_code)
   .then( results => {
     console.log(results)
     input.status = true;
     input.message = "Success to sign up";
     json_input = JSON.stringify(input);
-    res.send(json_input);
+    mail.sendMail(req.body.email, verification_code).then(() => {
+      res.send(json_input)
+    }).catch(error => {
+      throw error;
+    })
+    // res.send(json_input);
   })
   .catch( error => {
     console.log(error);
@@ -208,7 +218,11 @@ app.post('/addAdditionalInfo', (req,res) => {
 app.post('/getEmailByAccessToken', (req,res) => {
   console.log('getEmailByAccessToken requested');
 
-  let user_email = Cookie.getUserEmailByAccessToken(req.cookies.access_token);
+  // Cookie or session mechanism 
+  // let user_email = Cookie.getUserEmailByAccessToken(req.cookies.access_token);
+  let user_email = req.body.access_token === undefined ?
+                  Cookie.getUserEmailByAccessToken(req.cookies.access_token) :
+                  Cookie.getUserEmailByAccessToken(req.body.access_token);
   let input = {}
 
   if (user_email === false) {
@@ -221,6 +235,37 @@ app.post('/getEmailByAccessToken', (req,res) => {
 
   json_input = JSON.stringify(input);
   res.send(json_input);
+})
+
+app.post('/verification', (req,res) => {
+  console.log('Verification requests')
+  let code = req.body.code;
+  let input = {};
+  
+  mySql.Utils.checkVerificationCode(code)
+  .then(value => {
+    if (value.length === 0) {
+      input.status = false;
+      input.message = "Check verification code";
+      let json_input = JSON.stringify(input);
+      res.send(json_input);
+    } else {
+      mySql.Utils.updateValidationFlag(code)
+      .then(value => {
+        input.status = true;
+        input.message = "success to verification"
+        let json_input = JSON.stringify(input);
+        res.send(json_input);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
+  })
+  .catch(err => {
+    
+    console.log(err);
+  })
 })
 
 app.listen(port, () => {
