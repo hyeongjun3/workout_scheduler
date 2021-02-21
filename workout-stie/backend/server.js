@@ -183,7 +183,10 @@ app.post('/logout', (req,res) => {
 app.post('/addAdditionalInfo', (req,res) => {
   console.log('addAdditionalInfo requested');
 
-  let user_email = Cookie.getUserEmailByAccessToken(req.cookies.access_token);
+  // TODO : should update
+  let user_email = req.body.access_token === undefined ?
+                  Cookie.getUserEmailByAccessToken(req.cookies.access_token) :
+                  Cookie.getUserEmailByAccessToken(req.body.access_token);
   let input = {};
 
   if (user_email === false) {

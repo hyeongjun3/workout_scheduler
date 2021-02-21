@@ -87,6 +87,7 @@ mySql.Utils.addAdditionalInfo = function (user_email,nickname, gender) {
   let query = "UPDATE " + user_table + " SET" +
               " nickname=" + nickname  +
               ", gender=" + gender +
+              ", additional_flag=1" +
               " WHERE user_email=" + user_email;
   return new Promise ((resolve, reject) => {
     connection.query(query, (error, results, fields) => {

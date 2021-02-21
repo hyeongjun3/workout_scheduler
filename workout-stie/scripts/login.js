@@ -97,13 +97,16 @@ login.login_elem.addEventListener('click', event => {
       return;
     }
 
+    // TODO : why too slow when i use other type except string
     if (value.additional_flag === false) {
+      window.sessionStorage.setItem('additional_flag', 'false');
       window.location.href = "daily.html";
       return;
     }
 
     // Success
-    window.location.href = "daily.html";
+    window.sessionStorage.setItem('additional_flag','true');
+    // window.location.href = "daily.html";
   })
   .catch (error => {
     console.log(error);
