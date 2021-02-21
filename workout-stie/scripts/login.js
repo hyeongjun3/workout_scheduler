@@ -106,7 +106,7 @@ login.login_elem.addEventListener('click', event => {
 
     // Success
     window.sessionStorage.setItem('additional_flag','true');
-    // window.location.href = "daily.html";
+    window.location.href = "daily.html";
   })
   .catch (error => {
     console.log(error);

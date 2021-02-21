@@ -163,7 +163,8 @@ app.post('/signUp', (req,res) => {
 app.post('/logout', (req,res) => {
   console.log('LogOut requested');
 
-  let access_token = req.cookies.access_token;
+  let access_token = req.body.access_token === undefined ?
+                     req.cookies.access_token : req.body.access_token;
   let input = {}
   let json_input = {}
 
