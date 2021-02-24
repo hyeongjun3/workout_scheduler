@@ -286,7 +286,7 @@ app.post('/getUserInfo', (req,res) => {
 
     if (results.length === 0) {
       input.status = false;
-      input.message = "이메일 또는 비밀번호를 확인하세요";
+      input.message = "이메일를 확인하세요";
       json_input = JSON.stringify(input);
       res.status(400).send(json_input)
     } else {
@@ -294,6 +294,38 @@ app.post('/getUserInfo', (req,res) => {
       input.message = "성공"
       input.nickname = results[0].nickname;
       input.gender = results[0].gender;
+      json_input = JSON.stringify(input);
+      res.send(json_input)
+    }
+  })
+  .catch (error => {
+    input.status = false;
+    input.message = error;
+    json_input = JSON.stringify(input);
+    res.status(400).send(json_input);
+  })
+});
+
+app.post('/deleteUser', (req,res) => {
+  console.log(`Request Recieve`);
+
+  let user_email = Cookie.getUserEmailByAccessToken(req.body.access_token);
+
+  mySql.Utils.deleteUser(user_email)
+  .then ( results => {
+    let input = {}
+    let json_input = {}
+
+    res.set({'Content-type' : 'application/json'})
+
+    if (results.length === 0) {
+      input.status = false;
+      input.message = "이메일를 확인하세요";
+      json_input = JSON.stringify(input);
+      res.status(400).send(json_input)
+    } else {
+      input.status = true;
+      input.message = "성공"
       json_input = JSON.stringify(input);
       res.send(json_input)
     }
