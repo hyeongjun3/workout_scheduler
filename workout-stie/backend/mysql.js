@@ -63,6 +63,19 @@ mySql.Utils.readUser = function (user_email, password) {
   })
 }
 
+mySql.Utils.readUserInfo = function (user_email) {
+  user_email = '"' + user_email + '"'
+  let query = "SELECT * FROM " + user_table + " WHERE user_email = " + user_email + " LIMIT 1";
+  return new Promise ( (resolve, reject) => {
+    connection.query(query,(error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(results, fields);
+    })
+  })
+}
+
 // TODO : user가 검색 안될 때 처리
 mySql.Utils.deleteUser = function (user_email) {
   user_email = '"' + user_email + '"';
