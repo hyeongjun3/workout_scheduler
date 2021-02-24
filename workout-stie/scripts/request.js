@@ -26,14 +26,16 @@ export default class MyRequest {
     return res;
   }
 
-  logOutRequest() {
+  logOutRequest(input) {
     console.log("Request Log Out");
     let host = this.host + ':' + this.port + '/logout';
     const header = new Headers();
-    header.append('Content-Type', 'application/json')
+    header.append('Content-Type', 'application/json');
+    let json_input = JSON.stringify(input);
     const request = new Request(host, {headers: header,
                                         method: 'POST',
                                         credentials : 'include',
+                                        body: json_input,
                                       });
     let res = fetch(request)
     .then(response => {
@@ -103,6 +105,25 @@ export default class MyRequest {
 
   verification(input) {
     let host = this.host + ':' + this.port + '/verification';
+    const header = new Headers();
+    header.append('Content-Type', 'application/json')
+    let json_input = JSON.stringify(input)
+    const request = new Request(host, {headers: header,
+                                        method: 'POST',
+                                        credentials : 'include',
+                                        body : json_input,
+                                        });
+    let res = fetch(request)
+    .then(response => response.json())
+    .catch( error => {
+      console.log(error)
+    })
+
+    return res;
+  }
+
+  getUserInfo(input) {
+    let host = this.host + ':' + this.port + '/getUserInfo';
     const header = new Headers();
     header.append('Content-Type', 'application/json')
     let json_input = JSON.stringify(input)

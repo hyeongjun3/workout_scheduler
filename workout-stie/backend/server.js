@@ -163,7 +163,8 @@ app.post('/signUp', (req,res) => {
 app.post('/logout', (req,res) => {
   console.log('LogOut requested');
 
-  let access_token = req.cookies.access_token;
+  let access_token = req.body.access_token === undefined ?
+                     req.cookies.access_token : req.body.access_token;
   let input = {}
   let json_input = {}
 
@@ -183,7 +184,10 @@ app.post('/logout', (req,res) => {
 app.post('/addAdditionalInfo', (req,res) => {
   console.log('addAdditionalInfo requested');
 
-  let user_email = Cookie.getUserEmailByAccessToken(req.cookies.access_token);
+  // TODO : should update
+  let user_email = req.body.access_token === undefined ?
+                  Cookie.getUserEmailByAccessToken(req.cookies.access_token) :
+                  Cookie.getUserEmailByAccessToken(req.body.access_token);
   let input = {};
 
   if (user_email === false) {
@@ -267,6 +271,40 @@ app.post('/verification', (req,res) => {
     console.log(err);
   })
 })
+
+app.post('/getUserInfo', (req,res) => {
+  console.log(`Request Recieve`);
+
+  let user_email = Cookie.getUserEmailByAccessToken(req.body.access_token);
+
+  mySql.Utils.readUserInfo(user_email)
+  .then ( results => {
+    let input = {}
+    let json_input = {}
+
+    res.set({'Content-type' : 'application/json'})
+
+    if (results.length === 0) {
+      input.status = false;
+      input.message = "이메일 또는 비밀번호를 확인하세요";
+      json_input = JSON.stringify(input);
+      res.status(400).send(json_input)
+    } else {
+      input.status = true;
+      input.message = "성공"
+      input.nickname = results[0].nickname;
+      input.gender = results[0].gender;
+      json_input = JSON.stringify(input);
+      res.send(json_input)
+    }
+  })
+  .catch (error => {
+    input.status = false;
+    input.message = error;
+    json_input = JSON.stringify(input);
+    res.status(400).send(json_input);
+  })
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
