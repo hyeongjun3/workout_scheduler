@@ -16,6 +16,7 @@ body {
   margin : 0px 12px;
   height: 500px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #F4F5F7;
@@ -52,4 +53,18 @@ body {
 
 .input_field >label {
   text-align: center;
+}
+
+.update_button_group {
+  width : 50%;
+  margin-top : -30px;
+  margin-left: 12px;
+}
+
+.ok {
+  margin-right: 10px;
+}
+
+.hidden {
+  display: none;
 }
