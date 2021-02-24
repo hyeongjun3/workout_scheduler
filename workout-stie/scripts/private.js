@@ -76,11 +76,12 @@ update_btn_elem.addEventListener('click', event => {
 
 ok_btn_elem.addEventListener('click', event => {
     let input = {
+        'access_token' : window.sessionStorage.getItem('access_token'),
         'nickname' : nickname_input_elem.value,
-        'gender' : male_input_elem.checked === true ? 'M' : 'F' 
+        'gender' : male_input_elem.checked === true ? 'male' : 'female' 
     }
     
-    my_request.updateUserInfo(input)
+    my_request.addAdditionalInfo(input)
     .then(() => {
         return getUserInfo();
     })
