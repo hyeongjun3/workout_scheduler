@@ -1,0 +1,42 @@
+:root{
+    /* size */
+    --main_menu_margin_size : 12px;
+    --side_bar_width : 150px;
+    --default_padding_size : 8px;
+    --sub_menu_width_padding_size : 15px;
+    --default_font_size : 14px;
+
+    /* color */
+    --side_bar_background_color : #FAFBFC;
+    --side_bar_selected_color : #EBECF0;
+}
+
+.side_bar {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--side_bar_background_color);
+    /* background-color: green; */
+    height: 100vh;
+    width : var(--side_bar_width);
+    font-size: var(--default_font_size);
+
+}
+
+.main_menu {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--main_menu_margin_size);
+}
+
+.main_menu > span:first-child {
+    padding: var(--default_padding_size);
+    font-weight: bold;
+}
+
+.sub_menu {
+    padding: var(--default_padding_size) var(--sub_menu_width_padding_size);
+}
+
+.selected {
+    background-color: var(--side_bar_selected_color);
+}
