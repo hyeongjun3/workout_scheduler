@@ -1,16 +1,19 @@
 import myHeader from "./header.js"
 import MyRequest from './request.js'
 import {MyDialogOne, MyDialogAdditional} from './mydialog.js'
+import {SideBar} from './sidebar.js'
 
 let my_header = new myHeader(document);
 let alert_dialog = new MyDialogOne(document, "default", "확인");
 let addiotnal_dialog = new MyDialogAdditional(document);
+let side_bar = new SideBar(document);
 let my_request = new MyRequest();
 let access_token = '';
 
 my_header.setUI();
 alert_dialog.setUI();
 addiotnal_dialog.setUI();
+side_bar.setUI();
 
 addiotnal_dialog.setConfirmListener(event => {
   let input = addiotnal_dialog.getInput();
