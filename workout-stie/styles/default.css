@@ -1,0 +1,18 @@
+:root{
+    /* size */
+    --main_menu_margin_size : 12px;
+    --side_bar_width : 150px;
+    --default_padding_size : 8px;
+    --sub_menu_width_padding_size : 15px;
+    --default_font_size : 14px;
+
+    /* calender */
+    --calender_window_padding_size : 50px;
+    --calender_control_margin : 40px;
+    --calender_index_background_color : #FAFBFC;
+
+    /* color */
+    --side_bar_background_color : #FAFBFC;
+    --side_bar_selected_color : #EBECF0;
+    --grey-color : #F6CECE;
+}
