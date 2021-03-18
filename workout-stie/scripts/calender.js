@@ -1,3 +1,6 @@
+import MyRequest from './request.js'
+
+let my_request = new MyRequest();
 
 function MyDate(date,weight,class_name) {
     this.date = date;
@@ -8,6 +11,28 @@ function MyDate(date,weight,class_name) {
 class Calender {
     constructor(document) {
         this.document = document;
+    }
+
+    refresh(target_time,access_token) {
+        let target_year = target_time.getFullYear();
+        let target_month = target_time.getMonth() + 1;
+        let target_date = target_time.getDate();
+        
+        this.control_detail_elem.innerHTML = `${target_year}년 ${target_month}월`;
+
+        let input = {target_time : `${target_year}-${target_month}-${target_date}`, access_token : access_token};
+        return new Promise((resolve, reject) => {
+            /* TODO : progress bar */
+            my_request.getDailyInfo(input)
+            .then(value => {
+                /* Create Date element  */
+                this.getDateGroup(value.calender_daily);
+                resolve();
+            })
+            .catch(err => {
+                reject(err);
+            });
+        })
     }
 
     setUI() {
@@ -43,12 +68,8 @@ class Calender {
 
     }
 
-    getDateGroup() {
-                /* TODO : need to interact with server */;
-        let test  = [new MyDate('28','10kg','prev_month'),
-                    new MyDate('15','20kg','current_month'),
-                    new MyDate('1','30kg','next_month')];
-        test.forEach(value => {
+    getDateGroup(calender_daily) {
+        calender_daily.forEach(value => {
             let date_elem = this.document.createElement('div');
             date_elem.className = 'date ' + value.class_name;
 
@@ -67,6 +88,10 @@ class Calender {
             date_elem.appendChild(date_inner_elem);
 
             this.date_elem_list.push(date_elem);
+        })
+
+        this.date_elem_list.forEach(value => {
+            this.date_grid_elem.appendChild(value);
         })
     }
 
@@ -115,9 +140,96 @@ class Calender {
         this.date_grid_elem.className = 'date_grid';
         
         this.date_elem_list = [];
-        /* TODO : should run in promise */
-        this.getDateGroup();
     }
 }
 
-export {Calender};
+class DailyModal {
+    constructor(document) {
+        this.document = document;
+    }
+
+    setUI() {
+        this.setField();
+        this.setListener();
+        this.combination();
+    }
+
+    combination() {
+        this.daily_modal.appendChild(this.daily_main_window_elem);
+
+        this.daily_main_window_elem.appendChild(this.daily_top_elem);
+        this.daily_main_window_elem.appendChild(this.daily_body_elem);
+        this.daily_main_window_elem.appendChild(this.daily_button_group_elem);
+
+        this.daily_top_elem.appendChild(this.daily_delete_elem);
+        this.daily_top_elem.appendChild(this.daily_cancel_elem);
+
+        this.daily_body_elem.appendChild(this.daily_date_elem);
+        this.daily_body_elem.appendChild(this.daily_weight_elem);
+
+        this.daily_weight_elem.appendChild(this.daily_weight_inner_span_elem);
+        this.daily_weight_elem.appendChild(this.daily_weight_inner_input_elem);
+
+        this.daily_button_group_elem.appendChild(this.daily_edit_elem);
+
+        this.document.querySelector('body').appendChild(this.daily_modal);
+    }
+
+    setListener() {
+        this.daily_cancel_elem.addEventListener('click', event => {
+            this.daily_modal.close();
+        });
+    }
+
+    setField() {
+        this.daily_modal = this.document.createElement('dialog');
+        this.daily_modal.className = 'daily_modal';
+
+        this.daily_main_window_elem = this.document.createElement('div');
+        this.daily_main_window_elem.className = 'daily_main_window';
+
+        this.daily_top_elem = this.document.createElement('div');
+        this.daily_top_elem.className = 'daily_top';
+
+        this.daily_delete_elem = this.document.createElement('button');
+        this.daily_delete_elem.id = 'daily_delete';
+        this.daily_delete_elem.innerHTML = '삭제';
+
+        this.daily_cancel_elem = this.document.createElement('button');
+        this.daily_cancel_elem.id = 'daily_cancel';
+        this.daily_cancel_elem.innerHTML = 'X';
+
+        this.daily_body_elem = this.document.createElement('div');
+        this.daily_body_elem.className = 'daily_body';
+
+        this.daily_date_elem = this.document.createElement('div');
+        this.daily_date_elem.className = 'daily_date';
+        this.daily_date_elem.innerHTML = '날짜';
+
+        this.daily_weight_elem = this.document.createElement('div');
+        this.daily_weight_elem.className = 'daily_field';
+        this.daily_weight_elem.id = 'daily_weight';
+
+        this.daily_weight_inner_span_elem = this.document.createElement('span');
+        this.daily_weight_inner_span_elem.innerHTML = '몸무게';
+
+        this.daily_weight_inner_input_elem = this.document.createElement('input');
+        this.daily_weight_inner_input_elem.setAttribute('type', 'text');
+        this.daily_weight_inner_input_elem.setAttribute('name', 'daily_weight');
+        this.daily_weight_inner_input_elem.id = 'daily_weight';
+        this.daily_weight_inner_input_elem.setAttribute('disabled', true);
+
+        this.daily_button_group_elem = this.document.createElement('div');
+        this.daily_button_group_elem.className = 'daily_button_group';
+
+        this.daily_edit_elem = this.document.createElement('button');
+        this.daily_edit_elem.id = 'daily_edit';
+        this.daily_edit_elem.innerHTML = '수정';
+    }
+
+    showModal() {
+        this.daily_modal.showModal();
+    }
+}
+
+export {Calender, DailyModal};

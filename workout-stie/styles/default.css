@@ -3,16 +3,24 @@
     --main_menu_margin_size : 12px;
     --side_bar_width : 150px;
     --default_padding_size : 8px;
+    --default_padding_topbottom_size : 4px;
     --sub_menu_width_padding_size : 15px;
-    --default_font_size : 14px;
-
-    /* calender */
     --calender_window_padding_size : 50px;
     --calender_control_margin : 40px;
-    --calender_index_background_color : #FAFBFC;
+    --default_gap_size : 10px;
+    --field_height : 20px;
+
+    /* size */
+    --default_button_width : 100px;
+    
+    /* font size*/
+    --default_font_size : 14px;
+    --default_large_size : 30px;
 
     /* color */
     --side_bar_background_color : #FAFBFC;
     --side_bar_selected_color : #EBECF0;
     --grey-color : #F6CECE;
+    --calender_index_background_color : #FAFBFC;
+    --calender_date_background_color : #C0C0C0;
 }

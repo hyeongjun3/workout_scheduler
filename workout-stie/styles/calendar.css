@@ -81,5 +81,6 @@
 
 .prev_month,
 .next_month {
-    background-color: var(--grey-color);
+    background-color: var(--calender_date_background_color);
+    opacity: 0.5;
 }

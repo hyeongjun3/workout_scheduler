@@ -338,6 +338,79 @@ app.post('/deleteUser', (req,res) => {
   })
 });
 
+function MyDate(date,weight,class_name) {
+  this.date = date;
+  this.weight = weight;
+  this.class_name = class_name;
+}
+
+let date_num = ['-1','31','28','31','30','31','30',
+                     '31','31','30','31','30','31'];
+
+function getCalender(target_time) {
+  let ret = [];
+  let target_year = parseInt(target_time[0]);
+  let target_month = parseInt(target_time[1]);
+  let target_date = parseInt(target_time[2]);
+  let new_target_time = new Date(target_year,target_month-1,1,10)
+  new_target_time.toLocaleString('ko-KR', {timeZone : 'Asia/Seoul'})
+  
+
+  let prev_month = target_month - 1;
+  prev_month = prev_month === 0 ? 12 : prev_month;
+
+  let next_month = target_month + 1;
+  next_month = next_month === 13 ? 1 : next_month;
+
+  /* check leap year*/
+  if (target_year%4 === 0) {
+    if (target_year%100 === 0) {
+      if(target_year%400 === 0) {
+        date_num[2] = 29;
+      } 
+    } else {
+      date_num[2] = 29;
+    }
+  }
+
+  /* get current date */
+  let target_day = new_target_time.getDay();
+  let prev_date_start = date_num[prev_month] - target_day + 1;
+
+  /* push previous month date */
+  for (let i=0; i<target_day; i++, prev_date_start++) {
+    ret.push(new MyDate(prev_date_start,null,'prev_month'));
+  }
+
+  /* push current month date */
+  for (let i=0; i<date_num[target_month]; i++) {
+    ret.push(new MyDate(i+1,null,'current_month'));
+  }
+
+  let remain_date_num = 7 - ret.length%7;
+  for (let i=0; i<remain_date_num; i++) {
+    ret.push(new MyDate(i+1,null,'next_month'));
+  }
+  
+  return ret;
+}
+
+app.post('/getDailyInfo', (req,res) => {
+  console.log(req.body);
+  let input = {}
+  let json_input = {}
+  // console.log(typeof req.body.target_date)
+  let target_time = req.body.target_time.split('-');
+
+  let temp_calender_info = getCalender(target_time);
+
+  res.set({'Content-type' : 'application/json'})
+  input.status = false;
+  input.calender_daily = temp_calender_info;
+  json_input = JSON.stringify(input);
+  res.send(json_input)
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
