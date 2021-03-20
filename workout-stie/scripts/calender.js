@@ -11,9 +11,13 @@ function MyDate(date,weight,class_name) {
 class Calender {
     constructor(document) {
         this.document = document;
+        this.target_time = null;
+        this.daily_modal = new DailyModal(document)
+        this.daily_modal.setUI();
     }
 
     refresh(target_time,access_token) {
+        this.target_time = target_time;
         let target_year = target_time.getFullYear();
         let target_month = target_time.getMonth() + 1;
         let target_date = target_time.getDate();
@@ -42,7 +46,6 @@ class Calender {
     }
 
     combination() {
-
         this.calender_control_elem.appendChild(this.control_left_elem);
         this.calender_control_elem.appendChild(this.control_detail_elem);
         this.calender_control_elem.appendChild(this.control_right_elem);
@@ -65,7 +68,23 @@ class Calender {
     }
 
     setListener() {
+        this.date_grid_elem.addEventListener('click', event => {
+            let target_elem = event.target.parentElement;
+            let target_date = null;
 
+            if (target_elem.className === 'date_inner') {
+                target_date = target_elem.childNodes[0].innerHTML;
+            } else if (target_elem.classList.contains('date')){
+                target_date = target_elem.childNodes[0].childNodes[0].innerHTML;
+            } else {
+                /* fail to find parent element*/
+                return;
+            }
+
+            this.target_time.setDate(target_date);
+            this.daily_modal.setDate(this.target_time);
+            this.daily_modal.showModal();
+        })
     }
 
     getDateGroup(calender_daily) {
@@ -74,7 +93,7 @@ class Calender {
             date_elem.className = 'date ' + value.class_name;
 
             let date_inner_elem = this.document.createElement('div');
-            date_inner_elem.className = 'date_inner ';
+            date_inner_elem.className = 'date_inner';
 
             let inner_span_elem_1  = this.document.createElement('span');
             inner_span_elem_1.innerHTML = value.date;
@@ -146,6 +165,7 @@ class Calender {
 class DailyModal {
     constructor(document) {
         this.document = document;
+        this.target_time = null;
     }
 
     setUI() {
@@ -171,11 +191,38 @@ class DailyModal {
         this.daily_weight_elem.appendChild(this.daily_weight_inner_input_elem);
 
         this.daily_button_group_elem.appendChild(this.daily_edit_elem);
+        this.daily_button_group_elem.appendChild(this.daily_ok_elem);
+        this.daily_button_group_elem.appendChild(this.daily_edit_cancel_elem);
 
         this.document.querySelector('body').appendChild(this.daily_modal);
     }
 
     setListener() {
+        /* ok button */
+        this.daily_ok_elem.addEventListener('click', event => {
+            let weight = this.daily_weight_inner_input_elem.value;
+            console.log(weight);
+        })
+
+        /* cancel button */
+        this.daily_edit_cancel_elem.addEventListener('click', event => {
+            this.daily_weight_inner_input_elem.setAttribute('disabled', true);
+
+            this.daily_edit_elem.classList.remove('hidden');
+            this.daily_ok_elem.className = 'hidden';
+            this.daily_edit_cancel_elem.className = 'hidden';
+        })
+
+        /* edit button */
+        this.daily_edit_elem.addEventListener('click', event => {
+            this.daily_weight_inner_input_elem.removeAttribute('disabled');
+
+            this.daily_edit_elem.className = 'hidden';
+            this.daily_ok_elem.classList.remove('hidden');
+            this.daily_edit_cancel_elem.classList.remove('hidden');
+        })
+
+        /* close button */
         this.daily_cancel_elem.addEventListener('click', event => {
             this.daily_modal.close();
         });
@@ -214,7 +261,7 @@ class DailyModal {
         this.daily_weight_inner_span_elem.innerHTML = '몸무게';
 
         this.daily_weight_inner_input_elem = this.document.createElement('input');
-        this.daily_weight_inner_input_elem.setAttribute('type', 'text');
+        this.daily_weight_inner_input_elem.setAttribute('type', 'number');
         this.daily_weight_inner_input_elem.setAttribute('name', 'daily_weight');
         this.daily_weight_inner_input_elem.id = 'daily_weight';
         this.daily_weight_inner_input_elem.setAttribute('disabled', true);
@@ -225,6 +272,25 @@ class DailyModal {
         this.daily_edit_elem = this.document.createElement('button');
         this.daily_edit_elem.id = 'daily_edit';
         this.daily_edit_elem.innerHTML = '수정';
+
+        this.daily_ok_elem = this.document.createElement('button');
+        this.daily_ok_elem.className = 'hidden';
+        this.daily_ok_elem.id = 'daily_ok';
+        this.daily_ok_elem.innerHTML = '확인';
+
+        this.daily_edit_cancel_elem = this.document.createElement('button');
+        this.daily_edit_cancel_elem.className = 'hidden';
+        this.daily_edit_cancel_elem.id = 'daily_edit_cancel';
+        this.daily_edit_cancel_elem.innerHTML = '취소';
+    }
+
+    setDate(target_time) {
+        this.target_time = target_time;
+        let target_year = target_time.getFullYear();
+        let target_month = target_time.getMonth() + 1;
+        let target_date = target_time.getDate();
+
+        this.daily_date_elem.innerHTML = `${target_year}년 ${target_month}월 ${target_date}일`;
     }
 
     showModal() {

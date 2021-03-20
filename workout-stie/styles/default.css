@@ -24,3 +24,7 @@
     --calender_index_background_color : #FAFBFC;
     --calender_date_background_color : #C0C0C0;
 }
+
+.hidden {
+    display: none;
+}
