@@ -395,6 +395,31 @@ function getCalender(target_time) {
   return ret;
 }
 
+app.post('/createDaily', (req,res) => {
+  let input = {};
+  let json_input = {}
+
+  let user_email = Cookie.getUserEmailByAccessToken(req.body.access_token);
+  let weight = req.body.weight;
+  let target_time = req.body.target_time;
+
+  res.set({'Content-type' : 'application/json'})
+
+  mySql.Utils.createDaily(user_email, weight, target_time)
+  .then ( results => {
+    input.status = true;
+    input.message = "성공"
+    json_input = JSON.stringify(input);
+    res.send(json_input)
+  })
+  .catch (error => {
+    input.status = false;
+    input.message = error;
+    json_input = JSON.stringify(input);
+    res.status(400).send(json_input);
+  })
+})
+
 app.post('/getDailyInfo', (req,res) => {
   console.log(req.body);
   let input = {}

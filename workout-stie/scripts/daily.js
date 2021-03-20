@@ -8,7 +8,6 @@ let my_header = new myHeader(document);
 let alert_dialog = new MyDialogOne(document, "default", "확인");
 let addiotnal_dialog = new MyDialogAdditional(document);
 let side_bar = new SideBar(document);
-let calender = new Calender(document);
 let my_request = new MyRequest();
 let access_token = '';
 
@@ -58,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // const cookie_list = document.cookie.split(';').map(value => value.trim());
 
   // console.log(cookie_list);
-
+  let calender = new Calender(document,access_token);
   calender.setUI();
-  calender.refresh(new Date(),access_token);
+  calender.refresh(new Date());
 },false)

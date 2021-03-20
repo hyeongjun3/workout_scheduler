@@ -9,14 +9,15 @@ function MyDate(date,weight,class_name) {
 }
 
 class Calender {
-    constructor(document) {
+    constructor(document, access_token) {
         this.document = document;
+        this.access_token = access_token;
         this.target_time = null;
-        this.daily_modal = new DailyModal(document)
+        this.daily_modal = new DailyModal(document, access_token)
         this.daily_modal.setUI();
     }
 
-    refresh(target_time,access_token) {
+    refresh(target_time) {
         this.target_time = target_time;
         let target_year = target_time.getFullYear();
         let target_month = target_time.getMonth() + 1;
@@ -24,7 +25,7 @@ class Calender {
         
         this.control_detail_elem.innerHTML = `${target_year}년 ${target_month}월`;
 
-        let input = {target_time : `${target_year}-${target_month}-${target_date}`, access_token : access_token};
+        let input = {target_time : `${target_year}-${target_month}-${target_date}`, access_token : this.access_token};
         return new Promise((resolve, reject) => {
             /* TODO : progress bar */
             my_request.getDailyInfo(input)
@@ -37,6 +38,11 @@ class Calender {
                 reject(err);
             });
         })
+    }
+
+    progressOn() {
+        this.calender_main_window_elem.classList.add('transparent');
+        this.progress_bar_elem.classList.remove('hidden');
     }
 
     setUI() {
@@ -65,6 +71,7 @@ class Calender {
         this.calender_main_window_elem.appendChild(this.calender_elem);
 
         this.document.querySelector('body').appendChild(this.calender_main_window_elem);
+        this.document.querySelector('body').appendChild(this.progress_bar_elem);
     }
 
     setListener() {
@@ -75,13 +82,15 @@ class Calender {
             if (target_elem.className === 'date_inner') {
                 target_date = target_elem.childNodes[0].innerHTML;
             } else if (target_elem.classList.contains('date')){
-                target_date = target_elem.childNodes[0].childNodes[0].innerHTML;
+                target_elem = target_elem.childNodes[0];
+                target_date = target_elem.childNodes[0].innerHTML;
             } else {
                 /* fail to find parent element*/
                 return;
             }
 
             this.target_time.setDate(target_date);
+            this.daily_modal.setTargetElem(target_elem.childNodes[1]);
             this.daily_modal.setDate(this.target_time);
             this.daily_modal.showModal();
         })
@@ -159,13 +168,19 @@ class Calender {
         this.date_grid_elem.className = 'date_grid';
         
         this.date_elem_list = [];
+         /* progress bar */
+        this.progress_bar_elem = this.document.createElement('div');
+        this.progress_bar_elem.classList.add('arc-hider');
+        this.progress_bar_elem.classList.add('hidden');
     }
 }
 
 class DailyModal {
-    constructor(document) {
+    constructor(document,access_token) {
         this.document = document;
         this.target_time = null;
+        this.access_token = access_token;
+        this.target_elem = null;
     }
 
     setUI() {
@@ -201,7 +216,24 @@ class DailyModal {
         /* ok button */
         this.daily_ok_elem.addEventListener('click', event => {
             let weight = this.daily_weight_inner_input_elem.value;
-            console.log(weight);
+            let input_time = `${this.target_time.getFullYear()}-${this.target_time.getMonth()+1}-${this.target_time.getDate()}`
+            let input = {access_token : this.access_token,
+                         weight : weight,
+                         target_time : input_time};
+
+            /* TODO : progress on */
+            my_request.createDaily(input)
+            .then(value => {
+                this.target_elem.innerHTML = `${weight}kg`;
+                this.daily_weight_inner_input_elem.setAttribute('disabled', true);
+
+                this.daily_edit_elem.classList.remove('hidden');
+                this.daily_ok_elem.className = 'hidden';
+                this.daily_edit_cancel_elem.className = 'hidden';
+            })
+            .catch(err => {
+                console.log(err);
+            })
         })
 
         /* cancel button */
@@ -291,6 +323,10 @@ class DailyModal {
         let target_date = target_time.getDate();
 
         this.daily_date_elem.innerHTML = `${target_year}년 ${target_month}월 ${target_date}일`;
+    }
+
+    setTargetElem(target_elem) {
+        this.target_elem = target_elem;
     }
 
     showModal() {
