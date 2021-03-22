@@ -1,16 +1,25 @@
 import myHeader from "./header.js"
 import MyRequest from './request.js'
 import {MyDialogOne, MyDialogAdditional} from './mydialog.js'
+import {SideBar} from './sidebar.js'
+import {Calender} from './calender.js'
 
 let my_header = new myHeader(document);
 let alert_dialog = new MyDialogOne(document, "default", "확인");
 let addiotnal_dialog = new MyDialogAdditional(document);
+let side_bar = new SideBar(document);
 let my_request = new MyRequest();
 let access_token = '';
 
 my_header.setUI();
 alert_dialog.setUI();
 addiotnal_dialog.setUI();
+side_bar.setUI();
+// daily_modal.setUI();
+
+/* test */
+// document.querySelector('.daily_main_window').showModal();
+// daily_modal.showModal();
 
 addiotnal_dialog.setConfirmListener(event => {
   let input = addiotnal_dialog.getInput();
@@ -33,7 +42,6 @@ addiotnal_dialog.setConfirmListener(event => {
   })
 });
 
-
 document.addEventListener('DOMContentLoaded', function() {
   access_token = window.sessionStorage.getItem('access_token')
 
@@ -49,4 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // const cookie_list = document.cookie.split(';').map(value => value.trim());
 
   // console.log(cookie_list);
+  let calender = new Calender(document,access_token);
+  calender.setUI();
+  calender.refresh(new Date());
 },false)
