@@ -181,6 +181,7 @@ class DailyModal {
         this.target_time = null;
         this.access_token = access_token;
         this.target_elem = null;
+        this.already_have_weight_flag = false;
     }
 
     setUI() {
@@ -223,18 +224,33 @@ class DailyModal {
 
             console.log(input);
             /* TODO : progress on */
-            my_request.createDaily(input)
-            .then(value => {
+            if (this.already_have_weight_flag === true) {
+                my_request.editDaily(input)
+                .then(value => {
                 this.target_elem.innerHTML = `${weight}kg`;
                 this.daily_weight_inner_input_elem.setAttribute('disabled', true);
 
                 this.daily_edit_elem.classList.remove('hidden');
                 this.daily_ok_elem.className = 'hidden';
                 this.daily_edit_cancel_elem.className = 'hidden';
-            })
-            .catch(err => {
-                console.log(err);
-            })
+               })
+               .catch(err => {
+                   console.log(err);
+               })
+            } else {
+                my_request.createDaily(input)
+                .then(value => {
+                    this.target_elem.innerHTML = `${weight}kg`;
+                    this.daily_weight_inner_input_elem.setAttribute('disabled', true);
+
+                    this.daily_edit_elem.classList.remove('hidden');
+                    this.daily_ok_elem.className = 'hidden';
+                    this.daily_edit_cancel_elem.className = 'hidden';
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
         })
 
         /* cancel button */
@@ -259,6 +275,12 @@ class DailyModal {
         this.daily_cancel_elem.addEventListener('click', event => {
             this.daily_modal.close();
         });
+    }
+
+    refresh() {
+        this.daily_edit_elem.classList.remove('hidden');
+        this.daily_ok_elem.className = 'hidden';
+        this.daily_edit_cancel_elem.className = 'hidden';
     }
 
     setField() {
@@ -330,15 +352,18 @@ class DailyModal {
         this.target_elem = target_elem;
         let weight = this.target_elem.innerHTML;
         if (weight.length !== 0) {
+            this.already_have_weight_flag = true;
             weight = weight.substr(0,weight.length-2);
             console.log(weight);
             this.daily_weight_inner_input_elem.value = weight;
         } else {
+            this.already_have_weight_flag = false;
             this.daily_weight_inner_input_elem.value = '';
         }
     }
 
     showModal() {
+        this.refresh();
         this.daily_modal.showModal();
     }
 }

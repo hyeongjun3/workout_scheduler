@@ -197,4 +197,23 @@ export default class MyRequest {
 
     return res;
   }
+
+  editDaily(input) {
+    let host = this.host + ':' + this.port + '/editDaily';
+    const header = new Headers();
+    header.append('Content-Type', 'application/json')
+    let json_input = JSON.stringify(input)
+    const request = new Request(host, {headers: header,
+                                        method: 'POST',
+                                        credentials : 'include',
+                                        body : json_input,
+                                        });
+    let res = fetch(request)
+    .then(response => response.json())
+    .catch( error => {
+      console.log(error)
+    })
+
+    return res;
+  }
 }
