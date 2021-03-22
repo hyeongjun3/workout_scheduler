@@ -150,7 +150,23 @@ mySql.Utils.createDaily = function(user_email, weight, target_time) {
   let values = `(${user_email}, ${weight}, ${target_time})`;
   let query = 'INSERT INTO ' + daily_table + ' (user_email, weight, date) VALUES ' +  values;
 
-  console.log(query);
+  return new Promise ((resolve, reject) => {
+    connection.query(query, (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(results);
+    });
+  })
+}
+
+mySql.Utils.getDailyInfo = function(user_email, target_year, target_month) {
+  user_email = mySql.Utils.wrapString(user_email);
+  target_year = mySql.Utils.wrapString(target_year);
+  target_month = mySql.Utils.wrapString(target_month);
+
+  let query = `SELECT * FROM ${daily_table} WHERE user_email = ${user_email}
+               AND MONTH(date) = ${target_month} AND YEAR(date) = ${target_year} ORDER BY DATE(date)`
   return new Promise ((resolve, reject) => {
     connection.query(query, (error, results, fields) => {
       if (error) {
