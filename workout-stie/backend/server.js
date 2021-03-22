@@ -347,7 +347,7 @@ function MyDate(date,weight,class_name) {
 let date_num = ['-1','31','28','31','30','31','30',
                      '31','31','30','31','30','31'];
 
-function getCalender(target_time) {
+function getCalender(target_time, daily_info) {
   let ret = [];
   let target_year = parseInt(target_time[0]);
   let target_month = parseInt(target_time[1]);
@@ -355,7 +355,6 @@ function getCalender(target_time) {
   let new_target_time = new Date(target_year,target_month-1,1,10)
   new_target_time.toLocaleString('ko-KR', {timeZone : 'Asia/Seoul'})
   
-
   let prev_month = target_month - 1;
   prev_month = prev_month === 0 ? 12 : prev_month;
 
@@ -382,9 +381,20 @@ function getCalender(target_time) {
     ret.push(new MyDate(prev_date_start,null,'prev_month'));
   }
 
+  let user_daily_index = 0;
   /* push current month date */
   for (let i=0; i<date_num[target_month]; i++) {
-    ret.push(new MyDate(i+1,null,'current_month'));
+    let input_date = i+1;
+    let input_daily_data = new MyDate(i+1, null, 'current_month');
+    if (user_daily_index < daily_info.length) {
+      let value = daily_info[user_daily_index]
+      let target_date =  parseInt(JSON.stringify(value.date).split('-')[2].substr(0,2));
+      if (input_date === target_date) {
+        input_daily_data.weight = value.weight;
+        user_daily_index += 1;
+      }
+    }
+    ret.push(input_daily_data);
   }
 
   let remain_date_num = 7 - ret.length%7;
@@ -424,16 +434,26 @@ app.post('/getDailyInfo', (req,res) => {
   console.log(req.body);
   let input = {}
   let json_input = {}
-  // console.log(typeof req.body.target_date)
+
+  let user_email = Cookie.getUserEmailByAccessToken(req.body.access_token);
   let target_time = req.body.target_time.split('-');
-
-  let temp_calender_info = getCalender(target_time);
-
+  
   res.set({'Content-type' : 'application/json'})
-  input.status = false;
-  input.calender_daily = temp_calender_info;
-  json_input = JSON.stringify(input);
-  res.send(json_input)
+
+  mySql.Utils.getDailyInfo(user_email, target_time[0], target_time[1])
+  .then(results => {
+    let temp_calender_info = getCalender(target_time, results);
+    input.status = true;
+    input.calender_daily = temp_calender_info;
+    json_input = JSON.stringify(input);
+    res.send(json_input)
+  })
+  .catch(err => {
+    input.status = false;
+    input.message = error;
+    json_input = JSON.stringify(input);
+    res.status(400).send(json_input);
+  })
 })
 
 app.listen(port, () => {

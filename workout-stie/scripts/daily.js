@@ -15,11 +15,6 @@ my_header.setUI();
 alert_dialog.setUI();
 addiotnal_dialog.setUI();
 side_bar.setUI();
-// daily_modal.setUI();
-
-/* test */
-// document.querySelector('.daily_main_window').showModal();
-// daily_modal.showModal();
 
 addiotnal_dialog.setConfirmListener(event => {
   let input = addiotnal_dialog.getInput();
