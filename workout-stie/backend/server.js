@@ -389,7 +389,7 @@ function getCalender(target_time, daily_info) {
     if (user_daily_index < daily_info.length) {
       let value = daily_info[user_daily_index]
       let target_date =  parseInt(JSON.stringify(value.date).split('-')[2].substr(0,2));
-      if (input_date === target_date) {
+      if (input_date === target_date+1) {
         input_daily_data.weight = value.weight;
         user_daily_index += 1;
       }

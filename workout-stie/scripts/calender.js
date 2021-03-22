@@ -30,7 +30,6 @@ class Calender {
             /* TODO : progress bar */
             my_request.getDailyInfo(input)
             .then(value => {
-                console.log(value);
                 /* Create Date element  */
                 this.getDateGroup(value.calender_daily);
                 resolve();
@@ -89,7 +88,6 @@ class Calender {
                 /* fail to find parent element*/
                 return;
             }
-
             this.target_time.setDate(target_date);
             this.daily_modal.setTargetElem(target_elem.childNodes[1]);
             this.daily_modal.setDate(this.target_time);
@@ -223,6 +221,7 @@ class DailyModal {
                          weight : weight,
                          target_time : input_time};
 
+            console.log(input);
             /* TODO : progress on */
             my_request.createDaily(input)
             .then(value => {
@@ -334,6 +333,8 @@ class DailyModal {
             weight = weight.substr(0,weight.length-2);
             console.log(weight);
             this.daily_weight_inner_input_elem.value = weight;
+        } else {
+            this.daily_weight_inner_input_elem.value = '';
         }
     }
 
