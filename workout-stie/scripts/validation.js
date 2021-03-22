@@ -22,7 +22,7 @@ verification_btn_elem.addEventListener('click', e => {
   .then(value => {
     if(value.status === true) {
       window.sessionStorage.setItem('additional_flag','true');
-      window.location.href = './index.html';
+      window.location.href = './daily.html';
     } else {
       my_dialog.setMessage(value.message);
       my_dialog.showModal();
