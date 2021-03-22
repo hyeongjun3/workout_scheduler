@@ -1,6 +1,7 @@
 const { resolveCname } = require('dns');
 let mysql = require('mysql');
-const user_table = 'user_tbl'
+const user_table = 'user_tbl';
+const daily_table = 'daily_tbl';
 
 let connection = mysql.createConnection({
   host : 'localhost',
@@ -132,6 +133,24 @@ mySql.Utils.updateValidationFlag = function(code) {
   // UPDATE user_tbl SET validation_flag = 1 WHERE verification code = ''
   let query = 'UPDATE ' + user_table + ' SET validation_flag = 1 WHERE verification_code = ' + code;
 
+  return new Promise ((resolve, reject) => {
+    connection.query(query, (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(results);
+    });
+  })
+}
+
+mySql.Utils.createDaily = function(user_email, weight, target_time) {
+  user_email = mySql.Utils.wrapString(user_email);
+  weigt = mySql.Utils.wrapString(weight);
+  target_time = mySql.Utils.wrapString(target_time);
+  let values = `(${user_email}, ${weight}, ${target_time})`;
+  let query = 'INSERT INTO ' + daily_table + ' (user_email, weight, date) VALUES ' +  values;
+
+  console.log(query);
   return new Promise ((resolve, reject) => {
     connection.query(query, (error, results, fields) => {
       if (error) {
