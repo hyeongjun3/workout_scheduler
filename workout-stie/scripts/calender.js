@@ -1,4 +1,5 @@
 import MyRequest from './request.js'
+import {MyDialogTwo} from './mydialog.js'
 
 let my_request = new MyRequest();
 
@@ -30,7 +31,6 @@ class Calender {
             /* TODO : progress bar */
             my_request.getDailyInfo(input)
             .then(value => {
-                console.log(value);
                 /* Create Date element  */
                 this.getDateGroup(value.calender_daily);
                 resolve();
@@ -89,7 +89,6 @@ class Calender {
                 /* fail to find parent element*/
                 return;
             }
-
             this.target_time.setDate(target_date);
             this.daily_modal.setTargetElem(target_elem.childNodes[1]);
             this.daily_modal.setDate(this.target_time);
@@ -183,6 +182,9 @@ class DailyModal {
         this.target_time = null;
         this.access_token = access_token;
         this.target_elem = null;
+        this.already_have_weight_flag = false;
+        this.my_dialog_two = new MyDialogTwo(document, "진짜?", 'ㅇㅇ', 'ㄴㄴ');
+        this.my_dialog_two.setUI();
     }
 
     setUI() {
@@ -223,19 +225,35 @@ class DailyModal {
                          weight : weight,
                          target_time : input_time};
 
+            console.log(input);
             /* TODO : progress on */
-            my_request.createDaily(input)
-            .then(value => {
+            if (this.already_have_weight_flag === true) {
+                my_request.editDaily(input)
+                .then(value => {
                 this.target_elem.innerHTML = `${weight}kg`;
                 this.daily_weight_inner_input_elem.setAttribute('disabled', true);
 
                 this.daily_edit_elem.classList.remove('hidden');
                 this.daily_ok_elem.className = 'hidden';
                 this.daily_edit_cancel_elem.className = 'hidden';
-            })
-            .catch(err => {
-                console.log(err);
-            })
+               })
+               .catch(err => {
+                   console.log(err);
+               })
+            } else {
+                my_request.createDaily(input)
+                .then(value => {
+                    this.target_elem.innerHTML = `${weight}kg`;
+                    this.daily_weight_inner_input_elem.setAttribute('disabled', true);
+
+                    this.daily_edit_elem.classList.remove('hidden');
+                    this.daily_ok_elem.className = 'hidden';
+                    this.daily_edit_cancel_elem.className = 'hidden';
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
         })
 
         /* cancel button */
@@ -260,6 +278,40 @@ class DailyModal {
         this.daily_cancel_elem.addEventListener('click', event => {
             this.daily_modal.close();
         });
+
+        /* delete button */
+        this.daily_delete_elem.addEventListener('click', event => {
+            this.my_dialog_two.showModal();
+        })
+
+        /* dialog delete button */
+        this.my_dialog_two.setOkListener(() => {
+            let input_time = `${this.target_time.getFullYear()}-${this.target_time.getMonth()+1}-${this.target_time.getDate()}`
+            let input = {access_token : this.access_token,
+                         target_time : input_time};
+            my_request.deleteDaily(input)
+            .then(value => {
+                this.daily_weight_inner_input_elem.value = '';
+                this.target_elem.innerHTML = '';
+                this.daily_weight_inner_input_elem.setAttribute('disabled', true);
+
+                this.daily_edit_elem.classList.remove('hidden');
+                this.daily_ok_elem.className = 'hidden';
+                this.daily_edit_cancel_elem.className = 'hidden';
+
+                this.my_dialog_two.close();
+                this.close();
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        })
+    }
+
+    refresh() {
+        this.daily_edit_elem.classList.remove('hidden');
+        this.daily_ok_elem.className = 'hidden';
+        this.daily_edit_cancel_elem.className = 'hidden';
     }
 
     setField() {
@@ -331,14 +383,23 @@ class DailyModal {
         this.target_elem = target_elem;
         let weight = this.target_elem.innerHTML;
         if (weight.length !== 0) {
+            this.already_have_weight_flag = true;
             weight = weight.substr(0,weight.length-2);
             console.log(weight);
             this.daily_weight_inner_input_elem.value = weight;
+        } else {
+            this.already_have_weight_flag = false;
+            this.daily_weight_inner_input_elem.value = '';
         }
     }
 
     showModal() {
+        this.refresh();
         this.daily_modal.showModal();
+    }
+
+    close() {
+        this.daily_modal.close();
     }
 }
 

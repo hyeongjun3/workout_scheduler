@@ -389,7 +389,7 @@ function getCalender(target_time, daily_info) {
     if (user_daily_index < daily_info.length) {
       let value = daily_info[user_daily_index]
       let target_date =  parseInt(JSON.stringify(value.date).split('-')[2].substr(0,2));
-      if (input_date === target_date) {
+      if (input_date === target_date+1) {
         input_daily_data.weight = value.weight;
         user_daily_index += 1;
       }
@@ -449,6 +449,55 @@ app.post('/getDailyInfo', (req,res) => {
     res.send(json_input)
   })
   .catch(err => {
+    input.status = false;
+    input.message = error;
+    json_input = JSON.stringify(input);
+    res.status(400).send(json_input);
+  })
+})
+
+app.post('/editDaily', (req,res) => {
+  let input = {};
+  let json_input = {}
+
+  let user_email = Cookie.getUserEmailByAccessToken(req.body.access_token);
+  let weight = req.body.weight;
+  let target_time = req.body.target_time;
+
+  res.set({'Content-type' : 'application/json'})
+
+  mySql.Utils.editDaily(user_email, weight, target_time)
+  .then ( results => {
+    input.status = true;
+    input.message = "성공"
+    json_input = JSON.stringify(input);
+    res.send(json_input)
+  })
+  .catch (error => {
+    input.status = false;
+    input.message = error;
+    json_input = JSON.stringify(input);
+    res.status(400).send(json_input);
+  })
+})
+
+app.post('/deleteDaily', (req,res) => {
+  let input = {};
+  let json_input = {}
+
+  let user_email = Cookie.getUserEmailByAccessToken(req.body.access_token);
+  let target_time = req.body.target_time;
+
+  res.set({'Content-type' : 'application/json'})
+
+  mySql.Utils.deleteDaily(user_email, target_time)
+  .then ( results => {
+    input.status = true;
+    input.message = "성공"
+    json_input = JSON.stringify(input);
+    res.send(json_input)
+  })
+  .catch (error => {
     input.status = false;
     input.message = error;
     json_input = JSON.stringify(input);
