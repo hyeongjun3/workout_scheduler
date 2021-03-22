@@ -193,4 +193,19 @@ mySql.Utils.editDaily = function(user_email, weight, target_time) {
   })
 }
 
+mySql.Utils.deleteDaily = function(user_email, target_time) {
+  user_email = mySql.Utils.wrapString(user_email);
+  target_time = mySql.Utils.wrapString(target_time);
+  let query = `DELETE FROM ${daily_table} WHERE user_email=${user_email} AND date=${target_time}`;
+  console.log(query);
+  return new Promise ((resolve, reject) => {
+    connection.query(query, (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(results);
+    });
+  })
+}
+
 module.exports.Utils = mySql.Utils;

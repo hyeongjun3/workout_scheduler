@@ -1,4 +1,5 @@
 import MyRequest from './request.js'
+import {MyDialogTwo} from './mydialog.js'
 
 let my_request = new MyRequest();
 
@@ -182,6 +183,8 @@ class DailyModal {
         this.access_token = access_token;
         this.target_elem = null;
         this.already_have_weight_flag = false;
+        this.my_dialog_two = new MyDialogTwo(document, "진짜?", 'ㅇㅇ', 'ㄴㄴ');
+        this.my_dialog_two.setUI();
     }
 
     setUI() {
@@ -275,6 +278,34 @@ class DailyModal {
         this.daily_cancel_elem.addEventListener('click', event => {
             this.daily_modal.close();
         });
+
+        /* delete button */
+        this.daily_delete_elem.addEventListener('click', event => {
+            this.my_dialog_two.showModal();
+        })
+
+        /* dialog delete button */
+        this.my_dialog_two.setOkListener(() => {
+            let input_time = `${this.target_time.getFullYear()}-${this.target_time.getMonth()+1}-${this.target_time.getDate()}`
+            let input = {access_token : this.access_token,
+                         target_time : input_time};
+            my_request.deleteDaily(input)
+            .then(value => {
+                this.daily_weight_inner_input_elem.value = '';
+                this.target_elem.innerHTML = '';
+                this.daily_weight_inner_input_elem.setAttribute('disabled', true);
+
+                this.daily_edit_elem.classList.remove('hidden');
+                this.daily_ok_elem.className = 'hidden';
+                this.daily_edit_cancel_elem.className = 'hidden';
+
+                this.my_dialog_two.close();
+                this.close();
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        })
     }
 
     refresh() {
@@ -365,6 +396,10 @@ class DailyModal {
     showModal() {
         this.refresh();
         this.daily_modal.showModal();
+    }
+
+    close() {
+        this.daily_modal.close();
     }
 }
 

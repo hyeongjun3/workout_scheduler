@@ -481,6 +481,30 @@ app.post('/editDaily', (req,res) => {
   })
 })
 
+app.post('/deleteDaily', (req,res) => {
+  let input = {};
+  let json_input = {}
+
+  let user_email = Cookie.getUserEmailByAccessToken(req.body.access_token);
+  let target_time = req.body.target_time;
+
+  res.set({'Content-type' : 'application/json'})
+
+  mySql.Utils.deleteDaily(user_email, target_time)
+  .then ( results => {
+    input.status = true;
+    input.message = "성공"
+    json_input = JSON.stringify(input);
+    res.send(json_input)
+  })
+  .catch (error => {
+    input.status = false;
+    input.message = error;
+    json_input = JSON.stringify(input);
+    res.status(400).send(json_input);
+  })
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
