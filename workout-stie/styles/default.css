@@ -10,7 +10,10 @@
     --default_gap_size : 10px;
     --field_height : 20px;
 
-    /* size */
+    /* chart size */
+    --chart_margin_top : 100px;
+
+    /* button size */
     --default_button_width : 100px;
     
     /* font size*/

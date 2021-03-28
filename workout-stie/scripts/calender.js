@@ -2,6 +2,7 @@ import MyRequest from './request.js'
 import {MyDialogTwo} from './mydialog.js'
 
 let my_request = new MyRequest();
+let calender_daily = [];
 
 function MyDate(date,weight,class_name) {
     this.date = date;
@@ -32,6 +33,7 @@ class Calender {
             my_request.getDailyInfo(input)
             .then(value => {
                 /* Create Date element  */
+                calender_daily = value.calender_daily;
                 this.getDateGroup(value.calender_daily);
                 resolve();
             })
@@ -97,6 +99,9 @@ class Calender {
     }
 
     getDateGroup(calender_daily) {
+        this.date_grid_elem.innerHTML = '';
+        this.date_elem_list = [];
+
         calender_daily.forEach(value => {
             let date_elem = this.document.createElement('div');
             date_elem.className = 'date ' + value.class_name;
@@ -123,10 +128,16 @@ class Calender {
             this.date_grid_elem.appendChild(value);
         })
     }
+    show() {
+        this.calender_main_window_elem.classList.remove('hidden');
+    }
+    hide() {
+        this.calender_main_window_elem.classList.add('hidden');
+    }
 
     setField(){
         this.calender_main_window_elem = this.document.createElement('div');
-        this.calender_main_window_elem.className = 'calender_main_window';
+        this.calender_main_window_elem.className = 'calender_main_window hidden';
 
         this.calender_control_elem = this.document.createElement('div');
         this.calender_control_elem.className = 'calender_control';
@@ -403,4 +414,182 @@ class DailyModal {
     }
 }
 
-export {Calender, DailyModal};
+let chartDaily = function() {
+    let canvas = document.createElement('canvas');
+    let canvas_width = canvas.clientWidth;
+    let canvas_height = canvas.clientHeight;
+    let parent_width = document.body.clientWidth;
+    let date_num = ['-1','31','28','31','30','31','30',
+                    '31','31','30','31','30','31'];
+    let target_num = null;
+    let target_date = null;
+    let daily_info = []
+    let min_weight = 987654321;
+    let max_weight = -987654321;
+    let access_token = null;
+    let daily_info_point = []
+  
+    let chart_main_window_elem = null;
+    let chart_window_elem = null;
+
+    function Point(y,x) {
+        this.y = y;
+        this.x = x;
+    }
+
+    function setUI() {
+        setField();
+        combination();
+    }
+
+    function combination() {
+        document.body.appendChild(chart_main_window_elem);
+        chart_main_window_elem.appendChild(chart_window_elem);
+    }
+
+    function setField() {
+        chart_main_window_elem = document.createElement('div');
+        chart_main_window_elem.className = 'chart_main_window'
+        chart_window_elem = canvas;
+        chart_window_elem.id = 'tutorial';
+    }
+
+    function show() {
+        chart_main_window_elem.classList.remove('hidden');
+    }
+    
+    function hide() {
+        chart_main_window_elem.classList.add('hidden');
+    }
+
+    function setDate(date) {
+      target_date = date;
+      target_num = date_num[target_date.getMonth()+1];
+    }
+
+    function setAccessToken(__access_token) {
+        access_token = __access_token;
+    }
+  
+    function setDailyInfo(target_time) {
+        let target_year = target_time.getFullYear();
+        let target_month = target_time.getMonth() + 1;
+        let target_date = target_time.getDate();
+
+        let input = {target_time : `${target_year}-${target_month}-${target_date}`, access_token : access_token};
+
+        /* 값이 있는지 확인하고 없으면 통신 X*/
+        return new Promise((resolve, reject) => {
+            /* TODO : progress bar */
+            my_request.getDailyInfo(input)
+            .then(value => {
+                /* Create Date element  */
+                calender_daily = value.calender_daily;
+                daily_info = value.calender_daily;
+                daily_info = daily_info.filter(value => value.weight !== null);
+                daily_info.forEach(value => {
+                    if (value.weight > max_weight) {
+                        max_weight = value.weight;
+                    }
+                    
+                    if (value.weight < min_weight) {
+                        min_weight = value.weight;
+                    }
+                })
+                console.log(min_weight, max_weight);
+                resolve();
+            })
+            .catch(err => {
+                reject(err);
+            });
+        })
+    }
+    
+    function resize() {
+      parent_width = canvas.parentElement.clientWidth;
+      canvas_width = parent_width - 260;
+      canvas_height = parseInt(canvas_width/1.618);
+      canvas.setAttribute('width',canvas_width)
+      canvas.setAttribute('height',canvas_height);
+    }
+  
+    function draw() {
+      resize()
+  
+      if(!canvas.getContext) {
+        return;
+      }
+  
+      let ctx = canvas.getContext('2d');
+  
+      /* Draw y-axis */
+      let bottom_margin = canvas_height * 0.05;
+      let padding_width = canvas_width * 0.05;
+      let step_line_len = canvas_height * 0.025;
+      let verical_line_len = step_line_len * 0.6;
+      let y_axis_step_size = (canvas_width - 2*padding_width)/target_num;
+      for(let i=0; i<target_num; i++) {
+        let x = i * y_axis_step_size + padding_width; 
+        let y = canvas_height - bottom_margin;
+        ctx.beginPath();
+        ctx.moveTo(x,y);
+        ctx.lineTo(x,y+verical_line_len);
+        if (i+1>=10) {
+          ctx.fillText(i+1, x-5,y+verical_line_len+verical_line_len);
+        } else {
+          ctx.fillText(i+1, x-3,y+verical_line_len+verical_line_len);
+        }      
+        ctx.stroke();
+      }
+  
+      /* Draw x-axis */
+      let weight_step_num = 10;
+      let x_axis_step_size = (canvas_height-2*bottom_margin)/weight_step_num;
+      for(let weight = 0; weight<max_weight-min_weight; weight++) {
+          let y = bottom_margin + weight * x_axis_step_size;
+          ctx.beginPath();
+          ctx.moveTo(padding_width-y_axis_step_size, y);
+          ctx.lineTo(canvas_width-padding_width, y);
+          ctx.stroke();
+      }
+      
+      daily_info_point = [];
+      let prev_point = null;
+      daily_info.forEach(value => {
+        let x = (value.date-1) * y_axis_step_size + padding_width;
+        /* normalize according to weight_step_num */
+        let normalized_y = (value.weight - min_weight)/(max_weight-min_weight);
+        let y = bottom_margin + normalized_y * (weight_step_num-2) * x_axis_step_size + x_axis_step_size;
+        y = canvas_height - y;
+        daily_info_point.push(new Point(y,x))
+        console.log(`date: ${value.date} weight: ${value.weight} X : ${x} Y : ${y}`)
+        ctx.beginPath();
+        ctx.arc(x,y, 10, 0, Math.PI*2, true);
+        ctx.stroke();
+
+        if(prev_point !== null) {
+            ctx.beginPath();
+            ctx.lineWidth = 3;
+            ctx.moveTo(x,y);
+            ctx.lineTo(prev_point.x,prev_point.y);
+            ctx.stroke();
+            ctx.lineWidth = 1;
+        }
+
+        prev_point = new Point(y,x);
+      })
+    }
+  
+    return {
+      setDate : setDate,
+      resize : resize,
+      draw : draw,
+      setDailyInfo : setDailyInfo,
+      setAccessToken : setAccessToken,
+      setUI : setUI,
+      show : show,
+      hide : hide,
+    }
+  }
+
+export {Calender, DailyModal, chartDaily};
