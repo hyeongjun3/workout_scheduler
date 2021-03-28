@@ -5,6 +5,15 @@
     padding: var(--calender_window_padding_size);
 }
 
+.chart_main_window {
+    display: flex;
+    margin-top:  var(--chart_margin_top);
+    margin-left: var(--side_bar_width);
+    /* padding: var(--calender_window_padding_size); */
+    justify-content: center;
+    
+}
+
 .calender_control {
     display: flex;
     flex-direction: row;

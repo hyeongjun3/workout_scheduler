@@ -83,6 +83,14 @@ class SideBar {
         })
     }
 
+    setCalenderSubMenuListener(func) {
+        this.calender_sub_menu_elem.addEventListener('click',func);
+    }
+
+    setCharSubMenuListener(func) {
+        this.chart_sub_menu_elem.addEventListener('click',func);
+    }
+
     setField() {
         this.side_bar_elem = this.document.createElement('div');
         this.side_bar_elem.className = 'side_bar';
