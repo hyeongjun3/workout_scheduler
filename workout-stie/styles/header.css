@@ -1,7 +1,3 @@
-:root{
-  --grey-color : #F6CECE;
-}
-
 /* TODO : Important 말고 다른거 찾기 */
 .flex{
   display: flex !important;

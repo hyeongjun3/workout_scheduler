@@ -84,6 +84,8 @@ login.login_elem.addEventListener('click', event => {
 
     console.log(value);
 
+    window.sessionStorage.setItem('access_token',value.access_token)
+
     if (value.status === false) {
       my_dialog.setMessage(value.message);
       my_dialog.showModal();
@@ -95,12 +97,15 @@ login.login_elem.addEventListener('click', event => {
       return;
     }
 
+    // TODO : why too slow when i use other type except string
     if (value.additional_flag === false) {
+      window.sessionStorage.setItem('additional_flag', 'false');
       window.location.href = "daily.html";
       return;
     }
 
     // Success
+    window.sessionStorage.setItem('additional_flag','true');
     window.location.href = "daily.html";
   })
   .catch (error => {

@@ -56,11 +56,12 @@ export default class myHeader {
     })
 
     this.my_dialog.setOkListener(event => {
-      this.my_request.logOutRequest().then( result => {
+      let input = {'access_token' : window.sessionStorage.getItem('access_token')}
+      this.my_request.logOutRequest(input).then( result => {
         if (result.status === true) {
           window.location.replace("index.html");
         } else {
-          this.my_dialog.close();
+          // this.my_dialog.close();
         }
       });
     });
