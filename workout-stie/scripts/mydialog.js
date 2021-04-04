@@ -127,6 +127,10 @@ class MyDialogTwo {
   showModal() {
     this.my_dialog.showModal();
   }
+
+  close() {
+    this.my_dialog.close();
+  }
 }
 
 /*

@@ -3,13 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script type="module" src="scripts/private.js"></script>
+  <script type="module" src="scripts/private.js" defer></script>
   <link rel="stylesheet" href="styles/header.css">
   <link rel="stylesheet" href="styles/mydialog.css">
   <link rel="stylesheet" href="styles/private.css">
   <title>Document</title>
 </head>
 <body>
-  private
+  <div class="button_group">
+    <button class="update">수정</button>
+    <button class="withdrawl">회원탈퇴</button>
+  </div>
+
+  <div class="private_window">
+    <div class="private_field">
+      <form action="" class="form_nickname">
+        <label for="nickname">닉네임</label>
+        <div class="input_field">
+          <input type="text" id="nickname" disabled>
+        </div>
+      </form>
+      <form action="" class="form_gender">
+        <label for="" id="gender">성별</label>
+        <div class="input_field">
+          <label for="">
+            <input type="radio" id="male" name="gender" value="male" disabled>남자
+          </label>
+          <label for="">
+            <input type="radio" id="female" name="gender" value="female" disabled>여자
+          </label>
+        </div>
+      </form>
+    </div>
+    <div class="update_button_group hidden">
+      <button class="ok">확인</button>
+      <button class="cancel">취소</button>
+    </div>
+  </div>
 </body>
 </html>

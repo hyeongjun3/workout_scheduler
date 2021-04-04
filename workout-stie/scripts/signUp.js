@@ -89,7 +89,7 @@ signUp.btn_elem.addEventListener('click', event => {
     }
     console.log(result)
     signUp.Utils.progressOff();
-    window.location.href = "daily.html";
+    window.location.href = "validation.html";
   })
   .catch (error => {
     signUp.Utils.progressOff();
