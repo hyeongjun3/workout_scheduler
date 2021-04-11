@@ -11,5 +11,9 @@ module.exports = {
     'sourceType': 'module',
   },
   'rules': {
+    'require-jsdoc': 0,
+    'max-len': 'off',
+    'indent': 'off',
+    'objectsInObjects': false,
   },
 };

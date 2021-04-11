@@ -1,0 +1,54 @@
+@import "default.css" screen;
+
+.user-main-window {
+    max-width: var(--user-main-window-max-width);
+    margin : auto;
+    padding : var(--user-main-window-padding);
+    display : flex;
+    flex-direction: column;
+    border : var(--default-border);
+    border-radius: var(--default-border-radius);
+}
+
+.user-logo {
+    text-align: center;
+}
+
+.user-logo > img{
+    max-width: var(--user-logo-width);
+}
+
+.user-input-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-input-field-inner-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-input-field-inner-group:not(:last-child) {
+    margin-bottom: var(--user-input-field-margin-bottom);
+}
+
+.user-input-field-inner-group > *:not(:last-child) {
+    margin-bottom: var(--user-input-field-inner-margin-bottom);
+}
+
+.user-input-field-inner-group > label {
+    font-size: var(--user-input-field-label-font-size);
+}
+
+.user-input-field-inner-info {
+    font-size: var(--default-font-size-small);
+    color: var(--red-color);
+}
+
+.user-btn-group {
+    margin-top: var(--user-btn-group-margin-top);
+}
+
+button.user-btn-group-inner {
+    width : 100%;
+}

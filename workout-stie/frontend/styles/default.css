@@ -1,31 +1,86 @@
 :root{
-    /* size */
-    --main_menu_margin_size : 12px;
-    --side_bar_width : 150px;
-    --default_padding_size : 8px;
-    --default_padding_topbottom_size : 4px;
-    --sub_menu_width_padding_size : 15px;
-    --calender_window_padding_size : 50px;
-    --calender_control_margin : 40px;
-    --default_gap_size : 10px;
-    --field_height : 20px;
-
-    /* chart size */
-    --chart_margin_top : 100px;
-
-    /* button size */
-    --default_button_width : 100px;
+    /* ################################## */
+    /* Global */
     
-    /* font size*/
-    --default_font_size : 14px;
-    --default_large_size : 30px;
+    /* Color */
+    --red-color : #FF0000;
+    --grey-color : #F6F6F6;
+
+    /* Size */
+    --default-font-size-small : 12px;
+   
+    /* border */
+    --default-border : 1px solid black;
+    --default-border-radius : 20px;
+
+    /* button */
+    --default-button-width : 10px;
+    --default-button-padding : 10px;
+    --default-button-font-size : 12px;
+    --default-button-border : 1px solid var(--grey-color);
+    --default-button-border-radius : 8px;
+
+    /* input */
+    --default-input-padding : 10px;
+    --default-input-font-size : 15px;
+
+    /* ################################## */
+
+    /* ################################## */
+    /* User window (login, sign up)*/
+    /* size */
+    --user-main-window-max-width : 700px;
+    --user-logo-width : 100px;
+    --user-main-window-padding : 30px;
+    --user-input-field-margin-bottom : 20px;
+    --user-input-field-inner-margin-bottom : 8px; 
+    --user-input-field-label-font-size : 17px;
+    --user-btn-group-margin-top : 50px;
 
     /* color */
-    --side_bar_background_color : #FAFBFC;
-    --side_bar_selected_color : #EBECF0;
-    --grey-color : #F6CECE;
-    --calender_index_background_color : #FAFBFC;
-    --calender_date_background_color : #C0C0C0;
+
+    /* ################################## */
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+    box-sizing: border-box;
+}
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+button {
+    padding : var(--default-button-padding);
+    font-size: var(--default-input-font-size);
+    border : var(--default-button-border);
+    border-radius : var(--default-button-border-radius);
+}
+input {
+    box-sizing: border-box;
+    padding: var(--default-input-padding);
+    font-size: var(--default-input-font-size);
 }
 
 .hidden {
