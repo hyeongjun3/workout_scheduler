@@ -1,6 +1,14 @@
 ## 실행 방법
 ```shell
-$ something
+// 설치
+// workout-stie 폴더로 이동
+$ npm start
+```
+
+## Commit conventions
+```shell
+// commit-template 폴더에 위치함
+$ git commit -t commit-template/${template}
 ```
 ## 프론트 엔드
 

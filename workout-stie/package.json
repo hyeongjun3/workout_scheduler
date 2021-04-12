@@ -11,7 +11,11 @@
     "mysql": "^2.18.1",
     "nodemailer": "^6.4.18"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^7.24.0",
+    "eslint-config-google": "^0.14.0",
+    "prettier": "2.2.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
