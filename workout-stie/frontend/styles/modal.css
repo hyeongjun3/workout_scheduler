@@ -1,0 +1,45 @@
+@import "default.css" screen;
+
+.dialog_backdrop {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--modal-grey-filter);
+}
+
+/* Modal Content/Box */
+.alert_dialog {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: var(--modal-padding);
+    border: var(--modal-border);
+    border-radius: var(--modal-border-radius);
+    max-width: var(--modal-max-width);
+    width: 40%; /* Could be more or less, depending on screen size */
+}
+
+.alert_dialog > *:not(:first-child) {
+    margin-top: var(--modal-inner-spacing);
+}
+
+.dialog_label {
+    font-size: var(--default-font-size-medium);
+    text-align: center;
+}
+
+.dialog_form_actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.dialog_form_actions > * {
+    width: 100%;
+}
+
+.dialog_form_actions > *:not(:first-child) {
+    margin-left : var(--modal-inner-spacing);
+}
