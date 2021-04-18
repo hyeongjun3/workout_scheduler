@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p th:text="'access_token : ' + ${authInfo.access_token}" ></p>
+    <p th:text="'token_type : ' + ${authInfo.token_type}" ></p>
+    <p th:text="'refresh_token : ' + ${authInfo.refresh_token}" ></p>
+</body>
+</html>
