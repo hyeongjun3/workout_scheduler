@@ -52,3 +52,10 @@
 button.user-btn-group-inner {
     width : 100%;
 }
+
+.user-signup-a {
+    padding: var(--default-padding);
+    text-align: right;
+    font-size: var(--default-font-size-small);
+    color: var(--red-color);
+}

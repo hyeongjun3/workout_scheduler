@@ -1,128 +1,4 @@
-/* Checking window object if it has my request module */
-if (window.hasOwnProperty('myRequest') === false) {
-  import('./request.js').then((module) => {
-    const myRequest = module.MyRequest;
-    window.myRequest = myRequest;
-  });
-}
-
-function UserInputFieldForm(type, nameKor, nameEng, inputId, infoStr) {
-  this.type = type;
-  this.nameKor = nameKor;
-  this.nameEng = nameEng;
-  this.inputId = inputId;
-  this.infoStr = infoStr;
-  this.value = null;
-}
-
-function SignUpModel() {
-  this.emailFlag = false;
-  this.pwdFlag = false;
-  /* Use array because of order */
-  this.inputFieldForm = [
-    new UserInputFieldForm(
-      'email',
-      '이메일',
-      'email',
-      'input-email',
-      '잘못된 형식입니다'
-    ),
-    new UserInputFieldForm(
-      'password',
-      '비밀번호',
-      'pwd',
-      'input-pwd',
-      ''),
-    new UserInputFieldForm(
-      'password',
-      '비밀번호 확인',
-      'pwd2',
-      'input-pwd2',
-      '비밀번호가 일치하지 않습니다'
-    ),
-  ];
-}
-
-SignUpModel.prototype.validateEmail = function (email) {
-  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
-};
-
-SignUpModel.prototype.bindSetEmailAlert = function (callback) {
-  this.setEmailAlert = callback;
-};
-
-SignUpModel.prototype.bindSetPwdAlert = function (callback) {
-  this.setPwdAlert = callback;
-};
-
-SignUpModel.prototype.bindSetBtn = function (callback) {
-  this.setBtn = callback;
-};
-
-SignUpModel.prototype.checkValidForm = function () {
-  if (this.emailFlag === true && this.pwdFlag === true) {
-    this.setBtn(true);
-  } else {
-    this.setBtn(false);
-  }
-};
-
-SignUpModel.prototype.setValue = function (index, value) {
-  this.inputFieldForm[index].value = value;
-};
-
-SignUpModel.prototype.setEmail = function (emailInput) {
-  this.setValue(0, emailInput);
-
-  if (this.validateEmail(emailInput)) {
-    this.setEmailAlert(false);
-    this.emailFlag = true;
-  } else {
-    this.setEmailAlert(true);
-    this.emailFlag = false;
-  }
-
-  this.checkValidForm();
-};
-
-SignUpModel.prototype.setPwd = function (pwdInput) {
-  this.setValue(1, pwdInput);
-
-  if (this.inputFieldForm[1].value === this.inputFieldForm[2].value) {
-    this.setPwdAlert(false);
-    this.pwdFlag = true;
-  } else {
-    this.setPwdAlert(true);
-    this.pwdFlag = false;
-  }
-
-  this.checkValidForm();
-};
-
-SignUpModel.prototype.setPwd2 = function (pwd2Input) {
-  this.setValue(2, pwd2Input);
-
-  if (this.inputFieldForm[1].value === this.inputFieldForm[2].value) {
-    this.setPwdAlert(false);
-    this.pwdFlag = true;
-  } else {
-    this.setPwdAlert(true);
-    this.pwdFlag = false;
-  }
-
-  this.checkValidForm();
-};
-
-SignUpModel.prototype.signUp = function () {
-  const email = this.inputFieldForm[0].value;
-  const pwd = this.inputFieldForm[1].value;
-
-  return window.myRequest.signUp(email, pwd);
-};
-
-{
-  /*
+/*
 <div class="user-main-window">
   <div class="user-logo">
     <img src="../image/logo.png" alt="logo">
@@ -149,7 +25,6 @@ SignUpModel.prototype.signUp = function () {
   </div>
 </div>
 */
-}
 
 function SignView() {
   this.body = this.getElement('body');
@@ -168,7 +43,6 @@ function SignView() {
   this.userBtnGroupInner = this.createElement('button', 'user-btn-group-inner');
   this.userBtnGroupInner.setAttribute('id', 'btn-login');
   this.userBtnGroupInner.setAttribute('disabled', '');
-  this.userBtnGroupInner.innerHTML = '로그인';
   this.userBtnGroup.appendChild(this.userBtnGroupInner);
 
   this.appendChildList(this.userMainWindow, [
@@ -183,8 +57,8 @@ function SignView() {
 SignView.prototype.createElement = function (tag, ...classNameList) {
   console.debug(
     `[createElement]
-                  tag : ${tag}, 
-                  classNameList : ${classNameList}`.replace(/\n\s+/g, '')
+                    tag : ${tag}, 
+                    classNameList : ${classNameList}`.replace(/\n\s+/g, '')
   );
 
   const element = document.createElement(tag);
@@ -231,6 +105,10 @@ SignView.prototype.createInputElem = function (inputFieldFormList) {
     this.userInputFieldGroup[value.inputId] = { inputElem, spanElem };
   });
 };
+
+SignView.prototype.setButtonDesc = function(desc) {
+    this.userBtnGroupInner.innerHTML = desc;
+}
 
 SignView.prototype.setButton = function (enable) {
   if (enable === true) {
@@ -300,41 +178,22 @@ SignView.prototype.bindButtonClick = function (handler) {
   btnElem.addEventListener('click', (event) => {
     event.preventDefault();
 
-    handler()
-      .then((result) => {
-        if (result.success == 'true') {
-          window.location.href = 'daily.html';
-        } else {
-          /* something alert message */
-        }
-      })
-      .catch((err) => {
-        /* Something alert message */
-      });
+    handler();
   });
 };
 
-function SignController(model, view) {
-  this.model = model;
-  this.view = view;
+function SignInView() {
+    SignView.call(this);
 
-  /* create input field element list */
-  this.createInputElemList(this.model.inputFieldForm);
+    this.userSignUpA = this.createElement('a', 'user-signup-a');
+    this.userSignUpA.innerHTML = '회원가입?';
+    this.userMainWindow.appendChild(this.userSignUpA);
 
-  /* bind functions to model */
-  this.model.bindSetEmailAlert(this.view.setEmailInfo.bind(this.view));
-  this.model.bindSetPwdAlert(this.view.setPwd2Info.bind(this.view));
-  this.model.bindSetBtn(this.view.setButton.bind(this.view));
-
-  /* bind functions to view */ this.view.bindEmailInput(
-    this.model.setEmail.bind(this.model)
-  );
-  this.view.bindPwdInput(this.model.setPwd.bind(this.model));
-  this.view.bindPwd2Input(this.model.setPwd2.bind(this.model));
+    this.userSignUpA.addEventListener('click', () => {
+        window.location.href = 'signUp.html';
+    })
 }
 
-SignController.prototype.createInputElemList = function (inputFieldForm) {
-  this.view.createInputElem(inputFieldForm);
-};
+SignInView.prototype = Object.create(SignView.prototype);
 
-const signUpController = new SignController(new SignUpModel(), new SignView());
+export {SignView, SignInView};
