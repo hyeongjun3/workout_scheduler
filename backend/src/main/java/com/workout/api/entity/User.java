@@ -27,6 +27,10 @@ public class User implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(length = 100)
     private String password;
+    @Column(length = 100)
+    private String name;
+    @Column(length = 100)
+    private String provider;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
