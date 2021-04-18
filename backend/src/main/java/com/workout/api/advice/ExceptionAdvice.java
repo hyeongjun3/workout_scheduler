@@ -1,6 +1,8 @@
 package com.workout.api.advice;
 
+import com.workout.api.advice.exception.CCommunicationException;
 import com.workout.api.advice.exception.CEmailSigninFailedException;
+import com.workout.api.advice.exception.CUserExistException;
 import com.workout.api.advice.exception.CUserNotFoundException;
 import com.workout.api.model.response.CommonResult;
 import com.workout.api.service.ResponseService;
@@ -43,6 +45,18 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("emailSigninFailed.code")), getMessage("emailSigninFailed.msg"));
     }
 
+    @ExceptionHandler(CCommunicationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult communicationException(HttpServletRequest request, CCommunicationException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("communicationError.code")), getMessage("communicationError.msg"));
+    }
+
+    @ExceptionHandler(CUserExistException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult communicationException(HttpServletRequest request, CUserExistException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("existingUser.code")), getMessage("existingUser.msg"));
+    }
+
     // code정보에 해당하는 메시지를 조회합니다.
     private String getMessage(String code) {
         return getMessage(code, null);
@@ -51,4 +65,6 @@ public class ExceptionAdvice {
     private String getMessage(String code, Object[] args) {
         return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
     }
+
+
 }
