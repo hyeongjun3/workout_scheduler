@@ -3,3 +3,12 @@ node_modules
 package-lock.json
 certificate
 creditional
+
+### backend
+.gradle
+application.yml
+
+.idea
+*.iws
+*.iml
+*.ipr
