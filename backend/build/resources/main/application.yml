@@ -9,3 +9,18 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     properties.hibernate.hbm2ddl.auto: update
     showSql: true
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8
+  jwt:
+    secret: gyoogle!@#$
+  social:
+    kakao:
+      client_id: c246778d4fd54f3160f1f5a043db8b61 # REST API 키
+      redirect: /social/login/kakao
+      url:
+        login: https://kauth.kakao.com/oauth/authorize
+        token: https://kauth.kakao.com/oauth/token
+        profile: https://kapi.kakao.com/v2/user/me
+  url:
+    base: http://localhost:8080
