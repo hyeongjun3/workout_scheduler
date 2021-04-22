@@ -2,14 +2,13 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:mariadb://workout-db.ccyplmbykom0.ap-northeast-2.rds.amazonaws.com:3306/workout
-    username: root
-    password: workout123
-    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:h2:tcp://localhost/~/test
+    driver-class-name: org.h2.Driver
+    username: sa
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    hibernate:
-      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties.hibernate.hbm2ddl.auto: update
+    showSql: true
   messages:
     basename: i18n/exception
     encoding: UTF-8
@@ -24,4 +23,4 @@ spring:
         token: https://kauth.kakao.com/oauth/token
         profile: https://kapi.kakao.com/v2/user/me
   url:
-    base: http://3.37.23.36:8080
+    base: http://localhost:8080
