@@ -36,6 +36,15 @@ AlertModalController.prototype.setModal = function (label, desc) {
 function AdditionalModalController() {
   this.model = new AdditionalModalModel();
   this.view = new AdditionalModalView();
+
+  /* bind functions to model */
+  this.model.bindSetNicknameCallback(this.view.setNicknameInfo.bind(this.view));
+  this.model.bindSetConfirmBtnCallback(this.view.setConfirmBtn.bind(this.view));
+
+  /* bind functions to view */
+  this.view.bindNicknameInput(this.model.setNickname.bind(this.model));
+  this.view.bindGenderInput(this.model.setGender.bind(this.model));
+  this.view.bindConfirmBtn(this.model.requestAdditional.bind(this.model));
 }
 
 AdditionalModalController.prototype.showModal = function() {

@@ -51,30 +51,43 @@ ModalView.prototype.hideModal = function () {
   this.dialogBackdrop.classList.add('hidden');
 };
 
-ModalView.prototype.createInnerGroupInput = function(label, type, name, id, info) {
-  const elem = this.createElement('div','modal-input-field-inner-group');
+ModalView.prototype.createInnerGroupInput = function (
+  label,
+  type,
+  name,
+  id,
+  info
+) {
+  const elem = this.createElement('div', 'modal-input-field-inner-group');
   const labelElem = this.createElement('label');
-  labelElem.setAttribute('for',id);
+  labelElem.setAttribute('for', id);
   labelElem.innerHTML = label;
   const inputElem = this.createElement('input');
-  inputElem.setAttribute('type',type);
-  inputElem.setAttribute('name',name);
-  inputElem.setAttribute('id',id);
-  const infoElem = this.createElement('span','modal-input-inner-info', 'hidden');
+  inputElem.setAttribute('type', type);
+  inputElem.setAttribute('name', name);
+  inputElem.setAttribute('id', id);
+  const infoElem = this.createElement(
+    'span',
+    'modal-input-inner-info',
+    'hidden'
+  );
   infoElem.innerHTML = info;
-  this.appendChildList(elem, [labelElem,inputElem,infoElem]);
+  this.appendChildList(elem, [labelElem, inputElem, infoElem]);
 
   return elem;
-}
+};
 
 // input = {label, type, name, id}
-ModalView.prototype.createInnerGroupRadio = function(title, inputList) {
-  const elem = this.createElement('div','modal-input-field-inner-group');
+ModalView.prototype.createInnerGroupRadio = function (title, inputList) {
+  const elem = this.createElement('div', 'modal-input-field-inner-group');
   const titleElem = this.createElement('label');
   titleElem.innerHTML = title;
-  const inputRadio = this.createElement('div','modal-input-field-radio');
+  const inputRadio = this.createElement('div', 'modal-input-field-radio');
   inputList.forEach((value) => {
-    const inputRadioInner = this.createElement('div','modal-input-field-radio-inner');
+    const inputRadioInner = this.createElement(
+      'div',
+      'modal-input-field-radio-inner'
+    );
     inputRadio.appendChild(inputRadioInner);
     const inputElem = this.createElement('input');
     inputElem.setAttribute('type', value.type);
@@ -82,16 +95,16 @@ ModalView.prototype.createInnerGroupRadio = function(title, inputList) {
     inputElem.setAttribute('id', value.id);
     inputElem.setAttribute('value', value.id);
     const labelElem = this.createElement('label');
-    labelElem.setAttribute('for',value.id);
+    labelElem.setAttribute('for', value.id);
     labelElem.innerHTML = value.label;
     inputRadioInner.appendChild(inputElem);
     inputRadioInner.appendChild(labelElem);
-  })
+  });
   elem.appendChild(titleElem);
   elem.appendChild(inputRadio);
 
   return elem;
-}
+};
 
 /*
 <div class="dialog_backdrop no-scroll">
@@ -202,33 +215,108 @@ AlertModalView.prototype.setConfirmAction = function () {
 function AdditionalModalView() {
   ModalView.call(this);
 
-  this.modalMainWindow = this.createElement('div','modal-main-window');
-  this.modalMainWindow.setAttribute('role','dialog');
-  this.modalMainWindow.setAttribute('aria-modal','true');
-  this.modalMainWindow.setAttribute('aria-labelledby','modal-title');
+  this.modalMainWindow = this.createElement('div', 'modal-main-window');
+  this.modalMainWindow.setAttribute('role', 'dialog');
+  this.modalMainWindow.setAttribute('aria-modal', 'true');
+  this.modalMainWindow.setAttribute('aria-labelledby', 'modal-title');
   this.dialogBackdrop.appendChild(this.modalMainWindow);
 
-  this.modalTitle = this.createElement('div','modal-title');
-  this.modalTitle.setAttribute('id','modal-title');
-  this.modalTitle.innerHTML = '추가정보 입력'
-  
-  this.modalInputField = this.createElement('div','modal-input-field');
-  this.modalNicknameField = this.createInnerGroupInput('닉네임', 'text', 'nickname', 'input-nickname', '이미 존재하는 닉네임입니다');
-  this.modalGenderField = this.createInnerGroupRadio('성별',[
-    {label : '남자', type:'radio' , name:'male', id:'male'},
-    {label : '여자', type:'radio' , name:'female', id:'female'},
-  ])
-  this.appendChildList(this.modalInputField,[this.modalNicknameField,this.modalGenderField]);
+  this.modalTitle = this.createElement('div', 'modal-title');
+  this.modalTitle.setAttribute('id', 'modal-title');
+  this.modalTitle.innerHTML = '추가정보 입력';
 
-  this.modalBtnGroup = this.createElement('div','modal-btn-group');
-  this.modalBtnConfirm = this.createElement('button','modal-btn-group-inner');
-  this.modalBtnConfirm.setAttribute('id','btn-confirm');
+  this.modalInputField = this.createElement('div', 'modal-input-field');
+  this.modalNicknameField = this.createInnerGroupInput(
+    '닉네임',
+    'text',
+    'nickname',
+    'input-nickname',
+    '이미 존재하는 닉네임입니다'
+  );
+  this.modalNicknameInput = this.modalNicknameField.querySelector('input');
+  this.modalNicknameInfo = this.modalNicknameField.querySelector('span');
+
+  this.modalGenderField = this.createInnerGroupRadio('성별', [
+    { label: '남자', type: 'radio', name: 'gender', id: 'male' },
+    { label: '여자', type: 'radio', name: 'gender', id: 'female' },
+  ]);
+  this.modalGenderRadioBtns = this.modalGenderField.querySelectorAll('input');
+  this.appendChildList(this.modalInputField, [
+    this.modalNicknameField,
+    this.modalGenderField,
+  ]);
+
+  this.modalBtnGroup = this.createElement('div', 'modal-btn-group');
+  this.modalBtnConfirm = this.createElement('button', 'modal-btn-group-inner');
+  this.modalBtnConfirm.setAttribute('id', 'btn-confirm');
   this.modalBtnConfirm.innerHTML = '확인';
   this.modalBtnGroup.appendChild(this.modalBtnConfirm);
 
- this.appendChildList(this.modalMainWindow, [this.modalTitle, this.modalInputField, this.modalBtnGroup]);
+  this.appendChildList(this.modalMainWindow, [
+    this.modalTitle,
+    this.modalInputField,
+    this.modalBtnGroup,
+  ]);
+
+  /* event handler */
+  this.modalNicknameInput.addEventListener('input', (event) => {
+    this.nicknameInputHandler(event.target.value);
+  });
+
+  this.modalBtnConfirm.addEventListener('click', (event) => {
+    event.preventDefault();
+    this.confirmBtnHandler()
+    .then( (value) => {
+      console.log(value)
+      if(value.success == true) {
+        this.hideModal();
+      } else {
+        /* TODO : show modal info */
+      }
+    })
+    .catch( (err) => {
+      console.error(err);
+      /* TODO : show modal info */
+    })
+  })
+
+  this.modalGenderField.addEventListener('click' , (event) => {
+    if (event.target instanceof HTMLInputElement) {
+      this.genderInputHandler(event.target.value);
+    }
+  })
 }
 
 AdditionalModalView.prototype = Object.create(ModalView.prototype);
+
+/* Setter */
+AdditionalModalView.prototype.setNicknameInfo = function (enable) {
+  if (enable === true) {
+    this.modalNicknameInfo.classList.remove('hidden');
+  } else {
+    this.modalNicknameInfo.classList.add('hidden');
+  }
+};
+
+AdditionalModalView.prototype.setConfirmBtn = function (enable) {
+  if (enable === false) {
+    this.modalBtnConfirm.setAttribute('disabled', true);
+  } else {
+    this.modalBtnConfirm.removeAttribute('disabled');
+  }
+};
+
+/* Bind */
+AdditionalModalView.prototype.bindNicknameInput = function (handler) {
+  this.nicknameInputHandler = handler;
+};
+
+AdditionalModalView.prototype.bindGenderInput = function (handler) {
+  this.genderInputHandler = handler;
+}
+
+AdditionalModalView.prototype.bindConfirmBtn = function (handler) {
+  this.confirmBtnHandler = handler;
+}
 
 export { AlertModalView, AdditionalModalView };

@@ -1,3 +1,12 @@
+let myRequest = null;
+
+/* Checking window object if it has my request module */
+if (window.hasOwnProperty('myRequest') === false) {
+  import('../request.js').then((module) => {
+    myRequest = module.MyRequest;
+  });
+}
+
 function AlertModalModel(label, description, confirm_action, cancel_action) {
   this.label = label;
   this.description = description;
@@ -26,17 +35,62 @@ AlertModalModel.prototype.setDesc = function (desc) {
 function AdditionalModalModel() {
   this.nickname = null;
   this.gender = null;
+  this.nicknameFlag = false;
+  this.genderFlag = false;
 }
 
 /* Setter */
-AdditionalModalModel.prototype.setNickname = function(nickname) {
+AdditionalModalModel.prototype.setNickname = function (nickname) {
   this.nickname = nickname;
-}
 
-AdditionalModalModel.prototype.setGender = function(gender) {
+  myRequest
+    .checkNickname(this.nickname)
+    .then((value) => {
+      if (value.success == true) {
+        this.nicknameFlag = true;
+        this.setNicknameCallback(false);
+      } else {
+        this.nicknameFlag = false;
+        this.setNicknameCallback(true);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      this.nicknameFlag = false;
+      this.setNicknameCallback(false);
+    })
+    .finally(() => {
+      this.checkInputValid();
+    });
+};
+
+AdditionalModalModel.prototype.setGender = function (gender) {
+  this.genderFlag = true;
   this.gender = gender;
-}
+
+  this.checkInputValid();
+};
 
 /* Bind */
+AdditionalModalModel.prototype.bindSetNicknameCallback = function (callback) {
+  this.setNicknameCallback = callback;
+};
 
-export { AlertModalModel, AdditionalModalModel};
+AdditionalModalModel.prototype.bindSetConfirmBtnCallback = function (callback) {
+  this.setConfirmBtnCallback = callback;
+};
+
+/* Others */
+AdditionalModalModel.prototype.checkInputValid = function () {
+  if (this.nicknameFlag === true && this.genderFlag === true) {
+    this.setConfirmBtnCallback(true);
+  } else {
+    this.setConfirmBtnCallback(false);
+  }
+};
+
+AdditionalModalModel.prototype.requestAdditional = function () {
+  return myRequest.registerAdditionalInfo(this.nickname, this.gender);
+};
+
+export { AlertModalModel, AdditionalModalModel };
