@@ -1,1 +1,4 @@
-console.log(window.myRequest);
+import {AdditionalModalController} from './modal/modal.js'
+
+const additionalModal = new AdditionalModalController();
+additionalModal.showModal();
