@@ -40,7 +40,7 @@ public class SignController {
 
         userJpaRepository.save(User.builder()
                 .email(email)
-                .password(passwordEncoder.encode(password))
+                .password(passwordEncoder.encode("{noop}" + password))
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build());
         return responseService.getSuccessResult();
@@ -51,7 +51,7 @@ public class SignController {
     public SingleResult<String> signin(@ApiParam(value = "회원ID : 이메일", required = true) @RequestParam String email,
                                        @ApiParam(value = "비밀번호", required = true) @RequestParam String password) {
         User user = userJpaRepository.findByEmail(email).orElseThrow(CEmailSigninFailedException::new);
-        if (!passwordEncoder.matches(password, user.getPassword()))
+        if (!passwordEncoder.matches("{noop}" + password, user.getPassword()))
             throw new CEmailSigninFailedException();
 
         return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getUid()), user.getRoles()));

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @Builder // builder를 사용
 @Entity // jpa entity
 @Getter // user 필드값의 getter를 자동으로 생성
+@Setter
 @NoArgsConstructor // 인자없는 생성자를 자동으로 생성
 @AllArgsConstructor // 인자를 모두 갖춘 생성자를 자동으로 생성
 @Table(name = "user") // 'user' 테이블과 매핑됨을 명시
@@ -29,6 +30,8 @@ public class User implements UserDetails {
     private String password;
     @Column(length = 100)
     private String name;
+    @Column(length = 100)
+    private String gender;
     @Column(length = 100)
     private String provider;
 
