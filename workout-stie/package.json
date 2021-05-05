@@ -12,6 +12,7 @@
     "cors": "^2.8.5",
     "css-loader": "^5.2.4",
     "express": "^4.17.1",
+    "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^1.6.0",
     "mysql": "^2.18.1",
     "nodemailer": "^6.4.18",

@@ -12,6 +12,20 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(jpg|png)$/,
+                use : {
+                    loader: 'file-loader',
+                    options: {
+                        outputPath: './image/',
+                        name : '[name].[ext]?[hash]'
+                    }
+                }
+            },
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
