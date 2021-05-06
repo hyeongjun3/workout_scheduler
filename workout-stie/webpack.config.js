@@ -1,10 +1,15 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode: 'development',
-    entry: './scripts/signIn.js',
+    entry: {
+        signIn : './scripts/signIn.js',
+        signUp : './scripts/signUp.js',
+        daily : './scripts/daily.js'
+    },
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist')
@@ -43,9 +48,30 @@ module.exports = {
         hot: true
     },
     plugins: [
-        new CopyWebpackPlugin({
-            patterns: ['./html/signIn.html']
+        new HtmlWebpackPlugin({
+            title : '',
+            hash : true,
+            filename : 'signIn.html',
+            excludeChunks : ['signUp','daily'],
+            template : './html/signIn.html'
         }),
-        new webpack.HotModuleReplacementPlugin()
+        new HtmlWebpackPlugin({
+            title : '',
+            hash : true,
+            filename : 'signUp.html',
+            excludeChunks : ['signIn','daily'],
+            template : './html/signUp.html'
+        }),
+        new HtmlWebpackPlugin({
+            title : '',
+            hash : true,
+            filename : 'daily.html',
+            excludeChunks : ['signIn','signUp'],
+            template : './html/daily.html'
+        }),
+        // new CopyWebpackPlugin({
+        //     patterns: ['./html/signIn.html']
+        // }),
+        // new webpack.HotModuleReplacementPlugin()
     ]
 };
