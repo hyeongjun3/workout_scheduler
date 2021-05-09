@@ -16,7 +16,7 @@ public class Application {
             new SpringApplicationBuilder(Application.class)
                     .properties(
                             "spring.config.location=" +
-                                    "C:\\Users\\gyuse\\Desktop\\application-dev.yml"
+                                    "C:\\Users\\gyuse\\Desktop\\application-local.yml"
                     )
                     .run(arg);
         }
@@ -24,7 +24,7 @@ public class Application {
             new SpringApplicationBuilder(Application.class)
                     .properties(
                             "spring.config.location=" +
-                                    "app\\application-dev.yml"
+                                    "\\home\\ec2-user\\app\\application-dev.yml"
                     )
                     .run(arg);
         }

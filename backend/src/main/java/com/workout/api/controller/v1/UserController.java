@@ -53,7 +53,6 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         User user = userJpaRepository.findByEmail(email).orElseThrow(CEmailSigninFailedException::new);
-
         user.setName(name);
         user.setGender(gender);
         return responseService.getSingleResult(userJpaRepository.save(user));
@@ -62,11 +61,14 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @ApiOperation(value = "회원 삭제", notes = "id로 회원정보를 삭제한다")
-    @DeleteMapping(value = "/user/{uid}")
-    public CommonResult delete(
-            @ApiParam(value = "회원번호", required = true) @PathVariable long uid) {
-        userJpaRepository.deleteById(uid);
+    @ApiOperation(value = "회원 삭제", notes = "회원정보를 삭제한다")
+    @DeleteMapping(value = "/user/")
+    public CommonResult delete() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = userJpaRepository.findByEmail(email).orElseThrow(CEmailSigninFailedException::new);
+        userJpaRepository.deleteById(user.getUid());
         return responseService.getSuccessResult();
     }
 }
