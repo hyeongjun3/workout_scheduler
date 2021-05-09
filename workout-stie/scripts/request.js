@@ -3,6 +3,9 @@ import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
 const cognitoFlag = true;
+const myExceptions = Object.freeze({
+  UserNotConfirmedException: 1,
+});
 
 const MyRequest = (function () {
   const host = 'http://localhost';
@@ -54,6 +57,19 @@ const MyRequest = (function () {
       });
   }
 
+  function signIn(email, password) {
+    let ret = null;
+    const input = { email: email, password: password };
+    const jsonInput = JSON.stringify(input);
+
+    if (cognitoFlag === true) {
+      ret = Auth.signIn(email, password);
+    } else {
+      ret = requestToServer(jsonInput, '/v1/signIn');
+    }
+    return ret;
+  }
+
   function signUp(email, password) {
     let ret = null;
     /* create input of json format */
@@ -62,17 +78,46 @@ const MyRequest = (function () {
     /* request to server */
     if (cognitoFlag === true) {
       ret = Auth.signUp({
-        username : email,
-        password : password,
-        attributes : {
-          nickname : 'X',
-          gender : 'X',
-          'custom:additional_verified' : 0,
-        }
-      })
+        username: email,
+        password: password,
+        attributes: {
+          nickname: '',
+          gender: '',
+          'custom:additional_verified': 0,
+        },
+      });
     } else {
       ret = requestToServer(jsonInput, '/v1/signup');
     }
+    return ret;
+  }
+
+  function confirmSignUp(email, code) {
+    let ret = null;
+    /* create input of json format */
+    const input = { email: email, code: code };
+    const jsonInput = JSON.stringify(input);
+    /* request to server */
+    if (cognitoFlag === true) {
+      ret = Auth.confirmSignUp(email, code);
+    } else {
+      ret = requestToServer(jsonInput, '/v1/confirmSignUp');
+    }
+
+    return ret;
+  }
+
+  function resendCode(email) {
+    let ret = null;
+    /* create input of json format */
+    const input = { email: email };
+    const jsonInput = JSON.stringify(input);
+    if (cognitoFlag === true) {
+      ret = Auth.resendSignUp(email);
+    } else {
+      ret = requestToServer(jsonInput, '/v1/resendCode');
+    }
+
     return ret;
   }
 
@@ -92,10 +137,13 @@ const MyRequest = (function () {
   }
 
   return {
+    signIn: signIn,
     signUp: signUp,
+    confirmSignUp: confirmSignUp,
+    resendCode: resendCode,
     checkNickname: checkNickname,
     registerAdditionalInfo: registerAdditionalInfo,
   };
 })();
 
-export { MyRequest };
+export { MyRequest, cognitoFlag, myExceptions };
