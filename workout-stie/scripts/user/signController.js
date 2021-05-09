@@ -1,5 +1,3 @@
-import '../../styles/user.css'
-
 import {SignInModel, SignUpModel} from './signModel.js'
 import {SignInView, SignView} from './signView.js';
 import {AlertModalController} from '../modal/modal.js'

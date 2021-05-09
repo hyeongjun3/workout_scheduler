@@ -1,4 +1,5 @@
 import '../../image/logo.png';
+import '../../styles/user.css'
 
 /*
 <div class="user-main-window">
@@ -23,7 +24,7 @@ import '../../image/logo.png';
     </div>
   </div>
   <div class="user-btn-group">
-    <button class="user-btn-group-inner" id="btn-login">로그인</button>
+    <button class="user-btn-group-inner">로그인</button>
   </div>
 </div>
 */
@@ -43,7 +44,6 @@ function SignView() {
 
   this.userBtnGroup = this.createElement('div', 'user-btn-group');
   this.userBtnGroupInner = this.createElement('button', 'user-btn-group-inner');
-  this.userBtnGroupInner.setAttribute('id', 'btn-login');
   this.userBtnGroupInner.setAttribute('disabled', '');
   this.userBtnGroup.appendChild(this.userBtnGroupInner);
 
@@ -114,7 +114,6 @@ SignView.prototype.setButtonDesc = function(desc) {
 
 SignView.prototype.setButton = function (enable) {
   if (enable === true) {
-    console.log('remove!!');
     this.userBtnGroupInner.removeAttribute('disabled');
   } else {
     this.userBtnGroupInner.setAttribute('disabled', '');
@@ -180,7 +179,13 @@ SignView.prototype.bindButtonClick = function (handler) {
   btnElem.addEventListener('click', (event) => {
     event.preventDefault();
 
-    handler();
+    handler()
+    .then((result) => {
+      console.log(result);
+      if(result.hasOwnProperty('redirectionURL')) {
+        window.location.href = result.redirectionURL;
+      }
+    })
   });
 };
 
