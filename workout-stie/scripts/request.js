@@ -130,10 +130,23 @@ const MyRequest = (function () {
   }
 
   function registerAdditionalInfo(nickname, gender) {
+    let ret = null;
     const input = { nickname: nickname, gender: gender };
     const jsonInput = JSON.stringify(input);
 
-    return requestToServerTest(jsonInput, '/v1/registerAdditionalInfo');
+    if (cognitoFlag === true) {
+      /* TODO : check nickname whether it is existed or not */
+      /* after connecting with graphsql, to do this */
+      ret = Auth.currentAuthenticatedUser().then((user) => {
+        return Auth.updateUserAttributes(user, {
+          nickname: nickname,
+          gender: gender,
+        });
+      });
+    } else {
+      ret = requestToServerTest(jsonInput, '/v1/registerAdditionalInfo');
+    }
+    return ret;
   }
 
   return {
