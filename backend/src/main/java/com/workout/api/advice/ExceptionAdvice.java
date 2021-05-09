@@ -1,9 +1,6 @@
 package com.workout.api.advice;
 
-import com.workout.api.advice.exception.CCommunicationException;
-import com.workout.api.advice.exception.CEmailSigninFailedException;
-import com.workout.api.advice.exception.CUserExistException;
-import com.workout.api.advice.exception.CUserNotFoundException;
+import com.workout.api.advice.exception.*;
 import com.workout.api.model.response.CommonResult;
 import com.workout.api.service.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -53,8 +50,26 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CUserExistException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public CommonResult communicationException(HttpServletRequest request, CUserExistException e) {
+    public CommonResult userExistException(HttpServletRequest request, CUserExistException e) {
         return responseService.getFailResult(Integer.valueOf(getMessage("existingUser.code")), getMessage("existingUser.msg"));
+    }
+
+    @ExceptionHandler(CUserNotMatchPasswordException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult userNotMatchPasswordException(HttpServletRequest request, CUserNotMatchPasswordException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("notMachedPassword.code")), getMessage("notMachedPassword.msg"));
+    }
+
+    @ExceptionHandler(CUserSamePasswordException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult userSamePasswordException(HttpServletRequest request, CUserSamePasswordException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("samePassword.code")), getMessage("samePassword.msg"));
+    }
+
+    @ExceptionHandler(CUserConfirmPasswordException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult userConfirmPasswordException(HttpServletRequest request, CUserConfirmPasswordException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("notMachedPassword.code")), getMessage("notMachedPassword.msg"));
     }
 
     // code정보에 해당하는 메시지를 조회합니다.
