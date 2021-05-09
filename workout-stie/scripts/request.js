@@ -1,3 +1,9 @@
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from './aws-exports';
+Amplify.configure(awsconfig);
+
+const cognitoFlag = true;
+
 const MyRequest = (function () {
   const host = 'http://localhost';
   const port = 3000;
@@ -49,12 +55,25 @@ const MyRequest = (function () {
   }
 
   function signUp(email, password) {
+    let ret = null;
     /* create input of json format */
     const input = { email: email, password: password };
     const jsonInput = JSON.stringify(input);
     /* request to server */
-    // return requestToServer(jsonInput, '/v1/signup');
-    return requestToServerTest(jsonInput, '/v1/signup');
+    if (cognitoFlag === true) {
+      ret = Auth.signUp({
+        username : email,
+        password : password,
+        attributes : {
+          nickname : 'X',
+          gender : 'X',
+          'custom:additional_verified' : 0,
+        }
+      })
+    } else {
+      ret = requestToServer(jsonInput, '/v1/signup');
+    }
+    return ret;
   }
 
   function checkNickname(nickname) {

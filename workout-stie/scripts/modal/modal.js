@@ -1,3 +1,5 @@
+import '../../styles/modal.css';
+
 import { AlertModalModel, AdditionalModalModel } from './modalModel.js';
 import { AlertModalView, AdditionalModalView } from './modalView.js';
 

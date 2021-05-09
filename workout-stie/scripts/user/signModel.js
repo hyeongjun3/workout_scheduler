@@ -171,12 +171,12 @@ SignUpModel.prototype.signUp = function () {
 
   myRequest
     .signUp(this.email, this.pwd)
-    .then((result) => {
-      /* TODO : should be implement after rest api is implemented */
+    .then((user) => {
+      console.log(user);
     })
     .catch((err) => {
       console.error(err);
-      this.setModal('에러발생', err.msg);
+      this.setModal('에러발생', err.message);
       this.showModal();
     });
 };

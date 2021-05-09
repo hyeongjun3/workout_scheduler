@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "workoutstie4e4d876b": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

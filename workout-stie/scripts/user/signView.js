@@ -1,3 +1,5 @@
+import '../../image/logo.png';
+
 /*
 <div class="user-main-window">
   <div class="user-logo">

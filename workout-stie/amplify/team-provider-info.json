@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-workoutstie-dev-222004-authRole",
+      "UnauthRoleArn": "arn:aws:iam::867722143721:role/amplify-workoutstie-dev-222004-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::867722143721:role/amplify-workoutstie-dev-222004-authRole",
+      "Region": "ap-northeast-2",
+      "DeploymentBucketName": "amplify-workoutstie-dev-222004-deployment",
+      "UnauthRoleName": "amplify-workoutstie-dev-222004-unauthRole",
+      "StackName": "amplify-workoutstie-dev-222004",
+      "StackId": "arn:aws:cloudformation:ap-northeast-2:867722143721:stack/amplify-workoutstie-dev-222004/c73db370-ae6d-11eb-bee1-02eb73a0eeae",
+      "AmplifyAppId": "d3cjfwtt20bpy2"
+    },
+    "categories": {
+      "auth": {
+        "workoutstie4e4d876b": {}
+      }
+    }
+  }
+}
