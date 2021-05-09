@@ -14,3 +14,9 @@ communicationError:
 existingUser:
   code: "-1005"
   msg: "You are an existing member."
+samePassword:
+  code: "-1006"
+  msg: "Matches the password before the change."
+notMachedPassword:
+  code: "-1007"
+  msg: "The origin password or new password do not match."
