@@ -1,10 +1,21 @@
 let myRequest = null;
+let cognitoFlag = null;
+let myExceptions = null;
+let myUtils = null;
 
 /* Checking window object if it has my request module */
 if (window.hasOwnProperty('myRequest') === false) {
   import('../request.js').then((module) => {
     myRequest = module.MyRequest;
+    cognitoFlag = module.cognitoFlag;
+    myExceptions = module.myExceptions;
   });
+}
+
+if (window.hasOwnProperty('myUtils') === false) {
+  import('../utils.js').then((module) => {
+    myUtils = module.Utils;
+  })
 }
 
 function UserInputFieldForm(type, nameKor, nameEng, inputId, infoStr) {
@@ -97,15 +108,29 @@ SignInModel.prototype.signIn = function () {
   this.email = this.inputFieldForm[0].value;
   this.pwd = this.inputFieldForm[1].value;
 
-  myRequest
-    .signUp(this.email, this.pwd)
+  return myRequest
+    .signIn(this.email, this.pwd)
     .then((result) => {
+      /* TODO : should store the user data to client session */
       /* TODO : should be implement after rest api is implemented */
+      let ret = {};
+      console.log(result);
+      // ret.redirectionURL = 'daily.html';
+      return ret;
     })
     .catch((err) => {
-      console.error(err);
-      this.setModal('에러발생', err.msg);
-      this.showModal();
+      let ret = {};
+      if (myExceptions.hasOwnProperty(err.code)) {
+        const user = myUtils.getUser();
+        user.email = this.email;
+        myUtils.setUser(user);
+        ret.redirectionURL = 'validation.html';
+      } else {
+        console.error(err);
+        this.setModal('에러발생', err.message);
+        this.showModal();
+      }
+      return ret;
     });
 };
 
@@ -169,16 +194,22 @@ SignUpModel.prototype.signUp = function () {
   this.email = this.inputFieldForm[0].value;
   this.pwd = this.inputFieldForm[1].value;
 
-  myRequest
+  return myRequest
     .signUp(this.email, this.pwd)
-    .then((user) => {
-      console.log(user);
+    .then(() => {
+      const user = myUtils.getUser();
+      let ret = {};
+      user.email = this.email;
+      myUtils.setUser(user);
+      ret.redirectionURL = 'validation.html';
+      return ret;
     })
     .catch((err) => {
       console.error(err);
-      this.setModal('에러발생', err.message);
+      this.setModal(err.name, err.message);
       this.showModal();
+      return;
     });
 };
 
-export { SignInModel, SignUpModel };
+export { UserInputFieldForm, SignInModel, SignUpModel };
