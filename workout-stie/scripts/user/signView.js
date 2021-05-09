@@ -181,7 +181,6 @@ SignView.prototype.bindButtonClick = function (handler) {
 
     handler()
     .then((result) => {
-      console.log(result);
       if(result.hasOwnProperty('redirectionURL')) {
         window.location.href = result.redirectionURL;
       }

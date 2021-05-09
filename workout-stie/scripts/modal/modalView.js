@@ -266,13 +266,8 @@ function AdditionalModalView() {
   this.modalBtnConfirm.addEventListener('click', (event) => {
     event.preventDefault();
     this.confirmBtnHandler()
-    .then( (value) => {
-      console.log(value)
-      if(value.success == true) {
-        this.hideModal();
-      } else {
-        /* TODO : show modal info */
-      }
+    .then( () => {
+      this.hideModal();
     })
     .catch( (err) => {
       console.error(err);
