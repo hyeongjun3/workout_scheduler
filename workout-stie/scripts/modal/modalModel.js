@@ -1,10 +1,17 @@
 let myRequest = null;
+let myUtils = null;
 
 /* Checking window object if it has my request module */
 if (window.hasOwnProperty('myRequest') === false) {
   import('../request.js').then((module) => {
     myRequest = module.MyRequest;
   });
+}
+
+if (window.hasOwnProperty('myUtils') === false) {
+  import('../utils.js').then((module) => {
+    myUtils = module.Utils;
+  })
 }
 
 function AlertModalModel(label, description, confirm_action, cancel_action) {
@@ -90,7 +97,14 @@ AdditionalModalModel.prototype.checkInputValid = function () {
 };
 
 AdditionalModalModel.prototype.requestAdditional = function () {
-  return myRequest.registerAdditionalInfo(this.nickname, this.gender);
+  return myRequest.registerAdditionalInfo(this.nickname, this.gender)
+  .then(() => {
+    let user = myUtils.getUser();
+    user.nickname = this.nickname;
+    user.gender = this.gender;
+    myUtils.setUser(user);
+    return
+  });
 };
 
 export { AlertModalModel, AdditionalModalModel };

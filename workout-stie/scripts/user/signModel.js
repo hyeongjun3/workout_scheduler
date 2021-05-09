@@ -111,11 +111,10 @@ SignInModel.prototype.signIn = function () {
   return myRequest
     .signIn(this.email, this.pwd)
     .then((result) => {
-      /* TODO : should store the user data to client session */
-      /* TODO : should be implement after rest api is implemented */
       let ret = {};
-      console.log(result);
-      // ret.redirectionURL = 'daily.html';
+      const user = result.attributes;
+      myUtils.setUser(user);
+      ret.redirectionURL = 'daily.html';
       return ret;
     })
     .catch((err) => {
