@@ -5,6 +5,7 @@
   /* Color */
   --red-color: #ff0000;
   --grey-color: #f6f6f6;
+  --light-grey-color : #cecaca;
 
   /* Size */
   --default-font-size-small: 12px;
@@ -51,6 +52,10 @@
 
   /* color */
   /* ################################## */
+  /* top nav */
+  /* size */
+  --top-nav-height : 100px;
+  --top-nav-image-width : calc(var(--top-nav-height) - var(--default-padding)*2);
 }
 
 html,
