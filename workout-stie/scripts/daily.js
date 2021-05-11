@@ -1,6 +1,6 @@
 import { Utils as myUtils } from './utils.js';
 import { TopNav } from './navigation.js';
-import { PrivateInfoView } from './privateInfo/privateInfoView.js';
+import { PrivateInfoController as PrivateInfoWindow } from './privateInfo/PrivateInfoController.js';
 
 /* Check if user updated their's nickcname and gender or not*/
 const user = myUtils.getUser();
@@ -19,4 +19,4 @@ if (
 const topNav = new TopNav();
 
 /* Private Info */
-const test = new PrivateInfoView();
+const test = new PrivateInfoWindow();

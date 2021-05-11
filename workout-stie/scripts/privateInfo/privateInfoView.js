@@ -1,4 +1,4 @@
-import '../../styles/privateInfo.css'
+import '../../styles/privateInfo.css';
 
 // <div class="private-info-top">
 //     <button class="private-info-top-item">수정</button>
@@ -35,89 +35,138 @@ function PrivateInfoView() {
 
   this.privateInfoTop = this.createElement('div', 'private-info-top');
   {
-      this.privateInfoTopItemUpdate = this.createElement('button','private-info-top-item');
-      this.privateInfoTopItemUpdate.innerHTML = '수정';
-      this.privateInfoTopItemWithdrawal = this.createElement('button','private-info-top-item');
-      this.privateInfoTopItemWithdrawal.innerHTML = '회원탈퇴';
+    this.privateInfoTopItemUpdate = this.createElement(
+      'button',
+      'private-info-top-item'
+    );
+    this.privateInfoTopItemUpdate.innerHTML = '수정';
+    this.privateInfoTopItemWithdrawal = this.createElement(
+      'button',
+      'private-info-top-item'
+    );
+    this.privateInfoTopItemWithdrawal.innerHTML = '회원탈퇴';
   }
   this.privateInfoTop.appendChild(this.privateInfoTopItemUpdate);
   this.privateInfoTop.appendChild(this.privateInfoTopItemWithdrawal);
 
-  this.privateInfoWindow = this.createElement('div','private-info-window');
+  this.privateInfoWindow = this.createElement('div', 'private-info-window');
   {
-      this.privateInfoFieldGroup = this.createElement('div','private-info-field-group');
+    this.privateInfoFieldGroup = this.createElement(
+      'div',
+      'private-info-field-group'
+    );
+    {
+      this.privateInfoFieldNickname = this.createElement(
+        'div',
+        'private-info-field'
+      );
       {
-          this.privateInfoFieldNickname = this.createElement('div','private-info-field');
-          {
-              this.nicknameLabel = this.createElement('label');
-              this.nicknameLabel.setAttribute('for', 'input-nickname');
-              this.nicknameLabel.innerHTML = '닉네임';
-              this.nicknameInput = this.createElement('input');
-              this.nicknameInput.setAttribute('type', 'text');
-              this.nicknameInput.setAttribute('name' ,'nickname');
-              this.nicknameInput.setAttribute('id', 'input-nickname');
-          }
-          this.privateInfoFieldNickname.appendChild(this.nicknameLabel);
-          this.privateInfoFieldNickname.appendChild(this.nicknameInput);
-
-          this.privateInfoFieldGender = this.createElement('div','private-info-field');
-          {
-              this.genderLabel = this.createElement('label');
-              this.genderLabel.innerHTML = '성별';
-              this.genderRadio = this.createElement('div', 'private-info-field-radio');
-              {
-                this.maleInner = this.createElement('div','private-info-field-inner');
-                {
-                    this.maleInput = this.createElement('input');
-                    this.maleInput.setAttribute('type','radio');
-                    this.maleInput.setAttribute('name','male');
-                    this.maleInput.setAttribute('id','male');
-                    this.maleInput.setAttribute('value','male');
-                    this.maleLabel = this.createElement('label');
-                    this.maleLabel.setAttribute('for', 'male');
-                    this.maleLabel.innerHTML = '남자';
-                }
-                this.maleInner.appendChild(this.maleInput);
-                this.maleInner.appendChild(this.maleLabel);
-
-                this.femaleInner = this.createElement('div', 'private-info-field-inner');
-                {
-                    this.femaleInput = this.createElement('input');
-                    this.femaleInput.setAttribute('type','radio');
-                    this.femaleInput.setAttribute('name','female');
-                    this.femaleInput.setAttribute('id','female');
-                    this.femaleInput.setAttribute('value','female');
-                    this.femaleLabel = this.createElement('label');
-                    this.femaleLabel.setAttribute('for', 'female');
-                    this.femaleLabel.innerHTML = '여자';
-                }
-                this.femaleInner.appendChild(this.femaleInput);
-                this.femaleInner.appendChild(this.femaleLabel);
-              }
-              this.genderRadio.appendChild(this.maleInner);
-              this.genderRadio.appendChild(this.femaleInner);
-          }
-          this.privateInfoFieldGender.appendChild(this.genderLabel);
-          this.privateInfoFieldGender.appendChild(this.genderRadio);
-
-          this.privateInfoButtonGroup = this.createElement('div', 'private-info-button-group');
-          {
-              this.privateInfoButtonConfirm = this.createElement('button','private-info-button');
-              this.privateInfoButtonConfirm.innerHTML = '완료'
-              this.privateInfoButtonCancel = this.createElement('button','private-info-button');
-              this.privateInfoButtonCancel.innerHTML = '취소'
-          }
-          this.privateInfoButtonGroup.appendChild(this.privateInfoButtonConfirm);
-          this.privateInfoButtonGroup.appendChild(this.privateInfoButtonCancel);
+        this.nicknameLabel = this.createElement('label');
+        this.nicknameLabel.setAttribute('for', 'input-nickname');
+        this.nicknameLabel.innerHTML = '닉네임';
+        this.nicknameInput = this.createElement('input');
+        this.nicknameInput.setAttribute('type', 'text');
+        this.nicknameInput.setAttribute('name', 'nickname');
+        this.nicknameInput.setAttribute('id', 'input-nickname');
+        this.nicknameInput.disabled = true;
       }
-      this.privateInfoFieldGroup.appendChild(this.privateInfoFieldNickname);
-      this.privateInfoFieldGroup.appendChild(this.privateInfoFieldGender);
-      this.privateInfoFieldGroup.appendChild(this.privateInfoButtonGroup);
+      this.privateInfoFieldNickname.appendChild(this.nicknameLabel);
+      this.privateInfoFieldNickname.appendChild(this.nicknameInput);
+
+      this.privateInfoFieldGender = this.createElement(
+        'div',
+        'private-info-field'
+      );
+      {
+        this.genderLabel = this.createElement('label');
+        this.genderLabel.innerHTML = '성별';
+        this.genderRadio = this.createElement(
+          'div',
+          'private-info-field-radio'
+        );
+        {
+          this.maleInner = this.createElement(
+            'div',
+            'private-info-field-inner'
+          );
+          {
+            this.maleInput = this.createElement('input');
+            this.maleInput.setAttribute('type', 'radio');
+            this.maleInput.setAttribute('name', 'male');
+            this.maleInput.setAttribute('id', 'male');
+            this.maleInput.setAttribute('value', 'male');
+            this.maleInput.disabled = true;
+            this.maleLabel = this.createElement('label');
+            this.maleLabel.setAttribute('for', 'male');
+            this.maleLabel.innerHTML = '남자';
+          }
+          this.maleInner.appendChild(this.maleInput);
+          this.maleInner.appendChild(this.maleLabel);
+
+          this.femaleInner = this.createElement(
+            'div',
+            'private-info-field-inner'
+          );
+          {
+            this.femaleInput = this.createElement('input');
+            this.femaleInput.setAttribute('type', 'radio');
+            this.femaleInput.setAttribute('name', 'female');
+            this.femaleInput.setAttribute('id', 'female');
+            this.femaleInput.setAttribute('value', 'female');
+            this.femaleInput.disabled = true;
+            this.femaleLabel = this.createElement('label');
+            this.femaleLabel.setAttribute('for', 'female');
+            this.femaleLabel.innerHTML = '여자';
+          }
+          this.femaleInner.appendChild(this.femaleInput);
+          this.femaleInner.appendChild(this.femaleLabel);
+        }
+        this.genderRadio.appendChild(this.maleInner);
+        this.genderRadio.appendChild(this.femaleInner);
+      }
+      this.privateInfoFieldGender.appendChild(this.genderLabel);
+      this.privateInfoFieldGender.appendChild(this.genderRadio);
+
+      this.privateInfoButtonGroup = this.createElement(
+        'div',
+        'private-info-button-group',
+        'hidden'
+      );
+      {
+        this.privateInfoButtonConfirm = this.createElement(
+          'button',
+          'private-info-button'
+        );
+        this.privateInfoButtonConfirm.innerHTML = '완료';
+        this.privateInfoButtonCancel = this.createElement(
+          'button',
+          'private-info-button'
+        );
+        this.privateInfoButtonCancel.innerHTML = '취소';
+      }
+      this.privateInfoButtonGroup.appendChild(this.privateInfoButtonConfirm);
+      this.privateInfoButtonGroup.appendChild(this.privateInfoButtonCancel);
+    }
+    this.privateInfoFieldGroup.appendChild(this.privateInfoFieldNickname);
+    this.privateInfoFieldGroup.appendChild(this.privateInfoFieldGender);
+    this.privateInfoFieldGroup.appendChild(this.privateInfoButtonGroup);
   }
   this.privateInfoWindow.appendChild(this.privateInfoFieldGroup);
 
   this.body.appendChild(this.privateInfoTop);
   this.body.appendChild(this.privateInfoWindow);
+
+  /* Listener */
+  this.privateInfoTopItemUpdate.addEventListener('click', () => {
+    this.privateInfoButtonGroup.classList.remove('hidden');
+    this.nicknameInput.disabled = false;
+    this.maleInput.disabled = false;
+    this.femaleInput.disabled = false;
+  });
+
+  this.privateInfoButtonCancel.addEventListener('click', () => {
+    this.privateInfoButtonGroup.classList.add('hidden');
+  });
 }
 
 PrivateInfoView.prototype.createElement = function (tag, ...classNameList) {
@@ -142,5 +191,16 @@ PrivateInfoView.prototype.getElement = function (selector) {
   return element;
 };
 
+PrivateInfoView.prototype.setNickname = function(nickname) {
+    this.nicknameInput.value = nickname;
+}
 
-export {PrivateInfoView}; 
+PrivateInfoView.prototype.setGender = function(gender) {
+    if(gender === "male") {
+        this.maleInput.checked = true;
+    } else {
+        this.femaleInput.checked = true;
+    }
+}
+
+export { PrivateInfoView };
