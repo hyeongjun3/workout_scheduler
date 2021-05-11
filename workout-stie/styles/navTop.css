@@ -21,7 +21,33 @@
     display: flex;
 }
 
-.top-nav-right-group > input {
+.dropdown {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown:hover .dropdown-content {
+    display: flex;
+}
+
+.dropdown > input {
+    align-self: flex-end;
     padding : 0px;
     width: var(--top-nav-image-width);
+}
+
+.dropdown-content {
+    display: none;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid black;
+}
+
+.dropdown-item:not(:last-child) {
+    border-bottom: inherit;
+}
+
+.dropdown-item {
+    border-radius: 0px;
+    padding: var(--default-padding);
 }
