@@ -92,7 +92,7 @@ function PrivateInfoView() {
           {
             this.maleInput = this.createElement('input');
             this.maleInput.setAttribute('type', 'radio');
-            this.maleInput.setAttribute('name', 'male');
+            this.maleInput.setAttribute('name', 'gender');
             this.maleInput.setAttribute('id', 'male');
             this.maleInput.setAttribute('value', 'male');
             this.maleInput.disabled = true;
@@ -110,7 +110,7 @@ function PrivateInfoView() {
           {
             this.femaleInput = this.createElement('input');
             this.femaleInput.setAttribute('type', 'radio');
-            this.femaleInput.setAttribute('name', 'female');
+            this.femaleInput.setAttribute('name', 'gender');
             this.femaleInput.setAttribute('id', 'female');
             this.femaleInput.setAttribute('value', 'female');
             this.femaleInput.disabled = true;
