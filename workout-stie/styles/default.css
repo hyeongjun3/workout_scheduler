@@ -5,19 +5,21 @@
   /* Color */
   --red-color: #ff0000;
   --grey-color: #f6f6f6;
+  --light-grey-color : #cecaca;
 
   /* Size */
   --default-font-size-small: 12px;
   --default-font-size-medium : 18px;
   --default-font-size-large : 25px;
   --default-padding : 12px;
+  --default-margin : 12px;
 
   /* border */
   --default-border: 1px solid black;
   --default-border-radius: 20px;
 
   /* button */
-  --default-button-width: 10px;
+  --default-button-width: 100px;
   --default-button-padding: 10px;
   --default-button-font-size: 12px;
   --default-button-border: 1px solid var(--grey-color);
@@ -51,6 +53,14 @@
 
   /* color */
   /* ################################## */
+  /* top nav */
+  /* size */
+  --top-nav-height : 100px;
+  --top-nav-image-width : calc(var(--top-nav-height) - var(--default-padding)*2);
+
+  /* ################################## */
+  /* private info */
+  --private-info-width : 500px;
 }
 
 html,
@@ -164,6 +174,7 @@ button {
   font-size: var(--default-input-font-size);
   border: var(--default-button-border);
   border-radius: var(--default-button-border-radius);
+  width : var(--default-button-width);
 }
 input {
   box-sizing: border-box;
@@ -172,7 +183,7 @@ input {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .no_scroll {
