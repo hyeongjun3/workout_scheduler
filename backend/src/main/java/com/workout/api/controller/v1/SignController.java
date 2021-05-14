@@ -38,6 +38,11 @@ public class SignController {
     public CommonResult signup(@ApiParam(value = "회원ID : 이메일", required = true) @RequestParam String email,
                                @ApiParam(value = "비밀번호", required = true) @RequestParam String password) {
 
+        Optional<User> user = userJpaRepository.findByEmail(email);
+        if(user.isPresent()) {
+            throw new CUserExistException();
+        }
+
         userJpaRepository.save(User.builder()
                 .email(email)
                 .password(passwordEncoder.encode("{noop}" + password))

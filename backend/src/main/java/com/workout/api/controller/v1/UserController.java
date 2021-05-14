@@ -37,7 +37,8 @@ public class UserController {
     })
     @ApiOperation(value = "회원 조회", notes = "특정 회원을 조회한다.")
     @GetMapping(value = "/user")
-    public SingleResult<User> findUserById(@ApiParam(value = "언어", defaultValue = "ko") @RequestParam String lang) {
+    //public SingleResult<User> findUserById(@ApiParam(value = "언어", defaultValue = "ko") @RequestParam String lang) {
+    public SingleResult<User> findUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         return responseService.getSingleResult(userJpaRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new));

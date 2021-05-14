@@ -13,7 +13,7 @@ communicationError:
   msg: "통신 중 오류가 발생하였습니다."
 existingUser:
   code: "-1005"
-  msg: "이미 가입한 회원입니다. 로그인을 해주십시오."
+  msg: "이미 가입한 회원입니다."
 samePassword:
   code: "-1006"
   msg: "변경 전 패스워드와 일치합니다. 다시 변경해주십시오."
