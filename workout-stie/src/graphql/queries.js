@@ -23,7 +23,6 @@ export const getUser = /* GraphQL */ `
     }
   }
 `;
-
 export const listUsers = /* GraphQL */ `
   query ListUsers(
     $email: AWSEmail
@@ -93,6 +92,35 @@ export const listDailyInfos = /* GraphQL */ `
           gender
           createdAt
           updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const byNickname = /* GraphQL */ `
+  query ByNickname(
+    $nickname: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    byNickname(
+      nickname: $nickname
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        email
+        nickname
+        gender
+        dailyInfos {
+          nextToken
         }
         createdAt
         updatedAt

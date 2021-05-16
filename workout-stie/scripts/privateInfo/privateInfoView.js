@@ -6,9 +6,12 @@ import '../../styles/privateInfo.css';
 // </div>
 // <div class="private-info-window">
 //     <div class="private-info-field-group">
-//     <div class="private-info-field">
-//         <label for="input-nickname">닉네임</label>
-//         <input type="text" name="nickname" id="input-nickname"/>
+//     <div class="private-info-field-column">
+//         <div class="private-info-field-input">
+//          <label for="input-nickname">닉네임</label>
+//          <input type="text" name="nickname" id="input-nickname"/>
+//         </div>
+//         <span class="private-input-field-inner-info">중복된 닉네임 입니다.</span>
 //     </div>
 //     <div class="private-info-field">
 //         <label for="">성별</label>
@@ -58,20 +61,35 @@ function PrivateInfoView() {
     {
       this.privateInfoFieldNickname = this.createElement(
         'div',
-        'private-info-field'
+        'private-info-field-column'
       );
       {
-        this.nicknameLabel = this.createElement('label');
-        this.nicknameLabel.setAttribute('for', 'input-nickname');
-        this.nicknameLabel.innerHTML = '닉네임';
-        this.nicknameInput = this.createElement('input');
-        this.nicknameInput.setAttribute('type', 'text');
-        this.nicknameInput.setAttribute('name', 'nickname');
-        this.nicknameInput.setAttribute('id', 'input-nickname');
-        this.nicknameInput.disabled = true;
+        this.nicknameFieldInput = this.createElement(
+          'div',
+          'private-info-field-input'
+        );
+        {
+          this.nicknameLabel = this.createElement('label');
+          this.nicknameLabel.setAttribute('for', 'input-nickname');
+          this.nicknameLabel.innerHTML = '닉네임';
+          this.nicknameInput = this.createElement('input');
+          this.nicknameInput.setAttribute('type', 'text');
+          this.nicknameInput.setAttribute('name', 'nickname');
+          this.nicknameInput.setAttribute('id', 'input-nickname');
+          this.nicknameInput.disabled = true;
+        }
+        this.nicknameFieldInput.appendChild(this.nicknameLabel);
+        this.nicknameFieldInput.appendChild(this.nicknameInput);
+        this.nicknameInfo = this.createElement(
+          'span',
+          'private-input-field-inner-info',
+          'hidden'
+        );
+        this.nicknameInfo.innerHTML = '중복된 닉네임 입니다';        
       }
-      this.privateInfoFieldNickname.appendChild(this.nicknameLabel);
-      this.privateInfoFieldNickname.appendChild(this.nicknameInput);
+      this.privateInfoFieldNickname.appendChild(this.nicknameFieldInput);
+      this.privateInfoFieldNickname.appendChild(this.nicknameInfo);
+      
 
       this.privateInfoFieldGender = this.createElement(
         'div',
@@ -191,16 +209,33 @@ PrivateInfoView.prototype.getElement = function (selector) {
   return element;
 };
 
-PrivateInfoView.prototype.setNickname = function(nickname) {
-    this.nicknameInput.value = nickname;
-}
+PrivateInfoView.prototype.setNickname = function (nickname) {
+  this.nicknameInput.value = nickname;
+};
 
-PrivateInfoView.prototype.setGender = function(gender) {
-    if(gender === "male") {
-        this.maleInput.checked = true;
-    } else {
-        this.femaleInput.checked = true;
-    }
-}
+PrivateInfoView.prototype.setGender = function (gender) {
+  if (gender === 'male') {
+    this.maleInput.checked = true;
+  } else {
+    this.femaleInput.checked = true;
+  }
+};
+
+/* bind */
+PrivateInfoView.prototype.bindSetNicknameCallback = function (callback) {
+  this.nicknameInput.addEventListener('input', () => {
+    callback(this.nicknameInput.value)
+    .then( () => {
+      console.log('success')
+      this.nicknameInfo.classList.add('hidden');
+      this.privateInfoButtonConfirm.disabled = false;
+    })
+    .catch( () => {
+      console.log('fail')
+      this.nicknameInfo.classList.remove('hidden');
+      this.privateInfoButtonConfirm.disabled = true;
+    });
+  });
+};
 
 export { PrivateInfoView };

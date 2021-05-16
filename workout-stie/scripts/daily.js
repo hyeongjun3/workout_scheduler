@@ -20,7 +20,8 @@ const topNav = new TopNav();
 let privateInfoWindow = null;
 
 topNav.bindDropDownItemReadPrivate( () => {
-  privateInfoWindow = new PrivateInfoWindow();
-  console.log(privateInfoWindow);
+  if(privateInfoWindow === null) {
+    privateInfoWindow = new PrivateInfoWindow();
+  }
 })
 

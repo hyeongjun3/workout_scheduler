@@ -9,6 +9,9 @@ function PrivateInfoController () {
     this.model.bindSetGender(this.view.setGender.bind(this.view));
     this.model.bindSetNickname(this.view.setNickname.bind(this.view));
 
+    /* bind functions from model */
+    this.view.bindSetNicknameCallback(this.model.setNickname.bind(this.model));
+
     /* Init */
     this.model.init();
 }

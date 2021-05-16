@@ -1,6 +1,6 @@
 type User @model @aws_cognito_user_pools
 @key(fields: ["email"])
-@key(name: "byNickname", fields: ["nickname"])
+@key(name: "byNickname", fields: ["nickname"], queryField: "byNickname")
 {
   email: AWSEmail!
   nickname: String!

@@ -1,5 +1,7 @@
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import awsconfig from './aws-exports';
+import * as mutations from '../src/graphql/mutations.js';
+import * as queries from '../src/graphql/queries.js';
 Amplify.configure(awsconfig);
 
 const cognitoFlag = true;
@@ -122,11 +124,16 @@ const MyRequest = (function () {
   }
 
   function checkNickname(nickname) {
+    let ret = null;
     const input = { nickname: nickname };
     const jsonInput = JSON.stringify(input);
-    // return requestToServer(jsonInput, '/v1/checkNickname');
 
-    return requestToServerTest(jsonInput, '/v1/checkNickname');
+    if (cognitoFlag === true) {
+      ret = API.graphql(graphqlOperation(queries.byNickname, { nickname: nickname }));
+    } else {
+      ret = requestToServerTest(jsonInput, '/v1/checkNickname'); 
+    }
+    return ret;
   }
 
   function registerAdditionalInfo(nickname, gender) {
