@@ -1,5 +1,7 @@
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import awsconfig from './aws-exports';
+import * as mutations from '../src/graphql/mutations.js';
+import * as queries from '../src/graphql/queries.js';
 Amplify.configure(awsconfig);
 
 const cognitoFlag = true;
@@ -77,15 +79,21 @@ const MyRequest = (function () {
     const jsonInput = JSON.stringify(input);
     /* request to server */
     if (cognitoFlag === true) {
-      ret = Auth.signUp({
-        username: email,
-        password: password,
-        attributes: {
-          nickname: '',
-          gender: '',
-          'custom:additional_verified': 0,
-        },
-      });
+      ret = API.graphql(
+        graphqlOperation(mutations.createUser, {
+          input: { email: email, nickname: '', gender: '' },
+        })
+      ).then(() =>
+        Auth.signUp({
+          username: email,
+          password: password,
+          attributes: {
+            nickname: '',
+            gender: '',
+            'custom:additional_verified': 0,
+          },
+        })
+      );
     } else {
       ret = requestToServer(jsonInput, '/v1/signup');
     }
@@ -122,14 +130,21 @@ const MyRequest = (function () {
   }
 
   function checkNickname(nickname) {
+    let ret = null;
     const input = { nickname: nickname };
     const jsonInput = JSON.stringify(input);
-    // return requestToServer(jsonInput, '/v1/checkNickname');
 
-    return requestToServerTest(jsonInput, '/v1/checkNickname');
+    if (cognitoFlag === true) {
+      ret = API.graphql(
+        graphqlOperation(queries.byNickname, { nickname: nickname })
+      );
+    } else {
+      ret = requestToServerTest(jsonInput, '/v1/checkNickname');
+    }
+    return ret;
   }
 
-  function registerAdditionalInfo(nickname, gender) {
+  function registerAdditionalInfo(email, nickname, gender) {
     let ret = null;
     const input = { nickname: nickname, gender: gender };
     const jsonInput = JSON.stringify(input);
@@ -137,12 +152,18 @@ const MyRequest = (function () {
     if (cognitoFlag === true) {
       /* TODO : check nickname whether it is existed or not */
       /* after connecting with graphsql, to do this */
-      ret = Auth.currentAuthenticatedUser().then((user) => {
-        return Auth.updateUserAttributes(user, {
-          nickname: nickname,
-          gender: gender,
-        });
-      });
+      ret = API.graphql(
+        graphqlOperation(mutations.updateUser, {
+          input: { email: email, nickname: nickname, gender: gender },
+        })
+      ).then(() =>
+        Auth.currentAuthenticatedUser().then((user) => {
+          return Auth.updateUserAttributes(user, {
+            nickname: nickname,
+            gender: gender,
+          });
+        })
+      );
     } else {
       ret = requestToServerTest(jsonInput, '/v1/registerAdditionalInfo');
     }
