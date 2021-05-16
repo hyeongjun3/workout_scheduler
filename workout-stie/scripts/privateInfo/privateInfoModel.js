@@ -1,12 +1,19 @@
 import { Utils } from '../utils.js';
 
 let myRequest = null;
+let myUtils = null;
 
 /* Checking window object if it has my request module */
 if (window.hasOwnProperty('myRequest') === false) {
   import('../request.js').then((module) => {
     myRequest = module.MyRequest;
   });
+}
+
+if (window.hasOwnProperty('myUtils') === false) {
+  import('../utils.js').then((module) => {
+    myUtils = module.Utils;
+  })
 }
 
 function PrivateInfoModel() {
@@ -25,8 +32,6 @@ PrivateInfoModel.prototype.setNickname = function (nickname) {
   return myRequest
     .checkNickname(this.nickname)
     .then((user) => {
-      console.log(user)
-      console.log(user.data.byNickname.items.length)
       if (user.data.byNickname.items.length == 0) {
         return true
       } else {
@@ -53,5 +58,15 @@ PrivateInfoModel.prototype.init = function () {
   this.setNickNameCallback(this.nickname);
   this.setGenderCallback(this.gender);
 };
+
+PrivateInfoModel.prototype.requestAdditional = function (nickname, gender) {
+  this.user.nickname = nickname;
+  this.user.gender = gender;
+  return myRequest.registerAdditionalInfo(this.user.email, this.user.nickname, this.user.gender)
+  .then(() => {
+    myUtils.setUser(this.user);
+    return
+  });
+}
 
 export { PrivateInfoModel };

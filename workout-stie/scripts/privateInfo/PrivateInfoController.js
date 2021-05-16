@@ -11,7 +11,8 @@ function PrivateInfoController () {
 
     /* bind functions from model */
     this.view.bindSetNicknameCallback(this.model.setNickname.bind(this.model));
-
+    this.view.bindConfirmCallback(this.model.requestAdditional.bind(this.model));
+    
     /* Init */
     this.model.init();
 }

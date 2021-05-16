@@ -226,16 +226,21 @@ PrivateInfoView.prototype.bindSetNicknameCallback = function (callback) {
   this.nicknameInput.addEventListener('input', () => {
     callback(this.nicknameInput.value)
     .then( () => {
-      console.log('success')
       this.nicknameInfo.classList.add('hidden');
       this.privateInfoButtonConfirm.disabled = false;
     })
     .catch( () => {
-      console.log('fail')
       this.nicknameInfo.classList.remove('hidden');
       this.privateInfoButtonConfirm.disabled = true;
     });
   });
 };
 
+PrivateInfoView.prototype.bindConfirmCallback = function (callback) {
+  this.privateInfoButtonConfirm.addEventListener('click' , () => {
+    callback(this.nicknameInput.value, this.maleInput.checked === true ? 'male' : 'female');
+    this.privateInfoButtonGroup.classList.add('hidden');
+  })
+}
+ 
 export { PrivateInfoView };
