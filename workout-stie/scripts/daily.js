@@ -24,4 +24,3 @@ topNav.bindDropDownItemReadPrivate( () => {
     privateInfoWindow = new PrivateInfoWindow();
   }
 })
-
