@@ -2,6 +2,15 @@ import '../styles/navTop.css';
 import '../image/logo.png';
 import '../image/user.png';
 
+let myRequest = null;
+
+/* Checking window object if it has my request module */
+if (window.hasOwnProperty('myRequest') === false) {
+  import('./request.js').then((module) => {
+    myRequest = module.MyRequest;
+  });
+}
+
 // <nav class="top-nav">
 //   <div class="top-nav-left-group">
 //     <img src="../image/logo.png" alt="" srcset="" />
@@ -42,6 +51,17 @@ function TopNav() {
             'dropdown-item'
           );
           this.dropDownItemLogOut.innerHTML = '로그아웃';
+
+          this.dropDownItemLogOut.addEventListener('click', () => {
+            myRequest.signOut()
+            .then(() => {
+              window.location.href = "signIn.html";
+            })
+            .catch((err) => {
+              console.error(err);
+            })
+          });
+
           this.dropDownItemReadPrivate = this.createElement(
             'button',
             'dropdown-item'

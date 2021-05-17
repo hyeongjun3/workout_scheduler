@@ -170,6 +170,18 @@ const MyRequest = (function () {
     return ret;
   }
 
+  function signOut() {
+    let ret = null;
+
+    if (cognitoFlag === true) {
+      ret = Auth.signOut();
+    } else {
+      /* TODO : after implementation backend */
+    }
+
+    return ret;
+  }
+
   return {
     signIn: signIn,
     signUp: signUp,
@@ -177,6 +189,7 @@ const MyRequest = (function () {
     resendCode: resendCode,
     checkNickname: checkNickname,
     registerAdditionalInfo: registerAdditionalInfo,
+    signOut: signOut,
   };
 })();
 
