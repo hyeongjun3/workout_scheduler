@@ -79,21 +79,15 @@ const MyRequest = (function () {
     const jsonInput = JSON.stringify(input);
     /* request to server */
     if (cognitoFlag === true) {
-      ret = API.graphql(
-        graphqlOperation(mutations.createUser, {
-          input: { email: email, nickname: '', gender: '' },
-        })
-      ).then(() =>
-        Auth.signUp({
-          username: email,
-          password: password,
-          attributes: {
-            nickname: '',
-            gender: '',
-            'custom:additional_verified': 0,
-          },
-        })
-      );
+      ret = Auth.signUp({
+        username: email,
+        password: password,
+        attributes: {
+          nickname: '',
+          gender: '',
+          'custom:additional_verified': 0,
+        },
+      });
     } else {
       ret = requestToServer(jsonInput, '/v1/signup');
     }
@@ -153,7 +147,7 @@ const MyRequest = (function () {
       /* TODO : check nickname whether it is existed or not */
       /* after connecting with graphsql, to do this */
       ret = API.graphql(
-        graphqlOperation(mutations.updateUser, {
+        graphqlOperation(mutations.createUser, {
           input: { email: email, nickname: nickname, gender: gender },
         })
       ).then(() =>
