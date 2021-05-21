@@ -15,8 +15,12 @@ if (
   });
 }
 
-/* Top navigation bar */
+/* UI components */
 const topNav = new TopNav();
+let privateInfoWindow = null;
 
-/* Private Info */
-const test = new PrivateInfoWindow();
+topNav.bindDropDownItemReadPrivate( () => {
+  if(privateInfoWindow === null) {
+    privateInfoWindow = new PrivateInfoWindow();
+  }
+})

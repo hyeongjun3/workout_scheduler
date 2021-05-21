@@ -34,7 +34,7 @@
     margin-top: var(--default-margin);
 }
 
-.private-info-field {
+.private-info-field, .private-info-field-input {
     display: flex;
     width: 100%;
     flex-direction: row;
@@ -42,8 +42,19 @@
     justify-content: space-between;
 }
 
-.private-info-field > input, .private-info-field-radio {
+.private-info-field-column {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.private-info-field-input > input, .private-info-field-radio {
     width : 70%;
+}
+
+.private-input-field-inner-info {
+    font-size: var(--default-font-size-small);
+    color: var(--red-color);
 }
 
 .private-info-field-radio {

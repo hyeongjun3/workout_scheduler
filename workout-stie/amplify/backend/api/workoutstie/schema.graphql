@@ -1,0 +1,44 @@
+type User @model @aws_cognito_user_pools
+@key(fields: ["email"])
+@key(name: "byNickname", fields: ["nickname"], queryField: "byNickname")
+@auth(
+  rules : [
+    {allow : public, operations: [create]},
+  ]
+)
+{
+  email: AWSEmail!
+  nickname: String!
+  gender: String!
+  dailyInfos: [DailyInfo] @connection(keyName: "byUser", fields: ["email"])
+}
+
+type DailyInfo @model @aws_cognito_user_pools
+@key(name: "byUser", fields: ["userEmail"]) {
+  id: ID!
+  date: AWSDate!
+  weight: Int!
+  userEmail: AWSEmail!
+  user: User @connection(fields: ["userEmail"])
+}
+
+# type Blog @model {
+#   id: ID!
+#   name: String!
+#   posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
+# }
+
+# type Post @model @key(name: "byBlog", fields: ["blogID"]) {
+#   id: ID!
+#   title: String!
+#   blogID: ID!
+#   blog: Blog @connection(fields: ["blogID"])
+#   comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+# }
+
+# type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
+#   id: ID!
+#   postID: ID!
+#   post: Post @connection(fields: ["postID"])
+#   content: String!
+# }

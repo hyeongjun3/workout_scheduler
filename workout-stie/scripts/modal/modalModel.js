@@ -52,19 +52,14 @@ AdditionalModalModel.prototype.setNickname = function (nickname) {
 
   myRequest
     .checkNickname(this.nickname)
-    .then((value) => {
-      if (value.success == true) {
-        this.nicknameFlag = true;
-        this.setNicknameCallback(false);
-      } else {
-        this.nicknameFlag = false;
-        this.setNicknameCallback(true);
-      }
+    .then(() => {
+      this.nicknameFlag = true;
+      this.setNicknameCallback(false);
     })
     .catch((err) => {
       console.error(err);
       this.nicknameFlag = false;
-      this.setNicknameCallback(false);
+      this.setNicknameCallback(true);
     })
     .finally(() => {
       this.checkInputValid();
@@ -97,9 +92,11 @@ AdditionalModalModel.prototype.checkInputValid = function () {
 };
 
 AdditionalModalModel.prototype.requestAdditional = function () {
-  return myRequest.registerAdditionalInfo(this.nickname, this.gender)
+  let user = myUtils.getUser();
+  user.nickname = this.nickname;
+  user.gender = this.gender;
+  return myRequest.registerAdditionalInfo(user.email, this.nickname, this.gender)
   .then(() => {
-    let user = myUtils.getUser();
     user.nickname = this.nickname;
     user.gender = this.gender;
     myUtils.setUser(user);
