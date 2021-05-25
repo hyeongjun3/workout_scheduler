@@ -83,12 +83,6 @@ function TopNav() {
 }
 
 TopNav.prototype.createElement = function (tag, ...classNameList) {
-  console.debug(
-    `[createElement]
-                      tag : ${tag}, 
-                      classNameList : ${classNameList}`.replace(/\n\s+/g, '')
-  );
-
   const element = document.createElement(tag);
   classNameList = null ?? classNameList;
   classNameList.forEach((className) => {
