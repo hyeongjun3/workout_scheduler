@@ -5,13 +5,13 @@ const testUser = { email: 'test@naver.com', pwd: 'woekdjfzcfdo1' };
 
 /* SignUp test */
 describe('[SignUp]', () => {
-    /*TODO : delete user after sign up */
-    test('Success', () =>
-        myRequest.signUp(newUser.email, newUser.pwd)
-        .then(user => {
-            expect().toBe();
-        })
-    )
+    // /*TODO : delete user after sign up */
+    // test('Success', () =>
+    //     myRequest.signUp(newUser.email, newUser.pwd)
+    //     .then(user => {
+    //         expect().toBe();
+    //     })
+    // )
 
   test('Fail : existed email', () => {
     return myRequest.signUp(testUser.email, 'woekdjfzcfdo1').catch((err) => {

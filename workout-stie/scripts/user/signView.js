@@ -44,7 +44,7 @@ function SignView() {
 
   this.userBtnGroup = this.createElement('div', 'user-btn-group');
   this.userBtnGroupInner = this.createElement('button', 'user-btn-group-inner');
-  this.userBtnGroupInner.setAttribute('data-testid', 'test-signIn-btn');
+  this.userBtnGroupInner.setAttribute('data-testid', 'test-btn');
   this.userBtnGroupInner.setAttribute('disabled', '');
   this.userBtnGroup.appendChild(this.userBtnGroupInner);
 
