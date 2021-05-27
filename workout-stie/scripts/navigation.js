@@ -66,6 +66,7 @@ function TopNav() {
             'button',
             'dropdown-item'
           );
+          this.dropDownItemReadPrivate.setAttribute('data-testid','test-read-private-btn')
           this.dropDownItemReadPrivate.innerHTML = '개인정보 조회';
         }
         this.dropdownContent.appendChild(this.dropDownItemLogOut);

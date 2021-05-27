@@ -169,6 +169,7 @@ function PrivateInfoView() {
     this.privateInfoFieldGroup.appendChild(this.privateInfoFieldGender);
     this.privateInfoFieldGroup.appendChild(this.privateInfoButtonGroup);
   }
+  this.privateInfoWindow.setAttribute('data-testid','test-private-info-window')
   this.privateInfoWindow.appendChild(this.privateInfoFieldGroup);
 
   this.body.appendChild(this.privateInfoTop);
