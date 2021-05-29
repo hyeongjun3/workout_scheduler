@@ -47,14 +47,14 @@ public class UserController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "회원 수정", notes = "회원정보를 수정한다")
-    @PutMapping(value = "/user")
+    @PatchMapping(value = "/user")
     public SingleResult<User> modify(
             @ApiParam(value = "닉네임", required = true) @RequestParam String name,
             @ApiParam(value = "성별", required = true) @RequestParam String gender) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        User user = userJpaRepository.findByEmail(email).orElseThrow(CEmailSigninFailedException::new);
+        User user = userJpaRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new);
         user.setName(name);
         user.setGender(gender);
         return responseService.getSingleResult(userJpaRepository.save(user));
@@ -64,7 +64,7 @@ public class UserController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "회원 비밀번호 수정", notes = "회원 비밀번호를 수정한다")
-    @PutMapping(value = "/user/password")
+    @PatchMapping(value = "/user/password")
     public SingleResult<User> passwordModify(
             @ApiParam(value = "기존 패스워드", required = true) @RequestParam String password,
             @ApiParam(value = "새로운 패스워드", required = true) @RequestParam String newPassword,
@@ -72,7 +72,7 @@ public class UserController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        User user = userJpaRepository.findByEmail(email).orElseThrow(CEmailSigninFailedException::new);
+        User user = userJpaRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new);
 
         if(!passwordEncoder.matches("{noop}" + password, user.getPassword()))
             throw new CUserNotMatchPasswordException();

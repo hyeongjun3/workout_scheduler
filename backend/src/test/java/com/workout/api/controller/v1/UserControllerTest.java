@@ -3,8 +3,11 @@ package com.workout.api.controller.v1;
 import com.workout.api.entity.User;
 import com.workout.api.repository.UserJpaRepository;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,14 +24,17 @@ import org.springframework.util.MultiValueMap;
 import java.util.Collections;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserControllerTest {
 
     @Autowired
@@ -97,24 +103,25 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.list").exists());
     }
 
-    /*
+    @Ignore
     @Test
     public void modify() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("email", "testing@naver.com");
         params.add("name", "test");
         params.add("gender", "남");
+        params.add("role", "ROLE_USER");
 
-        mockMvc.perform(MockMvcRequestBuilders
-                .put("/v1/user")
-                .params(params)
-                .header("X-AUTH-TOKEN", token))
+
+        mockMvc.perform(patch("/v1/user")
+                .header("X-AUTH-TOKEN", token).param("name", "test").param("gender", "남"))
+                //.params(params))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
     }
-    */
-    /*
+
+    @Ignore
     @Test
     public void passwordModify() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -129,7 +136,6 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
     }
-    */
 
     @Test
     public void delete() throws Exception {
