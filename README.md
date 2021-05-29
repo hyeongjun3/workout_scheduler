@@ -1,10 +1,19 @@
+## Module 설치
+```shell
+npm install
+```
+
 ## 실행 방법
 ```shell
-// 설치
 // workout-stie 폴더로 이동
 $ npm start
 ```
 
+## 테스트 방법
+```shell
+// workout-stie 폴더로 이동
+$ npm test
+```
 ## Commit conventions
 ```shell
 // commit-template 폴더에 위치함

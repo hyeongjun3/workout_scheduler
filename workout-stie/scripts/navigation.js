@@ -66,6 +66,7 @@ function TopNav() {
             'button',
             'dropdown-item'
           );
+          this.dropDownItemReadPrivate.setAttribute('data-testid','test-read-private-btn')
           this.dropDownItemReadPrivate.innerHTML = '개인정보 조회';
         }
         this.dropdownContent.appendChild(this.dropDownItemLogOut);
@@ -83,12 +84,6 @@ function TopNav() {
 }
 
 TopNav.prototype.createElement = function (tag, ...classNameList) {
-  console.debug(
-    `[createElement]
-                      tag : ${tag}, 
-                      classNameList : ${classNameList}`.replace(/\n\s+/g, '')
-  );
-
   const element = document.createElement(tag);
   classNameList = null ?? classNameList;
   classNameList.forEach((className) => {

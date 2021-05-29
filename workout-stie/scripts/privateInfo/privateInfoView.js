@@ -169,6 +169,7 @@ function PrivateInfoView() {
     this.privateInfoFieldGroup.appendChild(this.privateInfoFieldGender);
     this.privateInfoFieldGroup.appendChild(this.privateInfoButtonGroup);
   }
+  this.privateInfoWindow.setAttribute('data-testid','test-private-info-window')
   this.privateInfoWindow.appendChild(this.privateInfoFieldGroup);
 
   this.body.appendChild(this.privateInfoTop);
@@ -188,12 +189,6 @@ function PrivateInfoView() {
 }
 
 PrivateInfoView.prototype.createElement = function (tag, ...classNameList) {
-  console.debug(
-    `[createElement]
-                      tag : ${tag}, 
-                      classNameList : ${classNameList}`.replace(/\n\s+/g, '')
-  );
-
   const element = document.createElement(tag);
   classNameList = null ?? classNameList;
   classNameList.forEach((className) => {

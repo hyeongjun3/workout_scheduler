@@ -44,6 +44,7 @@ function SignView() {
 
   this.userBtnGroup = this.createElement('div', 'user-btn-group');
   this.userBtnGroupInner = this.createElement('button', 'user-btn-group-inner');
+  this.userBtnGroupInner.setAttribute('data-testid', 'test-btn');
   this.userBtnGroupInner.setAttribute('disabled', '');
   this.userBtnGroup.appendChild(this.userBtnGroupInner);
 
@@ -57,12 +58,6 @@ function SignView() {
 }
 
 SignView.prototype.createElement = function (tag, ...classNameList) {
-  console.debug(
-    `[createElement]
-                    tag : ${tag}, 
-                    classNameList : ${classNameList}`.replace(/\n\s+/g, '')
-  );
-
   const element = document.createElement(tag);
   classNameList = null ?? classNameList;
   classNameList.forEach((className) => {
@@ -95,12 +90,14 @@ SignView.prototype.createInputElem = function (inputFieldFormList) {
     inputElem.setAttribute('type', value.type);
     inputElem.setAttribute('name', value.nameEng);
     inputElem.setAttribute('id', value.inputId);
+    inputElem.setAttribute('data-testid', 'test-' + value.nameEng);
     const spanElem = this.createElement(
-      'class',
+      'span',
       'user-input-field-inner-info',
       'hidden'
     );
     spanElem.innerHTML = value.infoStr;
+    spanElem.setAttribute('data-testid', 'test-info-' + value.nameEng);
     this.appendChildList(groupElem, [labelElem, inputElem, spanElem]);
 
     this.userInputField.appendChild(groupElem);
