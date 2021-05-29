@@ -1,73 +1,26 @@
-import myHeader from "./header.js"
-import MyRequest from './request.js'
-import {MyDialogOne, MyDialogAdditional} from './mydialog.js'
-import {SideBar} from './sidebar.js'
-import {Calender, chartDaily} from './calender.js'
+import { Utils as myUtils } from './utils.js';
+import { TopNav } from './navigation.js';
+import { PrivateInfoController as PrivateInfoWindow } from './privateInfo/PrivateInfoController.js';
 
-let access_token = window.sessionStorage.getItem('access_token')
+/* Check if user updated their's nickcname and gender or not*/
+const user = myUtils.getUser();
 
-// check user whether need to update additional info
-let additional_flag = window.sessionStorage.getItem('additional_flag') === 'true' ? true : false;
-
-if(additional_flag === false) {
-  console.log('!!')
-  addiotnal_dialog.showModal();
+if (
+  user.hasOwnProperty('nickname') === false ||
+  user.hasOwnProperty('gender') === false
+) {
+  import('./modal/modal.js').then((module) => {
+    const additionalModal = new module.AdditionalModalController();
+    additionalModal.showModal();
+  });
 }
 
+/* UI components */
+const topNav = new TopNav();
+let privateInfoWindow = null;
 
-let my_header = new myHeader(document);
-let alert_dialog = new MyDialogOne(document, "default", "확인");
-let addiotnal_dialog = new MyDialogAdditional(document);
-let side_bar = new SideBar(document);
-let my_request = new MyRequest();
-let calender = new Calender(document,access_token);
-let my_chart_daily = chartDaily();
-
-my_chart_daily.setUI();
-my_chart_daily.setAccessToken(window.sessionStorage.getItem('access_token'));
-my_chart_daily.setDate(new Date);
-
-my_header.setUI();
-alert_dialog.setUI();
-addiotnal_dialog.setUI();
-side_bar.setUI();
-calender.setUI();
-
-side_bar.setCharSubMenuListener(() => {
-  calender.hide();
-  my_chart_daily.show();
+topNav.bindDropDownItemReadPrivate( () => {
+  if(privateInfoWindow === null) {
+    privateInfoWindow = new PrivateInfoWindow();
+  }
 })
-
-side_bar.setCalenderSubMenuListener(() => {
-  calender.show();
-  my_chart_daily.hide();
-  calender.refresh(new Date());
-})
-
-addiotnal_dialog.setConfirmListener(event => {
-  let input = addiotnal_dialog.getInput();
-  input.access_token = window.sessionStorage.getItem('access_token')
-  
-  my_request.addAdditionalInfo(input)
-  .then( value => {
-    if (value.status === true) {
-      console.log("Success");
-      window.sessionStorage.setItem('additional_flag', 'true');
-      addiotnal_dialog.close();
-    } else {
-      alert_dialog.setMessage(value.message);
-      alert_dialog.showModal();
-    }
-    console.log(value);
-  })
-  .catch (error => {
-    console.log(error);
-  })
-});
-
-my_chart_daily.setDailyInfo(new Date())
-.then(() => {
-  my_chart_daily.draw();
-});
-
-window.onresize = my_chart_daily.draw;

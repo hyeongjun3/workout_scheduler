@@ -1,0 +1,70 @@
+@import "default.css" screen;
+
+.private-info-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: var(--default-padding);
+}
+
+.private-info-top-item:not(:last-child) {
+    margin-right: var(--default-margin);
+}
+
+.private-info-top-item {
+    width: var(--default-button-width);
+}
+
+.private-info-window {
+    display: flex;
+    width : var(--private-info-width);
+    border : 1px solid black;
+    border-radius: 10px;
+    padding: var(--default-padding);
+    margin : auto;
+}
+
+.private-info-field-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.private-info-field:not(:last-child) {
+    margin-top: var(--default-margin);
+}
+
+.private-info-field, .private-info-field-input {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.private-info-field-column {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.private-info-field-input > input, .private-info-field-radio {
+    width : 70%;
+}
+
+.private-input-field-inner-info {
+    font-size: var(--default-font-size-small);
+    color: var(--red-color);
+}
+
+.private-info-field-radio {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.private-info-button-group {
+    display: flex;
+    flex-direction: row;
+    margin-top: calc(var(--default-margin)*2);
+    justify-content: space-around;
+}

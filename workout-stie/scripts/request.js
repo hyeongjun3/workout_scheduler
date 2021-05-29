@@ -1,238 +1,190 @@
-export default class MyRequest {
-  constructor() {
-    // TODO : validate arguments
-    this.host = "http://localhost";
-    this.port = 3000;
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
+import awsconfig from './aws-exports';
+import * as mutations from '../src/graphql/mutations.js';
+import * as queries from '../src/graphql/queries.js';
+Amplify.configure(awsconfig);
+
+const cognitoFlag = true;
+const myExceptions = Object.freeze({
+  UserNotConfirmedException: 1,
+});
+
+const MyRequest = (function () {
+  const host = 'http://localhost';
+  const port = 3000;
+
+  /* Use this function for testing when the rest api is not yet implemented */
+  function requestToServerTest(input, apiName) {
+    return new Promise((resolve, reject) => {
+      let res = {
+        success: Math.floor(Math.random() * 2) == 0 ? true : false,
+        code: Math.floor(Math.random() * 100),
+        msg: 'hello',
+      };
+      if (res.success === true) {
+        resolve(res);
+      } else {
+        reject(res);
+      }
+    });
   }
 
-  logInRequest(input) {
-    console.log("Request")
-    let host = this.host + ':' + this.port + '/login';
-    const header = new Headers();
-    header.append('Content-Type', 'application/json')
-    let json_input = JSON.stringify(input);
-    const request = new Request(host, {headers: header,
-                                       method: 'POST',
-                                       credentials : 'include',
-                                       body: json_input });
-    let res = fetch(request)
-    .then(response => {
-      return response.json()
-    })
-    .catch(error => {
-      console.log(`Error message : ${error}`);
-    })
-    
-    return res;
-  }
-
-  logOutRequest(input) {
-    console.log("Request Log Out");
-    let host = this.host + ':' + this.port + '/logout';
+  function requestToServer(input, apiName) {
+    const api = `${this.host}:${this.port}/${apiName}`;
     const header = new Headers();
     header.append('Content-Type', 'application/json');
-    let json_input = JSON.stringify(input);
-    const request = new Request(host, {headers: header,
-                                        method: 'POST',
-                                        credentials : 'include',
-                                        body: json_input,
-                                      });
-    let res = fetch(request)
-    .then(response => {
-    return response.json()
-    })
-    .catch(error => {
-      console.log(`Error message : ${error}`);
-      return error;
-    })
+    const request = new Request(api, {
+      header: header,
+      method: 'POST',
+      body: input,
+    });
 
-    return res;
+    return new Promise((reslove, reject) => {
+      return fetch(request);
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonRes) => {
+        if (jsonRes.success == true) {
+          reslove(jsonRes);
+        } else {
+          reject(jsonRes);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        const errRes = { success: false, code: null, message: 'unknown error' };
+        reject(errRes);
+      });
   }
 
-  SignUpRequest(input) {
-    let host = this.host + ':' + this.port + '/signUp';
-    console.log("Fetch to ", host);
-    const header = new Headers();
-    header.append('Content-Type', 'application/json')
-    let json_input = JSON.stringify(input)
-    const request = new Request(host, {headers: header,
-                                        method: 'POST',
-                                        credentials : 'include',
-                                        body: json_input });
-    let res = fetch(request)
-    .then(response => response.json())
-    .catch( error => error)
+  function signIn(email, password) {
+    let ret = null;
+    const input = { email: email, password: password };
+    const jsonInput = JSON.stringify(input);
 
-    return res;
+    if (cognitoFlag === true) {
+      ret = Auth.signIn(email, password);
+    } else {
+      ret = requestToServer(jsonInput, '/v1/signIn');
+    }
+    return ret;
   }
 
-  addAdditionalInfo(input) {
-    let host = this.host + ':' + this.port + '/addAdditionalInfo';
-    const header = new Headers();
-    header.append('Content-Type', 'application/json')
-    let json_input = JSON.stringify(input)
-    const request = new Request(host, {headers: header,
-                                        method: 'POST',
-                                        credentials : 'include',
-                                        body: json_input });
-    let res = fetch(request)
-    .then(response => response.json())
-    .catch( error => {
-      console.log(error)
-    })
-
-    return res;
+  function signUp(email, password) {
+    let ret = null;
+    /* create input of json format */
+    const input = { email: email, password: password };
+    const jsonInput = JSON.stringify(input);
+    /* request to server */
+    if (cognitoFlag === true) {
+      ret = Auth.signUp({
+        username: email,
+        password: password,
+        attributes: {
+          nickname: '',
+          gender: '',
+          'custom:additional_verified': 0,
+        },
+      });
+    } else {
+      ret = requestToServer(jsonInput, '/v1/signup');
+    }
+    return ret;
   }
 
-  getEmailByAccessToken(input) {
-    let host = this.host + ':' + this.port + '/getEmailByAccessToken';
-    const header = new Headers();
-    header.append('Content-Type', 'application/json')
-    let json_input = JSON.stringify(input)
-    const request = new Request(host, {headers: header,
-                                        method: 'POST',
-                                        credentials : 'include',
-                                        body : json_input,
-                                        });
-    let res = fetch(request)
-    .then(response => response.json())
-    .catch( error => {
-      console.log(error)
-    })
+  function confirmSignUp(email, code) {
+    let ret = null;
+    /* create input of json format */
+    const input = { email: email, code: code };
+    const jsonInput = JSON.stringify(input);
+    /* request to server */
+    if (cognitoFlag === true) {
+      ret = Auth.confirmSignUp(email, code);
+    } else {
+      ret = requestToServer(jsonInput, '/v1/confirmSignUp');
+    }
 
-    return res;
+    return ret;
   }
 
-  verification(input) {
-    let host = this.host + ':' + this.port + '/verification';
-    const header = new Headers();
-    header.append('Content-Type', 'application/json')
-    let json_input = JSON.stringify(input)
-    const request = new Request(host, {headers: header,
-                                        method: 'POST',
-                                        credentials : 'include',
-                                        body : json_input,
-                                        });
-    let res = fetch(request)
-    .then(response => response.json())
-    .catch( error => {
-      console.log(error)
-    })
+  function resendCode(email) {
+    let ret = null;
+    /* create input of json format */
+    const input = { email: email };
+    const jsonInput = JSON.stringify(input);
+    if (cognitoFlag === true) {
+      ret = Auth.resendSignUp(email);
+    } else {
+      ret = requestToServer(jsonInput, '/v1/resendCode');
+    }
 
-    return res;
+    return ret;
   }
 
-  getUserInfo(input) {
-    let host = this.host + ':' + this.port + '/getUserInfo';
-    const header = new Headers();
-    header.append('Content-Type', 'application/json')
-    let json_input = JSON.stringify(input)
-    const request = new Request(host, {headers: header,
-                                        method: 'POST',
-                                        credentials : 'include',
-                                        body : json_input,
-                                        });
-    let res = fetch(request)
-    .then(response => response.json())
-    .catch( error => {
-      console.log(error)
-    })
+  function checkNickname(nickname) {
+    let ret = null;
+    const input = { nickname: nickname };
+    const jsonInput = JSON.stringify(input);
 
-    return res;
+    if (cognitoFlag === true) {
+      ret = API.graphql(
+        graphqlOperation(queries.byNickname, { nickname: nickname })
+      );
+    } else {
+      ret = requestToServerTest(jsonInput, '/v1/checkNickname');
+    }
+    return ret;
   }
 
-  deleteUser(input) {
-    let host = this.host + ':' + this.port + '/deleteUser';
-    const header = new Headers();
-    header.append('Content-Type', 'application/json')
-    let json_input = JSON.stringify(input)
-    const request = new Request(host, {headers: header,
-                                        method: 'POST',
-                                        credentials : 'include',
-                                        body : json_input,
-                                        });
-    let res = fetch(request)
-    .then(response => response.json())
-    .catch( error => {
-      console.log(error)
-    })
+  function registerAdditionalInfo(email, nickname, gender) {
+    let ret = null;
+    const input = { nickname: nickname, gender: gender };
+    const jsonInput = JSON.stringify(input);
 
-    return res;
+    if (cognitoFlag === true) {
+      /* TODO : check nickname whether it is existed or not */
+      /* after connecting with graphsql, to do this */
+      ret = API.graphql(
+        graphqlOperation(mutations.createUser, {
+          input: { email: email, nickname: nickname, gender: gender },
+        })
+      ).then(() =>
+        Auth.currentAuthenticatedUser().then((user) => {
+          return Auth.updateUserAttributes(user, {
+            nickname: nickname,
+            gender: gender,
+          });
+        })
+      );
+    } else {
+      ret = requestToServerTest(jsonInput, '/v1/registerAdditionalInfo');
+    }
+    return ret;
   }
 
-  createDaily(input) {
-    let host = this.host + ':' + this.port + '/createDaily';
-    const header = new Headers();
-    header.append('Content-Type', 'application/json')
-    let json_input = JSON.stringify(input)
-    const request = new Request(host, {headers: header,
-                                        method: 'POST',
-                                        credentials : 'include',
-                                        body : json_input,
-                                        });
-    let res = fetch(request)
-    .then(response => response.json())
-    .catch( error => {
-      console.log(error)
-    })
+  function signOut() {
+    let ret = null;
 
-    return res;    
+    if (cognitoFlag === true) {
+      ret = Auth.signOut();
+    } else {
+      /* TODO : after implementation backend */
+    }
+
+    return ret;
   }
 
-  getDailyInfo(input) {
-    let host = this.host + ':' + this.port + '/getDailyInfo';
-    const header = new Headers();
-    header.append('Content-Type', 'application/json')
-    let json_input = JSON.stringify(input)
-    const request = new Request(host, {headers: header,
-                                        method: 'POST',
-                                        credentials : 'include',
-                                        body : json_input,
-                                        });
-    let res = fetch(request)
-    .then(response => response.json())
-    .catch( error => {
-      console.log(error)
-    })
+  return {
+    signIn: signIn,
+    signUp: signUp,
+    confirmSignUp: confirmSignUp,
+    resendCode: resendCode,
+    checkNickname: checkNickname,
+    registerAdditionalInfo: registerAdditionalInfo,
+    signOut: signOut,
+  };
+})();
 
-    return res;
-  }
-
-  editDaily(input) {
-    let host = this.host + ':' + this.port + '/editDaily';
-    const header = new Headers();
-    header.append('Content-Type', 'application/json')
-    let json_input = JSON.stringify(input)
-    const request = new Request(host, {headers: header,
-                                        method: 'POST',
-                                        credentials : 'include',
-                                        body : json_input,
-                                        });
-    let res = fetch(request)
-    .then(response => response.json())
-    .catch( error => {
-      console.log(error)
-    })
-
-    return res;
-  }
-
-  deleteDaily(input) {
-    let host = this.host + ':' + this.port + '/deleteDaily';
-    const header = new Headers();
-    header.append('Content-Type', 'application/json')
-    let json_input = JSON.stringify(input)
-    const request = new Request(host, {headers: header,
-                                        method: 'POST',
-                                        credentials : 'include',
-                                        body : json_input,
-                                        });
-    let res = fetch(request)
-    .then(response => response.json())
-    .catch( error => {
-      console.log(error)
-    })
-
-    return res;
-  }
-}
+export { MyRequest, cognitoFlag, myExceptions };

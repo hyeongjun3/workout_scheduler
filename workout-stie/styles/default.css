@@ -1,33 +1,191 @@
-:root{
-    /* size */
-    --main_menu_margin_size : 12px;
-    --side_bar_width : 150px;
-    --default_padding_size : 8px;
-    --default_padding_topbottom_size : 4px;
-    --sub_menu_width_padding_size : 15px;
-    --calender_window_padding_size : 50px;
-    --calender_control_margin : 40px;
-    --default_gap_size : 10px;
-    --field_height : 20px;
+:root {
+  /* ################################## */
+  /* Global */
 
-    /* chart size */
-    --chart_margin_top : 100px;
+  /* Color */
+  --red-color: #ff0000;
+  --grey-color: #f6f6f6;
+  --light-grey-color : #cecaca;
 
-    /* button size */
-    --default_button_width : 100px;
-    
-    /* font size*/
-    --default_font_size : 14px;
-    --default_large_size : 30px;
+  /* Size */
+  --default-font-size-small: 12px;
+  --default-font-size-medium : 18px;
+  --default-font-size-large : 25px;
+  --default-padding : 12px;
+  --default-margin : 12px;
 
-    /* color */
-    --side_bar_background_color : #FAFBFC;
-    --side_bar_selected_color : #EBECF0;
-    --grey-color : #F6CECE;
-    --calender_index_background_color : #FAFBFC;
-    --calender_date_background_color : #C0C0C0;
+  /* border */
+  --default-border: 1px solid black;
+  --default-border-radius: 20px;
+
+  /* button */
+  --default-button-width: 100px;
+  --default-button-padding: 10px;
+  --default-button-font-size: 12px;
+  --default-button-border: 1px solid var(--grey-color);
+  --default-button-border-radius: 8px;
+
+  /* input */
+  --default-input-padding: 10px;
+  --default-input-font-size: 15px;
+
+  /* ################################## */
+  /* Modal dialog */
+  /* size */
+  --modal-max-width : 500px;
+  --modal-padding : 20px;
+  --modal-border : 1px solid var(--grey-color);
+  --modal-border-radius : 5px;
+  --modal-inner-spacing : 20px;
+  /* color */
+  --modal-grey-filter : rgb(0,0,0,0.2);
+
+  /* ################################## */
+  /* User window (login, sign up)*/
+  /* size */
+  --user-main-window-max-width: 700px;
+  --user-logo-width: 100px;
+  --user-main-window-padding: 30px;
+  --user-input-field-margin-bottom: 20px;
+  --user-input-field-inner-margin-bottom: 8px;
+  --user-input-field-label-font-size: 17px;
+  --user-btn-group-margin-top: 50px;
+
+  /* color */
+  /* ################################## */
+  /* top nav */
+  /* size */
+  --top-nav-height : 100px;
+  --top-nav-image-width : calc(var(--top-nav-height) - var(--default-padding)*2);
+
+  /* ################################## */
+  /* private info */
+  --private-info-width : 500px;
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+button {
+  padding: var(--default-button-padding);
+  font-size: var(--default-input-font-size);
+  border: var(--default-button-border);
+  border-radius: var(--default-button-border-radius);
+  width : var(--default-button-width);
+}
+input {
+  box-sizing: border-box;
+  padding: var(--default-input-padding);
+  font-size: var(--default-input-font-size);
 }
 
 .hidden {
-    display: none;
+  display: none !important;
+}
+
+.no_scroll {
+  overflow-y: auto;
 }

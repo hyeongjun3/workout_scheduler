@@ -1,0 +1,22 @@
+# exception_ko.yml
+unKnown:
+  code: "-9999"
+  msg: "알수 없는 오류가 발생하였습니다."
+userNotFound:
+  code: "-1000"
+  msg: "존재하지 않는 회원입니다."
+emailSigninFailed:
+  code: "-1001"
+  msg: "계정이 존재하지 않거나 이메일 또는 비밀번호가 정확하지 않습니다."
+communicationError:
+  code: "-1004"
+  msg: "통신 중 오류가 발생하였습니다."
+existingUser:
+  code: "-1005"
+  msg: "이미 가입한 회원입니다."
+samePassword:
+  code: "-1006"
+  msg: "변경 전 패스워드와 일치합니다. 다시 변경해주십시오."
+notMachedPassword:
+  code: "-1007"
+  msg: "기존 비밀번호 혹은 새로운 비밀번호가 일치하지 않습니다."

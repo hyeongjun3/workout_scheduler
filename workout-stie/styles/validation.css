@@ -1,64 +1,8 @@
-:root{
-  /* --blue-color : ~~~; */
-  --grey-color : #F6CECE;
-  --button-enable : #2ea44f;
-  /* --font-medium : ~~~; */
-  --font-medium : 12px;
-  /* --side-padding : ~~~; */
-}
+@import "default.css" screen;
 
-body {
-  margin : 0px;
-}
-
-.verfication_window {
-  width : 340px;
-  margin : auto;
-}
-
-.verfication_logo {
-  display: block;
-  width : 20%;
-  margin: auto;
-}
-
-.verfication_window > h2 {
-  text-align: center;
-}
-
-.verification_form {
-  box-sizing: border-box;
-  border: 1px solid var(--grey-color);
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  padding : 20px;
-  height :154px;
-  justify-content: space-between;
-}
-
-.verification_form > p {
-  font-size : 18px;
-  margin: 0px;
-}
-
-.verification_form > input {
-  box-sizing: border-box;
-  padding : 5px 12px;
-  border: 1px solid var(--grey-color);;
-  border-radius: 5px;
-}
-
-.verification_form > button {
-  box-sizing: border-box;
-  padding : 5px 12px;
-  background-color: var(--button-enable);
-  border : 1px solid white;
-  border-radius: 5px;
-}
-
-.resend {
-  background: none;
-  border : none;
-  text-decoration: underline;
+.resend-code {
+  padding: var(--default-padding);
+  text-align: right;
+  font-size: var(--default-font-size-small);
+  color: var(--red-color);
 }

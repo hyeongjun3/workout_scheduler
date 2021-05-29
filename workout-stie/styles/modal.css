@@ -1,0 +1,114 @@
+@import "default.css" screen;
+
+/* Alert modal */
+.dialog_backdrop {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--modal-grey-filter);
+}
+
+/* Modal Content/Box */
+.alert_dialog {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: var(--modal-padding);
+    border: var(--modal-border);
+    border-radius: var(--modal-border-radius);
+    max-width: var(--modal-max-width);
+    width: 40%; /* Could be more or less, depending on screen size */
+}
+
+.alert_dialog > *:not(:first-child) {
+    margin-top: var(--modal-inner-spacing);
+}
+
+.dialog_label {
+    font-size: var(--default-font-size-medium);
+    text-align: center;
+}
+
+.dialog_form_actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.dialog_form_actions > * {
+    width: 100%;
+}
+
+.dialog_form_actions > *:not(:first-child) {
+    margin-left : var(--modal-inner-spacing);
+}
+
+/* Modal */
+.modal-main-window {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    max-width: var(--user-main-window-max-width);
+    padding : var(--user-main-window-padding);
+    display : flex;
+    flex-direction: column;
+    border : var(--default-border);
+    border-radius: var(--default-border-radius);
+}
+
+.modal-title {
+    text-align: center;
+    font-size: var(--default-font-size-large);
+}
+
+.modal-input-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-input-field-inner-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-input-field-inner-group:not(:last-child) {
+    margin-bottom: var(--user-input-field-margin-bottom);
+}
+
+.modal-input-field-inner-group > *:not(:last-child) {
+    margin-bottom: var(--user-input-field-inner-margin-bottom);
+}
+
+.modal-input-field-inner-group > label {
+    font-size: var(--user-input-field-label-font-size);
+}
+
+.modal-input-field-inner-info {
+    font-size: var(--default-font-size-small);
+    color: var(--red-color);
+}
+
+.modal-input-field-radio {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.modal-input-field-radio-inner {
+    font-size: var(--default-input-font-size);
+}
+
+.modal-btn-group {
+    margin-top: var(--user-btn-group-margin-top);
+}
+
+button.modal-btn-group-inner {
+    width : 100%;
+}
+
+.modal-signup-a {
+    padding: var(--default-padding);
+    text-align: right;
+    font-size: var(--default-font-size-small);
+    color: var(--red-color);
+}
