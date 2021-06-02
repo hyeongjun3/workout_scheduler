@@ -42,11 +42,13 @@ function PrivateInfoView() {
       'button',
       'private-info-top-item'
     );
+    this.privateInfoTopItemUpdate.setAttribute('data-testid', 'test-edit-btn')
     this.privateInfoTopItemUpdate.innerHTML = '수정';
     this.privateInfoTopItemWithdrawal = this.createElement(
       'button',
       'private-info-top-item'
     );
+    this.privateInfoTopItemWithdrawal.setAttribute('data-testid', 'test-withdrawl')
     this.privateInfoTopItemWithdrawal.innerHTML = '회원탈퇴';
   }
   this.privateInfoTop.appendChild(this.privateInfoTopItemUpdate);
@@ -150,6 +152,7 @@ function PrivateInfoView() {
         'private-info-button-group',
         'hidden'
       );
+      this.privateInfoButtonGroup.setAttribute('data-testid','test-info-btn-group')
       {
         this.privateInfoButtonConfirm = this.createElement(
           'button',
