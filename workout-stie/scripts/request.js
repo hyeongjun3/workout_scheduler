@@ -10,8 +10,8 @@ const myExceptions = Object.freeze({
 });
 
 const MyRequest = (function () {
-  const host = 'http://localhost';
-  const port = 3000;
+  const host = 'http://3.37.23.36';
+  const port = 8080;
 
   /* Use this function for testing when the rest api is not yet implemented */
   function requestToServerTest(input, apiName) {
@@ -30,7 +30,7 @@ const MyRequest = (function () {
   }
 
   function requestToServer(input, apiName) {
-    const api = `${this.host}:${this.port}/${apiName}`;
+    const api = `${host}:${port}/${apiName}`;
     const header = new Headers();
     header.append('Content-Type', 'application/json');
     const request = new Request(api, {
@@ -89,7 +89,7 @@ const MyRequest = (function () {
         },
       });
     } else {
-      ret = requestToServer(jsonInput, '/v1/signup');
+      ret = requestToServer(jsonInput, 'v1/signup');
     }
     return ret;
   }

@@ -15,7 +15,7 @@ if (window.hasOwnProperty('myRequest') === false) {
 if (window.hasOwnProperty('myUtils') === false) {
   import('../utils.js').then((module) => {
     myUtils = module.Utils;
-  })
+  });
 }
 
 function UserInputFieldForm(type, nameKor, nameEng, inputId, infoStr) {
@@ -192,23 +192,34 @@ SignUpModel.prototype.setPwd2 = function (pwd2Input) {
 SignUpModel.prototype.signUp = function () {
   this.email = this.inputFieldForm[0].value;
   this.pwd = this.inputFieldForm[1].value;
+  let ret = null;
 
-  return myRequest
+  if (cognitoFlag === true) {
+    ret = myRequest
+      .signUp(this.email, this.pwd)
+      .then(() => {
+        const user = myUtils.getUser();
+        let ret = {};
+        user.email = this.email;
+        myUtils.setUser(user);
+        ret.redirectionURL = 'validation.html';
+        return ret;
+      })
+      .catch((err) => {
+        console.error(err);
+        this.setModal(err.name, err.message);
+        this.showModal();
+        return;
+      });
+  } else {
+    ret = myRequest
     .signUp(this.email, this.pwd)
-    .then(() => {
-      const user = myUtils.getUser();
-      let ret = {};
-      user.email = this.email;
-      myUtils.setUser(user);
-      ret.redirectionURL = 'validation.html';
-      return ret;
-    })
-    .catch((err) => {
-      console.error(err);
-      this.setModal(err.name, err.message);
-      this.showModal();
-      return;
+    .then((result) => {
+      console.log(result);
     });
+  }
+
+  return ret;
 };
 
 export { UserInputFieldForm, SignInModel, SignUpModel };
