@@ -20,3 +20,6 @@ samePassword:
 notMachedPassword:
   code: "-1007"
   msg: "The origin password or new password do not match."
+notMachedEmail:
+  code: "-1008"
+  msg: "Email format is not valid."

@@ -20,3 +20,6 @@ samePassword:
 notMachedPassword:
   code: "-1007"
   msg: "기존 비밀번호 혹은 새로운 비밀번호가 일치하지 않습니다."
+notMachedEmail:
+  code: "-1008"
+  msg: "이메일 형식이 올바르지 않습니다."
