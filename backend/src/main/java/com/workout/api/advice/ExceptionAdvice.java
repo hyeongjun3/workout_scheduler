@@ -54,6 +54,12 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("existingUser.code")), getMessage("existingUser.msg"));
     }
 
+    @ExceptionHandler(CUserNotMatchEmailException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult userNotMatchEmailException(HttpServletRequest request, CUserNotMatchEmailException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("notMachedEmail.code")), getMessage("notMachedEmail.msg"));
+    }
+
     @ExceptionHandler(CUserNotMatchPasswordException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult userNotMatchPasswordException(HttpServletRequest request, CUserNotMatchPasswordException e) {
