@@ -20,3 +20,12 @@ samePassword:
 notMachedPassword:
   code: "-1007"
   msg: "The origin password or new password do not match."
+notMachedEmail:
+  code: "-1008"
+  msg: "Email format is not valid."
+resourceNotExist:
+  code: "-1009"
+  msg: "This resource does not exist."
+notOwner:
+  code: "-1010"
+  msg: "This resource does not exist."

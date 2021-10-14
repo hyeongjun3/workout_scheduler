@@ -3,6 +3,7 @@ package com.workout.api.controller.v1;
 import com.workout.api.advice.exception.CEmailSigninFailedException;
 import com.workout.api.advice.exception.CUserExistException;
 import com.workout.api.advice.exception.CUserNotFoundException;
+import com.workout.api.advice.exception.CUserNotMatchEmailException;
 import com.workout.api.config.security.JwtTokenProvider;
 import com.workout.api.entity.User;
 import com.workout.api.model.response.CommonResult;
@@ -33,10 +34,17 @@ public class SignController {
     private final PasswordEncoder passwordEncoder;
     private final KakaoService kakaoService;
 
+    private final String email_regex = "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
+            + "[A-Za-z0-9-]+(\\.com|abc\\.co|abc\\.nz|abc\\.org|abc\\.net)$";
+
     @ApiOperation(value = "가입", notes = "회원가입을 한다.")
     @PostMapping(value = "/signup")
     public CommonResult signup(@ApiParam(value = "회원ID : 이메일", required = true) @RequestParam String email,
                                @ApiParam(value = "비밀번호", required = true) @RequestParam String password) {
+
+        if(!email.matches(email_regex)) {
+            throw new CUserNotMatchEmailException();
+        }
 
         Optional<User> user = userJpaRepository.findByEmail(email);
         if(user.isPresent()) {

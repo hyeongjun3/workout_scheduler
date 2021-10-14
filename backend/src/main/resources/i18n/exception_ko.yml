@@ -20,3 +20,12 @@ samePassword:
 notMachedPassword:
   code: "-1007"
   msg: "기존 비밀번호 혹은 새로운 비밀번호가 일치하지 않습니다."
+notMachedEmail:
+  code: "-1008"
+  msg: "이메일 형식이 올바르지 않습니다."
+resourceNotExist:
+  code: "-1009"
+  msg: "해당 자원이 존재하지 않습니다."
+notOwner:
+  code: "-1010"
+  msg: "해당 소유자가 아닙니다."

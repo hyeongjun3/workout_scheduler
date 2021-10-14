@@ -54,6 +54,12 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("existingUser.code")), getMessage("existingUser.msg"));
     }
 
+    @ExceptionHandler(CUserNotMatchEmailException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult userNotMatchEmailException(HttpServletRequest request, CUserNotMatchEmailException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("notMachedEmail.code")), getMessage("notMachedEmail.msg"));
+    }
+
     @ExceptionHandler(CUserNotMatchPasswordException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult userNotMatchPasswordException(HttpServletRequest request, CUserNotMatchPasswordException e) {
@@ -70,6 +76,18 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult userConfirmPasswordException(HttpServletRequest request, CUserConfirmPasswordException e) {
         return responseService.getFailResult(Integer.valueOf(getMessage("notMachedPassword.code")), getMessage("notMachedPassword.msg"));
+    }
+
+    @ExceptionHandler(CResourceNotExistException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult resourceNotExistException(HttpServletRequest request, CResourceNotExistException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("resourceNotExist.code")), getMessage("resourceNotExist.msg"));
+    }
+
+    @ExceptionHandler(CNotOwnerException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public CommonResult notOwnerException(HttpServletRequest request, CNotOwnerException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("notOwner.code")), getMessage("notOwner.msg"));
     }
 
     // code정보에 해당하는 메시지를 조회합니다.
